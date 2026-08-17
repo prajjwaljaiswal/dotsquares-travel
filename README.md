@@ -1,6 +1,6 @@
 # dotsquares-travel
 
-A Next.js + TypeScript travel application scaffolded with Tailwind CSS, ESLint, and Prettier.
+A Next.js + TypeScript travel booking application styled with Tailwind CSS.
 
 ## Getting Started
 
@@ -16,32 +16,31 @@ Run the development server:
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the app.
 
 ## Available Scripts
 
-- `npm run dev` – Start the local development server
-- `npm run build` – Build the application for production
-- `npm run start` – Start the production server
-- `npm run lint` – Run ESLint
-- `npm run format` – Format code with Prettier
-- `npm run format:check` – Check formatting without writing changes
-- `npm run type-check` – Run TypeScript compiler checks
+- `npm run dev` – start the development server
+- `npm run build` – build the production bundle
+- `npm run start` – start the production server
+- `npm run lint` – run ESLint
+- `npm run format` – format code with Prettier
+- `npm test` – run the test suite
 
 ## Project Structure
 
 ```
-.
-├── components/   # Reusable React components
-├── data/         # Static/sample data sources
-├── lib/          # Shared utilities and constants
-├── pages/        # Next.js routes
-├── styles/       # Global styles and Tailwind entrypoint
-└── types/        # Shared TypeScript types and interfaces
+components/   Reusable React components
+data/         Sample/static data sources
+lib/          Shared utility functions
+pages/        Next.js pages (routes)
+styles/       Global CSS and Tailwind entry point
+types/        Shared TypeScript types and interfaces
 ```
 
 ## Tech Stack
 
-- [Next.js](https://nextjs.org/) with TypeScript (strict mode)
-- [Tailwind CSS](https://tailwindcss.com/) for styling
-- [ESLint](https://eslint.org/) + [Prettier](https://prettier.io/) for code quality and formatting
+- Next.js 14 (Pages Router)
+- TypeScript (strict mode)
+- Tailwind CSS
+- ESLint + Prettier
