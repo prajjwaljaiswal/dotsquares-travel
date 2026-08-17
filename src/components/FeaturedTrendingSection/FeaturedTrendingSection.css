@@ -1,7 +1,5 @@
 .featured-trending-section {
-  padding: 40px 24px;
-  max-width: 1200px;
-  margin: 0 auto;
+  padding: 48px 24px;
 }
 
 .featured-trending-section__header {
@@ -9,18 +7,22 @@
   margin-bottom: 32px;
 }
 
-.featured-trending-section__header h2 {
-  font-size: 28px;
+.featured-trending-section__title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #2c3e50;
   margin: 0 0 8px;
 }
 
-.featured-trending-section__header p {
+.featured-trending-section__subtitle {
+  color: #666;
   margin: 0;
-  color: #6b7280;
 }
 
 .featured-trending-section__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
 }

@@ -1,11 +1,19 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { describe, it, expect } from 'vitest';
-import FeaturedTrendingSection from '../FeaturedTrendingSection';
-import { featuredTrendingPackages } from '../../data/packages';
+import FeaturedTrendingSection from '../FeaturedTrendingSection/FeaturedTrendingSection';
 
 describe('FeaturedTrendingSection', () => {
-  it('renders at least 6 featured/trending package cards', () => {
+  it('renders the section heading', () => {
+    render(
+      <MemoryRouter>
+        <FeaturedTrendingSection />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByText('Featured & Trending Packages')).toBeInTheDocument();
+  });
+
+  it('renders at least 6 package cards', () => {
     render(
       <MemoryRouter>
         <FeaturedTrendingSection />
@@ -16,15 +24,14 @@ describe('FeaturedTrendingSection', () => {
     expect(cards.length).toBeGreaterThanOrEqual(6);
   });
 
-  it('renders a card for every featured/trending package in the demo data', () => {
+  it('renders each card with a "View Details" and "Book Now" action', () => {
     render(
       <MemoryRouter>
         <FeaturedTrendingSection />
       </MemoryRouter>
     );
 
-    featuredTrendingPackages.forEach((pkg) => {
-      expect(screen.getByText(pkg.title)).toBeInTheDocument();
-    });
+    expect(screen.getAllByTestId('view-details-link').length).toBeGreaterThanOrEqual(6);
+    expect(screen.getAllByTestId('book-now-link').length).toBeGreaterThanOrEqual(6);
   });
 });

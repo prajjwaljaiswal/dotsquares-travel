@@ -1,28 +1,26 @@
+import React from 'react';
 import PackageCard from '../PackageCard/PackageCard';
 import { getFeaturedOrTrendingPackages } from '../../data/packages';
 import './FeaturedTrendingSection.css';
 
-interface FeaturedTrendingSectionProps {
-  minimumCards?: number;
-}
-
-function FeaturedTrendingSection({ minimumCards = 6 }: FeaturedTrendingSectionProps) {
-  const featuredPackages = getFeaturedOrTrendingPackages();
-  const cardsToDisplay = featuredPackages.slice(0, Math.max(minimumCards, featuredPackages.length));
+const FeaturedTrendingSection: React.FC = () => {
+  const packages = getFeaturedOrTrendingPackages();
 
   return (
-    <section className="featured-trending-section" aria-labelledby="featured-trending-heading">
+    <section className="featured-trending-section" aria-label="Featured and trending packages">
       <div className="featured-trending-section__header">
-        <h2 id="featured-trending-heading">Featured &amp; Trending Packages</h2>
-        <p>Hand-picked getaways loved by our travelers</p>
+        <h2 className="featured-trending-section__title">Featured &amp; Trending Packages</h2>
+        <p className="featured-trending-section__subtitle">
+          Handpicked getaways loved by travelers around the world.
+        </p>
       </div>
       <div className="featured-trending-section__grid" data-testid="featured-trending-grid">
-        {cardsToDisplay.map((pkg) => (
+        {packages.map((pkg) => (
           <PackageCard key={pkg.id} pkg={pkg} />
         ))}
       </div>
     </section>
   );
-}
+};
 
 export default FeaturedTrendingSection;

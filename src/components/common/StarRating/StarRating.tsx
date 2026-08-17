@@ -1,29 +1,35 @@
-import { FC } from 'react';
+import React from 'react';
 import './StarRating.css';
 
 interface StarRatingProps {
   rating: number;
-  maxStars?: number;
+  maxRating?: number;
 }
 
-const StarRating: FC<StarRatingProps> = ({ rating, maxStars = 5 }) => {
-  const stars = Array.from({ length: maxStars }, (_, index) => {
-    const starValue = index + 1;
-    const isFilled = starValue <= Math.round(rating);
-    return (
-      <span
-        key={starValue}
-        data-testid={isFilled ? 'star-filled' : 'star-empty'}
-        className={isFilled ? 'star star--filled' : 'star star--empty'}
-      >
-        ★
-      </span>
-    );
-  });
+const StarRating: React.FC<StarRatingProps> = ({ rating, maxRating = 5 }) => {
+  const filledCount = Math.round(rating);
+  const emptyCount = Math.max(maxRating - filledCount, 0);
 
   return (
-    <div className="star-rating" data-testid="star-rating">
-      {stars}
+    <div className="star-rating" role="img" aria-label={`Rated ${rating} out of ${maxRating}`}>
+      {Array.from({ length: filledCount }).map((_, index) => (
+        <span
+          key={`filled-${index}`}
+          data-testid="star-filled"
+          className="star-rating__star star-rating__star--filled"
+        >
+          ★
+        </span>
+      ))}
+      {Array.from({ length: emptyCount }).map((_, index) => (
+        <span
+          key={`empty-${index}`}
+          data-testid="star-empty"
+          className="star-rating__star star-rating__star--empty"
+        >
+          ★
+        </span>
+      ))}
       <span className="star-rating__value">{rating.toFixed(1)}</span>
     </div>
   );

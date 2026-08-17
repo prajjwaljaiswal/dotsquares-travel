@@ -1,22 +1,21 @@
 .package-card {
-  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  display: flex;
-  flex-direction: column;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .package-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 .package-card__image-wrapper {
   position: relative;
-  width: 100%;
-  height: 190px;
+  height: 200px;
   overflow: hidden;
 }
 
@@ -24,102 +23,82 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
 }
 
 .package-card__badge {
   position: absolute;
-  top: 10px;
+  top: 12px;
   padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
   font-weight: 600;
-  color: #ffffff;
+  color: #fff;
 }
 
 .package-card__badge--trending {
-  left: 10px;
-  background-color: #f97316;
+  right: 12px;
+  background: #e74c3c;
 }
 
 .package-card__badge--featured {
-  right: 10px;
-  background-color: #2563eb;
+  left: 12px;
+  background: #2c3e50;
 }
 
 .package-card__body {
   padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
   flex: 1;
 }
 
 .package-card__title {
-  margin: 0;
-  font-size: 18px;
+  margin: 0 0 4px;
+  font-size: 1.1rem;
   font-weight: 700;
 }
 
-.package-card__location {
-  margin: 0;
-  font-size: 13px;
-  color: #6b7280;
-}
-
-.package-card__meta {
-  display: flex;
-  justify-content: space-between;
-  font-size: 14px;
-  color: #374151;
-}
-
-.package-card__rating {
-  color: #f59e0b;
-  font-weight: 600;
-}
-
-.package-card__footer {
-  margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.package-card__location,
+.package-card__duration {
+  margin: 0 0 4px;
+  color: #666;
+  font-size: 0.9rem;
 }
 
 .package-card__price {
-  font-size: 18px;
+  margin-top: 8px;
+  font-size: 1.2rem;
   font-weight: 700;
-  color: #111827;
+  color: #2c3e50;
+}
+
+.package-card__price-suffix {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #999;
 }
 
 .package-card__actions {
   display: flex;
   gap: 8px;
+  padding: 0 16px 16px;
 }
 
 .package-card__button {
   flex: 1;
+  text-align: center;
   padding: 10px 12px;
   border-radius: 8px;
-  border: none;
-  font-size: 14px;
   font-weight: 600;
-}
-
-.package-card__button--primary {
-  background-color: #2563eb;
-  color: #ffffff;
-}
-
-.package-card__button--primary:hover {
-  background-color: #1d4ed8;
+  text-decoration: none;
+  font-size: 0.9rem;
 }
 
 .package-card__button--secondary {
-  background-color: #f3f4f6;
-  color: #111827;
+  border: 1px solid #2c3e50;
+  color: #2c3e50;
+  background: #fff;
 }
 
-.package-card__button--secondary:hover {
-  background-color: #e5e7eb;
+.package-card__button--primary {
+  background: #2c3e50;
+  color: #fff;
 }
