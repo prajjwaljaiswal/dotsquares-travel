@@ -1,25 +1,28 @@
 .featured-trending-section {
-  padding: 40px 0;
+  padding: 48px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .featured-trending-section__header {
-  margin-bottom: 24px;
   text-align: center;
+  margin-bottom: 32px;
 }
 
-.featured-trending-section__title {
+.featured-trending-section__header h2 {
   font-size: 28px;
+  font-weight: 800;
   margin: 0 0 8px;
 }
 
-.featured-trending-section__subtitle {
+.featured-trending-section__header p {
+  font-size: 16px;
+  color: #6b7280;
   margin: 0;
-  color: #5a6472;
-  font-size: 15px;
 }
 
 .featured-trending-section__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
 }

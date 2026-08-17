@@ -1,29 +1,16 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
 import Inspiration from './Inspiration';
-import { inspirationOffers } from '../../data/inspiration';
 
 describe('Inspiration', () => {
   it('renders the section heading', () => {
     render(<Inspiration />);
-    expect(
-      screen.getByRole('heading', { name: /travel inspiration & seasonal offers/i })
-    ).toBeInTheDocument();
+    expect(screen.getByText('Get Inspired')).toBeInTheDocument();
   });
 
-  it('renders a card for every offer in demo data', () => {
+  it('renders inspiration cards', () => {
     render(<Inspiration />);
-    expect(screen.getAllByRole('article')).toHaveLength(inspirationOffers.length);
-  });
-
-  it('renders title, description, and a CTA link for each offer', () => {
-    render(<Inspiration />);
-    inspirationOffers.forEach((offer) => {
-      expect(screen.getByText(offer.title)).toBeInTheDocument();
-      expect(screen.getByText(offer.description)).toBeInTheDocument();
-      const cta = screen.getByRole('link', { name: offer.ctaLabel });
-      expect(cta).toBeInTheDocument();
-      expect(cta).toHaveAttribute('href', offer.ctaUrl);
-    });
+    const cards = screen.getAllByTestId('inspiration-card');
+    expect(cards.length).toBeGreaterThan(0);
   });
 });

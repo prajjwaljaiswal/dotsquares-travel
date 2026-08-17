@@ -1,10 +1,10 @@
 .package-card {
-  background: #ffffff;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -13,111 +13,62 @@
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
-.package-card__image-wrapper {
-  position: relative;
-  width: 100%;
-  height: 180px;
-  overflow: hidden;
-}
-
 .package-card__image {
   width: 100%;
-  height: 100%;
+  height: 200px;
   object-fit: cover;
-  display: block;
 }
 
-.package-card__badge {
-  position: absolute;
-  top: 12px;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #ffffff;
-}
-
-.package-card__badge--trending {
-  left: 12px;
-  background-color: #ff6b35;
-}
-
-.package-card__badge--featured {
-  right: 12px;
-  background-color: #2d6cdf;
-}
-
-.package-card__body {
+.package-card__content {
   padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  flex: 1;
 }
 
 .package-card__title {
-  margin: 0;
   font-size: 18px;
   font-weight: 700;
+  margin: 0;
 }
 
-.package-card__meta {
-  display: flex;
-  justify-content: space-between;
+.package-card__duration {
   font-size: 14px;
-  color: #5a6472;
-}
-
-.package-card__rating {
-  color: #f5a623;
-  font-weight: 600;
+  color: #6b7280;
+  margin: 0;
 }
 
 .package-card__price {
-  font-size: 16px;
-}
-
-.package-card__price-amount {
+  font-size: 18px;
   font-weight: 700;
-  font-size: 20px;
-  color: #1f2733;
-}
-
-.package-card__price-label {
-  color: #5a6472;
-  font-size: 13px;
+  color: #111827;
+  margin: 0;
 }
 
 .package-card__actions {
-  margin-top: auto;
   display: flex;
   gap: 8px;
+  margin-top: 8px;
 }
 
-.package-card__btn {
+.package-card__view-details-btn,
+.package-card__book-now-btn {
   flex: 1;
   padding: 10px 12px;
   border-radius: 8px;
-  border: none;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+  border: none;
 }
 
-.package-card__btn--secondary {
-  background-color: #eef1f6;
-  color: #1f2733;
+.package-card__view-details-btn {
+  background: #ffffff;
+  border: 1px solid #111827;
+  color: #111827;
 }
 
-.package-card__btn--secondary:hover {
-  background-color: #dfe4ec;
-}
-
-.package-card__btn--primary {
-  background-color: #2d6cdf;
+.package-card__book-now-btn {
+  background: #111827;
   color: #ffffff;
-}
-
-.package-card__btn--primary:hover {
-  background-color: #2456b3;
 }

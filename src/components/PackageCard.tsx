@@ -1,5 +1,6 @@
-import React from 'react';
+import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
+import StarRating from './common/StarRating/StarRating';
 import { TravelPackage } from '../types/package';
 import './PackageCard.css';
 
@@ -7,53 +8,36 @@ interface PackageCardProps {
   pkg: TravelPackage;
 }
 
-const PackageCard: React.FC<PackageCardProps> = ({ pkg }) => {
+const PackageCard: FC<PackageCardProps> = ({ pkg }) => {
   const navigate = useNavigate();
 
-  const handleViewDetails = (): void => {
+  const handleViewDetails = () => {
     navigate(`/packages/${pkg.id}`);
   };
 
-  const handleBookNow = (): void => {
-    navigate(`/booking?packageId=${pkg.id}`);
+  const handleBookNow = () => {
+    navigate(`/booking/${pkg.id}`, { state: { packageId: pkg.id } });
   };
 
   return (
-    <div className="package-card" data-testid={`package-card-${pkg.id}`}>
-      <div className="package-card__image-wrapper">
-        <img className="package-card__image" src={pkg.image} alt={pkg.title} />
-        {pkg.trending && (
-          <span className="package-card__badge package-card__badge--trending">Trending</span>
-        )}
-        {pkg.featured && (
-          <span className="package-card__badge package-card__badge--featured">Featured</span>
-        )}
-      </div>
-      <div className="package-card__body">
+    <div className="package-card" data-testid="package-card">
+      <img src={pkg.image} alt={pkg.title} className="package-card__image" />
+      <div className="package-card__content">
         <h3 className="package-card__title">{pkg.title}</h3>
-        <div className="package-card__meta">
-          <span className="package-card__duration" data-testid="package-card-duration">
-            {pkg.duration}
-          </span>
-          <span className="package-card__rating" data-testid="package-card-rating">
-            ★ {pkg.rating.toFixed(1)}
-          </span>
-        </div>
-        <div className="package-card__price" data-testid="package-card-price">
-          <span className="package-card__price-amount">${pkg.price.toLocaleString()}</span>
-          <span className="package-card__price-label"> / person</span>
-        </div>
+        <p className="package-card__duration">{pkg.duration}</p>
+        <StarRating rating={pkg.rating} />
+        <p className="package-card__price">${pkg.price.toLocaleString()}</p>
         <div className="package-card__actions">
           <button
             type="button"
-            className="package-card__btn package-card__btn--secondary"
+            className="package-card__view-details-btn"
             onClick={handleViewDetails}
           >
             View Details
           </button>
           <button
             type="button"
-            className="package-card__btn package-card__btn--primary"
+            className="package-card__book-now-btn"
             onClick={handleBookNow}
           >
             Book Now

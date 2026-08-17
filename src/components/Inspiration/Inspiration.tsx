@@ -1,39 +1,57 @@
-import React from 'react';
-import styles from './Inspiration.module.css';
-import { inspirationOffers } from '../../data/inspiration';
+import { FC } from 'react';
+import './Inspiration.css';
 
-const Inspiration: React.FC = () => {
+interface InspirationItem {
+  id: string;
+  title: string;
+  image: string;
+  description: string;
+}
+
+const inspirationItems: InspirationItem[] = [
+  {
+    id: 'mountains',
+    title: 'Mountain Escapes',
+    image: 'https://images.example.com/inspiration/mountains.jpg',
+    description: 'Breathtaking peaks and serene trails for the adventurous soul.',
+  },
+  {
+    id: 'beaches',
+    title: 'Tropical Beaches',
+    image: 'https://images.example.com/inspiration/beaches.jpg',
+    description: 'Sun-soaked shores and crystal-clear waters await.',
+  },
+  {
+    id: 'cities',
+    title: 'City Lights',
+    image: 'https://images.example.com/inspiration/cities.jpg',
+    description: 'Vibrant culture, food, and nightlife in the world’s top cities.',
+  },
+];
+
+const Inspiration: FC = () => {
   return (
-    <section className={styles.section} aria-labelledby="inspiration-heading">
-      <div className={styles.container}>
-        <h2 id="inspiration-heading" className={styles.heading}>
-          Travel Inspiration &amp; Seasonal Offers
-        </h2>
-        <p className={styles.subheading}>
-          Handpicked destinations and limited-time deals to spark your next adventure
-        </p>
-        <div className={styles.grid}>
-          {inspirationOffers.map((offer) => (
-            <article key={offer.id} className={styles.card}>
-              <div className={styles.imageWrapper}>
-                <img
-                  src={offer.imageUrl}
-                  alt={offer.title}
-                  className={styles.image}
-                  loading="lazy"
-                />
-                {offer.badge && <span className={styles.badge}>{offer.badge}</span>}
-              </div>
-              <div className={styles.content}>
-                <h3 className={styles.title}>{offer.title}</h3>
-                <p className={styles.description}>{offer.description}</p>
-                <a href={offer.ctaUrl} className={styles.cta}>
-                  {offer.ctaLabel}
-                </a>
-              </div>
-            </article>
-          ))}
-        </div>
+    <section className="inspiration" data-testid="inspiration-section">
+      <div className="inspiration__header">
+        <h2>Get Inspired</h2>
+        <p>Explore ideas for your next adventure</p>
+      </div>
+      <div className="inspiration__grid">
+        {inspirationItems.map((item) => (
+          <div
+            className="inspiration__card"
+            key={item.id}
+            data-testid="inspiration-card"
+          >
+            <img
+              src={item.image}
+              alt={item.title}
+              className="inspiration__image"
+            />
+            <h3 className="inspiration__title">{item.title}</h3>
+            <p className="inspiration__description">{item.description}</p>
+          </div>
+        ))}
       </div>
     </section>
   );

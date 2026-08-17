@@ -1,28 +1,22 @@
-import React from 'react';
-import { packages } from '../data/packages';
+import { FC } from 'react';
 import PackageCard from './PackageCard';
+import { featuredTrendingPackages } from '../data/packages';
 import './FeaturedTrendingSection.css';
 
-const FeaturedTrendingSection: React.FC = () => {
-  const featuredTrendingPackages = packages.filter(
-    (pkg) => pkg.featured || pkg.trending
-  );
-
+const FeaturedTrendingSection: FC = () => {
   return (
     <section
       className="featured-trending-section"
-      aria-labelledby="featured-trending-heading"
       data-testid="featured-trending-section"
     >
       <div className="featured-trending-section__header">
-        <h2 id="featured-trending-heading" className="featured-trending-section__title">
-          Featured &amp; Trending Packages
-        </h2>
-        <p className="featured-trending-section__subtitle">
-          Handpicked travel experiences loved by our travelers
-        </p>
+        <h2>Featured & Trending Packages</h2>
+        <p>Hand-picked getaways loved by travelers around the world</p>
       </div>
-      <div className="featured-trending-section__grid" data-testid="featured-trending-grid">
+      <div
+        className="featured-trending-section__grid"
+        data-testid="package-grid"
+      >
         {featuredTrendingPackages.map((pkg) => (
           <PackageCard key={pkg.id} pkg={pkg} />
         ))}

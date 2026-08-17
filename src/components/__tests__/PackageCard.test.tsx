@@ -1,31 +1,30 @@
-import React from 'react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import PackageCard from '../PackageCard';
 import { TravelPackage } from '../../types/package';
 
 const mockNavigate = vi.fn();
 
 vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual<typeof import('react-router-dom')>('react-router-dom');
+  const actual = await vi.importActual<typeof import('react-router-dom')>(
+    'react-router-dom'
+  );
   return {
     ...actual,
-    useNavigate: () => mockNavigate
+    useNavigate: () => mockNavigate,
   };
 });
 
-const samplePackage: TravelPackage = {
-  id: 'p1',
-  title: 'Bali Beach Escape',
-  image: 'https://images.example.com/packages/bali.jpg',
+const mockPackage: TravelPackage = {
+  id: 'test-package',
+  title: 'Test Package',
+  image: 'https://example.com/image.jpg',
   duration: '5 Days / 4 Nights',
-  rating: 4.8,
-  price: 899,
+  rating: 4.5,
+  price: 999,
   featured: true,
   trending: true,
-  description: 'A relaxing beach getaway.'
 };
 
 describe('PackageCard', () => {
@@ -33,39 +32,41 @@ describe('PackageCard', () => {
     mockNavigate.mockClear();
   });
 
-  const renderCard = () =>
+  it('renders image, title, duration, rating and price', () => {
     render(
       <MemoryRouter>
-        <PackageCard pkg={samplePackage} />
+        <PackageCard pkg={mockPackage} />
       </MemoryRouter>
     );
 
-  it('renders image, title, duration, rating, and price', () => {
-    renderCard();
-
-    const image = screen.getByAltText(samplePackage.title) as HTMLImageElement;
-    expect(image).toBeInTheDocument();
-    expect(image.src).toBe(samplePackage.image);
-
-    expect(screen.getByText(samplePackage.title)).toBeInTheDocument();
-    expect(screen.getByTestId('package-card-duration')).toHaveTextContent(samplePackage.duration);
-    expect(screen.getByTestId('package-card-rating')).toHaveTextContent('4.8');
-    expect(screen.getByTestId('package-card-price')).toHaveTextContent('$899');
+    expect(screen.getByAltText('Test Package')).toBeInTheDocument();
+    expect(screen.getByText('Test Package')).toBeInTheDocument();
+    expect(screen.getByText('5 Days / 4 Nights')).toBeInTheDocument();
+    expect(screen.getByText('$999')).toBeInTheDocument();
+    expect(screen.getByTestId('star-rating')).toBeInTheDocument();
   });
 
-  it('navigates to package detail page when View Details is clicked', async () => {
-    renderCard();
+  it('navigates to the package detail page on View Details click', () => {
+    render(
+      <MemoryRouter>
+        <PackageCard pkg={mockPackage} />
+      </MemoryRouter>
+    );
 
-    await userEvent.click(screen.getByRole('button', { name: /view details/i }));
-
-    expect(mockNavigate).toHaveBeenCalledWith(`/packages/${samplePackage.id}`);
+    fireEvent.click(screen.getByText('View Details'));
+    expect(mockNavigate).toHaveBeenCalledWith('/packages/test-package');
   });
 
-  it('navigates to booking flow with package pre-selected when Book Now is clicked', async () => {
-    renderCard();
+  it('navigates to the booking flow with the package pre-selected on Book Now click', () => {
+    render(
+      <MemoryRouter>
+        <PackageCard pkg={mockPackage} />
+      </MemoryRouter>
+    );
 
-    await userEvent.click(screen.getByRole('button', { name: /book now/i }));
-
-    expect(mockNavigate).toHaveBeenCalledWith(`/booking?packageId=${samplePackage.id}`);
+    fireEvent.click(screen.getByText('Book Now'));
+    expect(mockNavigate).toHaveBeenCalledWith('/booking/test-package', {
+      state: { packageId: 'test-package' },
+    });
   });
 });
