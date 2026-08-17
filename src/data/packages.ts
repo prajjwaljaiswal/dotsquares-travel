@@ -1,100 +1,116 @@
-import { TravelPackage } from '../types/package';
+import type { TravelPackage } from '../types/package';
 
 export const packages: TravelPackage[] = [
   {
-    id: 'p1',
-    title: 'Bali Beach Escape',
-    image: 'https://images.example.com/packages/bali.jpg',
+    id: 'pkg-001',
+    title: 'Bali Beach Paradise',
+    image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600',
     duration: '5 Days / 4 Nights',
     rating: 4.8,
     price: 899,
+    currency: 'USD',
+    location: 'Bali, Indonesia',
+    description: 'Relax on white sand beaches, explore ancient temples and enjoy vibrant nightlife on this all-inclusive Bali getaway.',
     featured: true,
     trending: true,
-    description:
-      'Relax on pristine beaches, explore ancient temples, and enjoy vibrant nightlife on this all-inclusive Bali getaway.'
   },
   {
-    id: 'p2',
+    id: 'pkg-002',
     title: 'Swiss Alps Adventure',
-    image: 'https://images.example.com/packages/swiss-alps.jpg',
+    image: 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=600',
     duration: '7 Days / 6 Nights',
     rating: 4.9,
-    price: 2199,
+    price: 1799,
+    currency: 'USD',
+    location: 'Interlaken, Switzerland',
+    description: 'Hike breathtaking alpine trails, ride scenic cable cars and stay in cozy mountain lodges.',
     featured: true,
     trending: false,
-    description:
-      'Hike scenic trails, ride historic cable cars, and take in breathtaking alpine views on this Swiss mountain adventure.'
   },
   {
-    id: 'p3',
-    title: 'Dubai City Lights',
-    image: 'https://images.example.com/packages/dubai.jpg',
+    id: 'pkg-003',
+    title: 'Santorini Sunset Escape',
+    image: 'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=600',
     duration: '4 Days / 3 Nights',
-    rating: 4.6,
+    rating: 4.7,
     price: 1099,
+    currency: 'USD',
+    location: 'Santorini, Greece',
+    description: 'Watch iconic sunsets over whitewashed villages while enjoying Aegean cuisine and boutique stays.',
     featured: false,
     trending: true,
-    description:
-      'Experience futuristic skylines, desert safaris, and luxury shopping in the heart of Dubai.'
   },
   {
-    id: 'p4',
-    title: 'Kyoto Cultural Journey',
-    image: 'https://images.example.com/packages/kyoto.jpg',
+    id: 'pkg-004',
+    title: 'Tokyo City Explorer',
+    image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600',
     duration: '6 Days / 5 Nights',
-    rating: 4.7,
-    price: 1599,
+    rating: 4.6,
+    price: 1499,
+    currency: 'USD',
+    location: 'Tokyo, Japan',
+    description: 'Immerse yourself in neon streets, ancient shrines and world-class sushi across bustling Tokyo.',
     featured: true,
     trending: true,
-    description:
-      'Wander through ancient temples, traditional gardens, and historic streets on this immersive Kyoto experience.'
   },
   {
-    id: 'p5',
-    title: 'Santorini Sunset Retreat',
-    image: 'https://images.example.com/packages/santorini.jpg',
-    duration: '5 Days / 4 Nights',
-    rating: 4.9,
-    price: 1799,
-    featured: true,
-    trending: false,
-    description:
-      'Watch world-famous sunsets, sail the Aegean Sea, and stay in iconic cliffside villas in Santorini.'
-  },
-  {
-    id: 'p6',
-    title: 'Amazon Rainforest Expedition',
-    image: 'https://images.example.com/packages/amazon.jpg',
+    id: 'pkg-005',
+    title: 'Amazon Rainforest Trek',
+    image: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600',
     duration: '8 Days / 7 Nights',
     rating: 4.5,
-    price: 2499,
+    price: 2199,
+    currency: 'USD',
+    location: 'Manaus, Brazil',
+    description: 'Trek through dense jungle canopy, spot exotic wildlife and stay in eco-lodges deep in the Amazon.',
     featured: false,
     trending: true,
-    description:
-      'Explore the world\'s largest rainforest with guided wildlife tours, river cruises, and jungle lodges.'
   },
   {
-    id: 'p7',
-    title: 'Iceland Northern Lights Tour',
-    image: 'https://images.example.com/packages/iceland.jpg',
-    duration: '6 Days / 5 Nights',
+    id: 'pkg-006',
+    title: 'Dubai Desert & Luxury',
+    image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600',
+    duration: '5 Days / 4 Nights',
     rating: 4.8,
-    price: 2099,
+    price: 1599,
+    currency: 'USD',
+    location: 'Dubai, UAE',
+    description: 'Experience dune bashing, luxury shopping and the iconic Burj Khalifa on this premium desert escape.',
     featured: true,
-    trending: true,
-    description:
-      'Chase the aurora borealis, soak in geothermal hot springs, and explore glaciers on this Icelandic adventure.'
+    trending: false,
   },
   {
-    id: 'p8',
+    id: 'pkg-007',
+    title: 'Machu Picchu Discovery',
+    image: 'https://images.unsplash.com/photo-1526392060635-9d6019884377?w=600',
+    duration: '6 Days / 5 Nights',
+    rating: 4.9,
+    price: 1699,
+    currency: 'USD',
+    location: 'Cusco, Peru',
+    description: 'Trek the legendary Inca Trail and witness the sunrise over the ancient citadel of Machu Picchu.',
+    featured: false,
+    trending: true,
+  },
+  {
+    id: 'pkg-008',
     title: 'Maldives Overwater Bliss',
-    image: 'https://images.example.com/packages/maldives.jpg',
+    image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600',
     duration: '5 Days / 4 Nights',
     rating: 5.0,
-    price: 2999,
-    featured: false,
-    trending: false,
-    description:
-      'Unwind in a private overwater villa surrounded by crystal-clear turquoise waters and vibrant coral reefs.'
-  }
+    price: 2599,
+    currency: 'USD',
+    location: 'Male, Maldives',
+    description: 'Unwind in a private overwater villa surrounded by turquoise lagoons and vibrant coral reefs.',
+    featured: true,
+    trending: true,
+  },
 ];
+
+export function getPackageById(id: string): TravelPackage | undefined {
+  return packages.find((pkg) => pkg.id === id);
+}
+
+export function getFeaturedOrTrendingPackages(): TravelPackage[] {
+  return packages.filter((pkg) => pkg.featured || pkg.trending);
+}

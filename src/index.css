@@ -4,17 +4,17 @@
 
 body {
   margin: 0;
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'Segoe UI', Arial, sans-serif;
   background-color: #f7f8fa;
-  color: #1f2733;
+  color: #1f2937;
 }
 
 a {
+  text-decoration: none;
   color: inherit;
 }
 
-.page-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 24px 16px 64px;
+button {
+  cursor: pointer;
+  font-family: inherit;
 }

@@ -1,0 +1,26 @@
+.featured-trending-section {
+  padding: 40px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.featured-trending-section__header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.featured-trending-section__header h2 {
+  font-size: 28px;
+  margin: 0 0 8px;
+}
+
+.featured-trending-section__header p {
+  margin: 0;
+  color: #6b7280;
+}
+
+.featured-trending-section__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}

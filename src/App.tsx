@@ -1,17 +1,16 @@
-import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import PackageDetailPage from './pages/PackageDetailPage';
-import BookingPage from './pages/BookingPage';
+import Home from './pages/Home';
+import PackageDetail from './pages/PackageDetail';
+import Booking from './pages/Booking';
 
-const App: React.FC = () => {
+function App() {
   return (
     <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/packages/:packageId" element={<PackageDetailPage />} />
-      <Route path="/booking" element={<BookingPage />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/packages/:id" element={<PackageDetail />} />
+      <Route path="/booking/:packageId" element={<Booking />} />
     </Routes>
   );
-};
+}
 
 export default App;

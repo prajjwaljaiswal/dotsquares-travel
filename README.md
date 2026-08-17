@@ -1,30 +1,45 @@
 # dotsquares-travel
 
-## Homepage Sections
+A travel booking web application homepage built with React, TypeScript and Vite.
 
-This project includes the following homepage sections built with React and TypeScript:
+## Features
 
-- **Testimonials** (`src/components/Testimonials`): Displays customer name, star rating, and quote using demo data from `src/data/testimonials.ts`.
-- **Travel Inspiration** (`src/components/Inspiration`): Displays promotional/seasonal offers with a call-to-action button, using demo data from `src/data/inspiration.ts`.
-
-Both sections are composed together in `src/pages/Home/Home.tsx` and styled using CSS Modules backed by shared design tokens in `src/styles/tokens.css`.
+- **Featured & Trending Packages Section** — Displays a curated grid of at least 6 featured/trending travel packages sourced from demo data. Each package card shows an image, title, duration, rating and price, along with **View Details** and **Book Now** actions.
+  - **View Details** navigates to `/packages/:id` to show the full package detail page.
+  - **Book Now** navigates to `/booking/:packageId`, pre-selecting the chosen package inside the booking flow.
 
 ## Getting Started
 
-Install dependencies:
-
 ```bash
 npm install
+npm run dev
 ```
 
-Run tests:
+## Testing
 
 ```bash
 npm test
 ```
 
-Type-check / build:
+## Build
 
 ```bash
 npm run build
+```
+
+## Project Structure
+
+```
+src/
+  components/
+    PackageCard/            # Reusable package card UI
+    FeaturedTrendingSection/ # Homepage section listing featured/trending packages
+  data/
+    packages.ts              # Demo package data flagged as featured/trending
+  pages/
+    Home.tsx                 # Homepage hosting the featured/trending section
+    PackageDetail.tsx        # Package detail page
+    Booking.tsx               # Booking flow page with pre-selected package
+  types/
+    package.ts                # Shared TravelPackage type
 ```
