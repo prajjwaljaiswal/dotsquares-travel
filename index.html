@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dotsquares Travel</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-container">
+      <a href="/" class="logo">Dotsquares Travel</a>
+
+      <nav class="primary-nav" aria-label="Primary navigation">
+        <ul class="nav-links">
+          <li><a href="/destinations">Destinations</a></li>
+          <li><a href="/packages">Packages</a></li>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/blog">Blog</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+        <a href="/book-now" class="btn-cta">Book Now</a>
+      </nav>
+
+      <button
+        type="button"
+        class="hamburger"
+        id="hamburger-btn"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+      </button>
+    </div>
+
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+
+    <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation" aria-hidden="true">
+      <ul class="mobile-nav-links">
+        <li><a href="/destinations" class="mobile-nav-link">Destinations</a></li>
+        <li><a href="/packages" class="mobile-nav-link">Packages</a></li>
+        <li><a href="/about" class="mobile-nav-link">About Us</a></li>
+        <li><a href="/blog" class="mobile-nav-link">Blog</a></li>
+        <li><a href="/contact" class="mobile-nav-link">Contact</a></li>
+      </ul>
+      <a href="/book-now" class="btn-cta mobile-cta">Book Now</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Page content goes here -->
+  </main>
+
+  <script src="js/nav.js"></script>
+</body>
+</html>
