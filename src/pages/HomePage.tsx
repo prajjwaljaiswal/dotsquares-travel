@@ -1,9 +1,12 @@
-import HeroBanner from '../components/HeroBanner/HeroBanner'
+import React from 'react';
+import FeaturedTrendingSection from '../components/FeaturedTrendingSection';
 
-export default function HomePage() {
+const HomePage: React.FC = () => {
   return (
-    <main>
-      <HeroBanner />
+    <main className="page-container" data-testid="home-page">
+      <FeaturedTrendingSection />
     </main>
-  )
-}
+  );
+};
+
+export default HomePage;

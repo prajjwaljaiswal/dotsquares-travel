@@ -5,10 +5,16 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  color: #1f2a44;
-  background: #fff;
+  background-color: #f7f8fa;
+  color: #1f2733;
 }
 
 a {
   color: inherit;
+}
+
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
 }
