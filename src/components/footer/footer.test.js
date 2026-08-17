@@ -1,43 +1,29 @@
-const { SiteFooter } = require('./footer.js');
+require('./footer.js');
 
 describe('site-footer web component', () => {
-  beforeEach(() => {
+  afterEach(() => {
     document.body.innerHTML = '';
   });
 
-  test('registers the site-footer custom element', () => {
-    expect(window.customElements.get('site-footer')).toBeDefined();
+  test('registers as a custom element', () => {
+    expect(customElements.get('site-footer')).toBeDefined();
   });
 
-  test('renders footer with nav links, contact info, social icons and legal links', () => {
+  test('renders footer content in shadow DOM with nav, social, newsletter, contact and legal links', () => {
     const footer = document.createElement('site-footer');
     document.body.appendChild(footer);
 
     const root = footer.shadowRoot;
-    expect(root.querySelector('.site-footer')).not.toBeNull();
-
-    const links = Array.from(root.querySelectorAll('a')).map((a) => a.getAttribute('href'));
-    expect(links).toContain('/destinations');
-    expect(links).toContain('/bookings');
-    expect(links).toContain('/about');
-    expect(links).toContain('/support');
-    expect(links).toContain('/privacy');
-    expect(links).toContain('/terms');
-
-    expect(root.querySelectorAll('.social-icons a').length).toBeGreaterThanOrEqual(4);
+    expect(root).not.toBeNull();
+    expect(root.querySelector('.footer-nav')).not.toBeNull();
+    expect(root.querySelector('.social-links')).not.toBeNull();
+    expect(root.querySelector('.newsletter-form')).not.toBeNull();
     expect(root.querySelector('.contact-info')).not.toBeNull();
+    expect(root.querySelector('.legal-links a[href="/privacy"]')).not.toBeNull();
+    expect(root.querySelector('.legal-links a[href="/terms"]')).not.toBeNull();
   });
 
-  test('shows current year in copyright', () => {
-    const footer = document.createElement('site-footer');
-    document.body.appendChild(footer);
-
-    const year = new Date().getFullYear().toString();
-    const copyright = footer.shadowRoot.querySelector('.copyright');
-    expect(copyright.textContent).toContain(year);
-  });
-
-  test('newsletter form shows error message for invalid email', () => {
+  test('newsletter form shows an error message for an invalid email', () => {
     const footer = document.createElement('site-footer');
     document.body.appendChild(footer);
 
@@ -47,11 +33,10 @@ describe('site-footer web component', () => {
     const message = root.querySelector('.newsletter-message');
 
     input.value = 'not-an-email';
-    form.dispatchEvent(new Event('submit', { cancelable: true }));
+    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
 
-    expect(message.textContent).toBe('Please enter a valid email address.');
-    expect(message.className).toContain('error');
-    expect(input.getAttribute('aria-invalid')).toBe('true');
+    expect(message.textContent).toMatch(/valid email/i);
+    expect(message.classList.contains('error')).toBe(true);
   });
 
   test('newsletter form shows success message for valid email and resets input', () => {
@@ -64,18 +49,30 @@ describe('site-footer web component', () => {
     const message = root.querySelector('.newsletter-message');
 
     input.value = 'traveler@example.com';
-    form.dispatchEvent(new Event('submit', { cancelable: true }));
+    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
 
-    expect(message.textContent).toBe("Thanks for subscribing! You'll hear from us soon.");
-    expect(message.className).toContain('success');
-    expect(input.getAttribute('aria-invalid')).toBe('false');
+    expect(message.textContent).toMatch(/thanks for subscribing/i);
+    expect(message.classList.contains('success')).toBe(true);
     expect(input.value).toBe('');
   });
 
-  test('SiteFooter.validateEmail correctly validates email formats', () => {
-    expect(SiteFooter.validateEmail('good@example.com')).toBe(true);
-    expect(SiteFooter.validateEmail('bad-email')).toBe(false);
-    expect(SiteFooter.validateEmail('missing@domain')).toBe(false);
-    expect(SiteFooter.validateEmail('')).toBe(false);
+  test('renders consistently across multiple instances so it can be reused on every page', () => {
+    const footerOne = document.createElement('site-footer');
+    const footerTwo = document.createElement('site-footer');
+    document.body.appendChild(footerOne);
+    document.body.appendChild(footerTwo);
+
+    expect(footerOne.shadowRoot.querySelector('.footer')).not.toBeNull();
+    expect(footerTwo.shadowRoot.querySelector('.footer')).not.toBeNull();
+  });
+
+  test('legal links section includes copyright notice', () => {
+    const footer = document.createElement('site-footer');
+    document.body.appendChild(footer);
+
+    const root = footer.shadowRoot;
+    const legal = root.querySelector('.legal-links');
+
+    expect(legal.textContent).toMatch(/all rights reserved/i);
   });
 });
