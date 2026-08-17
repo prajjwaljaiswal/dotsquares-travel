@@ -1,36 +1,39 @@
 'use client';
 
-import { createContext, useContext, useRef, type ReactNode } from 'react';
-import { useStore } from 'zustand';
-import { createBookingStore, type BookingStoreApi } from './booking-store';
-import type { BookingStore } from './types';
+import { createContext, useContext, useMemo, useState, type ReactNode } from 'react';
+import { createBookingActions, initialBookingState } from './booking-store';
+import type { BookingState, BookingStore } from './types';
 
-const BookingStoreContext = createContext<BookingStoreApi | undefined>(undefined);
+const BookingContext = createContext<BookingStore | null>(null);
 
-export interface BookingProviderProps {
-  children: ReactNode;
+export function BookingProvider({ children }: { children: ReactNode }) {
+  const [state, setState] = useState<BookingState>(initialBookingState);
+
+  const actions = useMemo(
+    () =>
+      createBookingActions((updater) => {
+        setState((prev) => updater(prev));
+      }),
+    []
+  );
+
+  const store = useMemo<BookingStore>(
+    () => ({
+      ...state,
+      ...actions,
+    }),
+    [state, actions]
+  );
+
+  return <BookingContext.Provider value={store}>{children}</BookingContext.Provider>;
 }
 
-export const BookingProvider = ({ children }: BookingProviderProps) => {
-  const storeRef = useRef<BookingStoreApi>();
-
-  if (!storeRef.current) {
-    storeRef.current = createBookingStore();
-  }
-
-  return (
-    <BookingStoreContext.Provider value={storeRef.current}>
-      {children}
-    </BookingStoreContext.Provider>
-  );
-};
-
 export function useBookingStore<T>(selector: (store: BookingStore) => T): T {
-  const bookingStoreContext = useContext(BookingStoreContext);
+  const context = useContext(BookingContext);
 
-  if (!bookingStoreContext) {
+  if (!context) {
     throw new Error('useBookingStore must be used within a BookingProvider');
   }
 
-  return useStore(bookingStoreContext, selector);
+  return selector(context);
 }

@@ -1,43 +1,40 @@
-import { createStore } from 'zustand/vanilla';
-import type { BookingState, BookingStore } from './types';
+import type { BookingActions, BookingState, PackageSelection, TravelerDetails } from './types';
 
-export const defaultBookingState: BookingState = {
-  selectedPackage: null,
-  currentStep: 0,
-  totalSteps: 4,
-  stepData: {},
+export const initialBookingState: BookingState = {
+  currentStep: 'package',
+  selectedPackage: {
+    packageId: null,
+    packageName: null,
+    price: null,
+  },
   travelers: [],
-  isComplete: false,
+  addOns: [],
+  paymentStatus: 'idle',
+  totalPrice: 0,
 };
 
-export const createBookingStore = (initialState: BookingState = defaultBookingState) => {
-  return createStore<BookingStore>()((set) => ({
-    ...initialState,
-    setSelectedPackage: (pkg) => set({ selectedPackage: pkg }),
-    setStepData: (stepKey, data) =>
-      set((state) => ({
-        stepData: {
-          ...state.stepData,
-          [stepKey]: { ...state.stepData[stepKey], ...data },
-        },
-      })),
-    setTravelers: (travelers) => set({ travelers }),
-    goToStep: (step) =>
-      set((state) => ({
-        currentStep: Math.min(Math.max(step, 0), state.totalSteps - 1),
-      })),
-    nextStep: () =>
-      set((state) => ({
-        currentStep: Math.min(state.currentStep + 1, state.totalSteps - 1),
-      })),
-    prevStep: () =>
-      set((state) => ({
-        currentStep: Math.max(state.currentStep - 1, 0),
-      })),
-    setTotalSteps: (totalSteps) => set({ totalSteps }),
-    completeBooking: () => set({ isComplete: true }),
-    resetBooking: () => set({ ...defaultBookingState }),
-  }));
-};
+type StateUpdater = (updater: (state: BookingState) => BookingState) => void;
 
-export type BookingStoreApi = ReturnType<typeof createBookingStore>;
+export function createBookingActions(setState: StateUpdater): BookingActions {
+  return {
+    setStep: (step) => setState((state) => ({ ...state, currentStep: step })),
+    selectPackage: (pkg: PackageSelection) =>
+      setState((state) => ({
+        ...state,
+        selectedPackage: pkg,
+        totalPrice: pkg.price ?? state.totalPrice,
+      })),
+    setTravelers: (travelers: TravelerDetails[]) =>
+      setState((state) => ({ ...state, travelers })),
+    toggleAddOn: (addOnId: string) =>
+      setState((state) => ({
+        ...state,
+        addOns: state.addOns.includes(addOnId)
+          ? state.addOns.filter((id) => id !== addOnId)
+          : [...state.addOns, addOnId],
+      })),
+    setPaymentStatus: (status) => setState((state) => ({ ...state, paymentStatus: status })),
+    setTotalPrice: (price) => setState((state) => ({ ...state, totalPrice: price })),
+    resetBooking: () => setState(() => initialBookingState),
+  };
+}

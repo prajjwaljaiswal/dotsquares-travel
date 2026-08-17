@@ -1,38 +1,38 @@
-import { createStore } from 'zustand/vanilla';
-import type { SearchFilters, SearchState, SearchStore } from './types';
+import type { SearchActions, SearchFilters, SearchResultItem, SearchState, SortOption } from './types';
 
-export const defaultSearchFilters: SearchFilters = {
-  destination: undefined,
-  checkIn: undefined,
-  checkOut: undefined,
-  guests: undefined,
-  priceMin: undefined,
-  priceMax: undefined,
+export const initialSearchFilters: SearchFilters = {
+  destination: '',
+  priceRange: [0, 10000],
+  duration: null,
   categories: [],
 };
 
-export const defaultSearchState: SearchState = {
+export const initialSearchState: SearchState = {
   query: '',
-  filters: defaultSearchFilters,
+  filters: initialSearchFilters,
   sort: 'relevance',
   results: [],
   isLoading: false,
-  error: null,
 };
 
-export const createSearchStore = (initialState: SearchState = defaultSearchState) => {
-  return createStore<SearchStore>()((set) => ({
-    ...initialState,
-    setQuery: (query) => set({ query }),
-    setFilters: (filters) =>
-      set((state) => ({ filters: { ...state.filters, ...filters } })),
-    resetFilters: () => set({ filters: defaultSearchFilters }),
-    setSort: (sort) => set({ sort }),
-    setResults: (results) => set({ results }),
-    setLoading: (isLoading) => set({ isLoading }),
-    setError: (error) => set({ error }),
-    resetSearch: () => set({ ...defaultSearchState }),
-  }));
-};
+type StateUpdater = (updater: (state: SearchState) => SearchState) => void;
 
-export type SearchStoreApi = ReturnType<typeof createSearchStore>;
+export function createSearchActions(setState: StateUpdater): SearchActions {
+  return {
+    setQuery: (query: string) => setState((state) => ({ ...state, query })),
+    setFilters: (filters: Partial<SearchFilters>) =>
+      setState((state) => ({
+        ...state,
+        filters: { ...state.filters, ...filters },
+      })),
+    resetFilters: () =>
+      setState((state) => ({
+        ...state,
+        filters: initialSearchFilters,
+      })),
+    setSort: (sort: SortOption) => setState((state) => ({ ...state, sort })),
+    setResults: (results: SearchResultItem[]) => setState((state) => ({ ...state, results })),
+    setLoading: (isLoading: boolean) => setState((state) => ({ ...state, isLoading })),
+    resetSearch: () => setState(() => initialSearchState),
+  };
+}

@@ -1,43 +1,36 @@
-export interface TravelPackage {
+export type BookingStep = 'package' | 'travelers' | 'addons' | 'payment' | 'confirmation';
+
+export interface PackageSelection {
+  packageId: string | null;
+  packageName: string | null;
+  price: number | null;
+}
+
+export interface TravelerDetails {
   id: string;
-  name: string;
-  destination: string;
-  price: number;
-  duration?: string;
-  image?: string;
-  [key: string]: unknown;
+  fullName: string;
+  email: string;
+  phone: string;
 }
 
-export interface BookingStepData {
-  [stepKey: string]: Record<string, unknown>;
-}
-
-export interface Traveler {
-  firstName: string;
-  lastName: string;
-  email?: string;
-  phone?: string;
-  [key: string]: unknown;
-}
+export type PaymentStatus = 'idle' | 'pending' | 'success' | 'failed';
 
 export interface BookingState {
-  selectedPackage: TravelPackage | null;
-  currentStep: number;
-  totalSteps: number;
-  stepData: BookingStepData;
-  travelers: Traveler[];
-  isComplete: boolean;
+  currentStep: BookingStep;
+  selectedPackage: PackageSelection;
+  travelers: TravelerDetails[];
+  addOns: string[];
+  paymentStatus: PaymentStatus;
+  totalPrice: number;
 }
 
 export interface BookingActions {
-  setSelectedPackage: (pkg: TravelPackage | null) => void;
-  setStepData: (stepKey: string, data: Record<string, unknown>) => void;
-  setTravelers: (travelers: Traveler[]) => void;
-  goToStep: (step: number) => void;
-  nextStep: () => void;
-  prevStep: () => void;
-  setTotalSteps: (totalSteps: number) => void;
-  completeBooking: () => void;
+  setStep: (step: BookingStep) => void;
+  selectPackage: (pkg: PackageSelection) => void;
+  setTravelers: (travelers: TravelerDetails[]) => void;
+  toggleAddOn: (addOnId: string) => void;
+  setPaymentStatus: (status: PaymentStatus) => void;
+  setTotalPrice: (price: number) => void;
   resetBooking: () => void;
 }
 

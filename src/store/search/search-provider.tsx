@@ -1,36 +1,39 @@
 'use client';
 
-import { createContext, useContext, useRef, type ReactNode } from 'react';
-import { useStore } from 'zustand';
-import { createSearchStore, type SearchStoreApi } from './search-store';
-import type { SearchStore } from './types';
+import { createContext, useContext, useMemo, useState, type ReactNode } from 'react';
+import { createSearchActions, initialSearchState } from './search-store';
+import type { SearchState, SearchStore } from './types';
 
-const SearchStoreContext = createContext<SearchStoreApi | undefined>(undefined);
+const SearchContext = createContext<SearchStore | null>(null);
 
-export interface SearchProviderProps {
-  children: ReactNode;
+export function SearchProvider({ children }: { children: ReactNode }) {
+  const [state, setState] = useState<SearchState>(initialSearchState);
+
+  const actions = useMemo(
+    () =>
+      createSearchActions((updater) => {
+        setState((prev) => updater(prev));
+      }),
+    []
+  );
+
+  const store = useMemo<SearchStore>(
+    () => ({
+      ...state,
+      ...actions,
+    }),
+    [state, actions]
+  );
+
+  return <SearchContext.Provider value={store}>{children}</SearchContext.Provider>;
 }
 
-export const SearchProvider = ({ children }: SearchProviderProps) => {
-  const storeRef = useRef<SearchStoreApi>();
-
-  if (!storeRef.current) {
-    storeRef.current = createSearchStore();
-  }
-
-  return (
-    <SearchStoreContext.Provider value={storeRef.current}>
-      {children}
-    </SearchStoreContext.Provider>
-  );
-};
-
 export function useSearchStore<T>(selector: (store: SearchStore) => T): T {
-  const searchStoreContext = useContext(SearchStoreContext);
+  const context = useContext(SearchContext);
 
-  if (!searchStoreContext) {
+  if (!context) {
     throw new Error('useSearchStore must be used within a SearchProvider');
   }
 
-  return useStore(searchStoreContext, selector);
+  return selector(context);
 }
