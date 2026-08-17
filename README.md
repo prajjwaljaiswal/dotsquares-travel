@@ -1,17 +1,17 @@
 # dotsquares-travel
 
-## About Us Page
+A simple static travel site.
 
-The `about-us/` directory contains the standalone About Us page for DotSquares
-Travel. It includes:
+## Pages
 
-- **Our Story** — a narrative section with placeholder copy and imagery
-  describing the company's background.
-- **Mission & Vision** — two side-by-side cards outlining the company's
-  mission and vision statements.
-- **Travel Philosophy** — a section highlighting the core principles that
-  guide how DotSquares Travel approaches travel experiences.
+- `contact.html` - Contact Us page with company contact details (address, phone, email) and an enquiry form (name, email, subject, message). The form includes client-side validation for required fields and email format, and shows a demo success confirmation on submission (no backend integration).
 
-Open `about-us/index.html` in a browser to view the page. Styles live in
-`about-us/styles.css` and are fully responsive, with breakpoints at 1024px,
-768px, and 480px to support desktop, tablet, and mobile layouts.
+## Running Locally
+
+Since this is a static site, you can open `contact.html` directly in a browser, or serve the project root with any simple static file server, for example:
+
+```bash
+npx serve .
+```
+
+Then navigate to `/contact.html` in your browser.
