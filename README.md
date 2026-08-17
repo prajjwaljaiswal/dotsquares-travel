@@ -1,17 +1,24 @@
 # dotsquares-travel
 
-A simple static travel site.
+## FAQ Page
 
-## Pages
+The FAQ page (`faq.html`) provides an accordion-style list of frequently asked questions relevant to travel booking (flights, cancellations, payments, visas, luggage, refunds, and support).
 
-- `contact.html` - Contact Us page with company contact details (address, phone, email) and an enquiry form (name, email, subject, message). The form includes client-side validation for required fields and email format, and shows a demo success confirmation on submission (no backend integration).
+### Viewing the page
 
-## Running Locally
+Open `faq.html` directly in a browser, or serve the repository root with any static file server, e.g.:
 
-Since this is a static site, you can open `contact.html` directly in a browser, or serve the project root with any simple static file server, for example:
-
-```bash
+```
 npx serve .
 ```
 
-Then navigate to `/contact.html` in your browser.
+Then navigate to `/faq.html`.
+
+### Running tests
+
+Install dependencies and run the Jest test suite, which covers the accordion expand/collapse behavior in `js/faq.js`:
+
+```
+npm install
+npm test
+```
