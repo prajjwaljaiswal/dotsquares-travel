@@ -4,13 +4,6 @@ export interface Destination {
   country: string;
   description: string;
   imageUrl: string;
+  pricePerNight: number;
+  rating: number;
 }
-
-export interface NavItem {
-  label: string;
-  href: string;
-}
-
-export type PageProps<T = Record<string, unknown>> = T & {
-  title?: string;
-};

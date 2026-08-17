@@ -1,28 +1,37 @@
-import Head from 'next/head';
+import type { GetStaticProps, NextPage } from 'next';
+import Layout from '@/components/Layout';
 import DestinationCard from '@/components/DestinationCard';
-import { destinations } from '@/data/destinations';
-import { Destination } from '@/types/destination';
+import { destinations as allDestinations } from '@/data/destinations';
+import { Destination } from '@/types/index';
 
-export default function Home() {
+interface HomeProps {
+  destinations: Destination[];
+}
+
+const Home: NextPage<HomeProps> = ({ destinations }) => {
   return (
-    <>
-      <Head>
-        <title>Dotsquares Travel</title>
-        <meta name="description" content="Discover your next travel destination" />
-      </Head>
-      <main className="mx-auto max-w-6xl px-4 py-10">
-        <section className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900">Dotsquares Travel</h1>
-          <p className="mt-3 text-lg text-gray-600">
-            Explore handpicked destinations for your next adventure.
-          </p>
-        </section>
-        <section className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {destinations.map((destination: Destination) => (
+    <Layout>
+      <section className="mx-auto max-w-6xl px-4 py-12">
+        <h1 className="text-3xl font-bold text-gray-900">Explore Top Destinations</h1>
+        <p className="mt-2 max-w-2xl text-gray-600">
+          Handpicked getaways from around the world, ready for your next adventure.
+        </p>
+        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {destinations.map((destination) => (
             <DestinationCard key={destination.id} destination={destination} />
           ))}
-        </section>
-      </main>
-    </>
+        </div>
+      </section>
+    </Layout>
   );
-}
+};
+
+export const getStaticProps: GetStaticProps<HomeProps> = async () => {
+  return {
+    props: {
+      destinations: allDestinations,
+    },
+  };
+};
+
+export default Home;
