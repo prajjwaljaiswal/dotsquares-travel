@@ -1,0 +1,36 @@
+.destination-detail {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.destination-detail__back {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: #2563eb;
+  font-weight: 500;
+}
+
+.destination-detail__image {
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+.destination-detail__title {
+  margin: 0 0 16px;
+  font-size: 2rem;
+  color: #1f2933;
+}
+
+.destination-detail__description {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #333f48;
+}
+
+.destination-detail--not-found {
+  text-align: center;
+}
