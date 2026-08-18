@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
-import App from './App.jsx';
+import App from './AppLegacy.jsx';
 
 describe('App routing', () => {
   it('renders the 404 page for an unmatched route', () => {
