@@ -1,101 +1,84 @@
-import { TravelPackage } from '../types/travelPackage';
+export interface TravelPackage {
+  id: string;
+  name: string;
+  description: string;
+  location: string;
+  price: number;
+  currency: string;
+  image: string;
+  rating?: number;
+  duration?: string;
+  isFeatured?: boolean;
+  isTrending?: boolean;
+}
 
 export const packages: TravelPackage[] = [
   {
-    id: 'bali-beach-escape',
-    title: 'Bali Beach Escape',
-    image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80',
-    duration: '7 Days / 6 Nights',
-    rating: 4.8,
-    price: 899,
-    currency: 'USD',
-    location: 'Bali, Indonesia',
-    featured: true,
-    trending: true,
-    description: 'Relax on pristine beaches and explore vibrant Balinese culture on this all-inclusive getaway.',
-  },
-  {
-    id: 'swiss-alps-adventure',
-    title: 'Swiss Alps Adventure',
-    image: 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?auto=format&fit=crop&w=800&q=80',
-    duration: '5 Days / 4 Nights',
-    rating: 4.9,
-    price: 1499,
-    currency: 'USD',
-    location: 'Zermatt, Switzerland',
-    featured: true,
-    trending: false,
-    description: 'Hike breathtaking alpine trails and enjoy panoramic views of the Matterhorn.',
-  },
-  {
-    id: 'paris-city-lights',
-    title: 'Paris City Lights',
-    image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80',
-    duration: '4 Days / 3 Nights',
-    rating: 4.7,
-    price: 749,
-    currency: 'USD',
+    id: '1',
+    name: 'Paris Getaway',
+    description: 'Experience the romance and charm of the City of Lights with guided tours and luxury accommodation',
     location: 'Paris, France',
-    featured: false,
-    trending: true,
-    description: 'Discover iconic landmarks, world-class museums, and charming cafes in the City of Light.',
+    price: 1299,
+    currency: 'USD',
+    image: '/images/packages/paris.jpg',
+    rating: 4.8,
+    duration: '5 days',
+    isFeatured: true,
   },
   {
-    id: 'santorini-sunset',
-    title: 'Santorini Sunset Getaway',
-    image: 'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=800&q=80',
-    duration: '6 Days / 5 Nights',
-    rating: 4.9,
-    price: 1199,
-    currency: 'USD',
-    location: 'Santorini, Greece',
-    featured: true,
-    trending: true,
-    description: 'Watch the world-famous sunsets over whitewashed villages perched on volcanic cliffs.',
-  },
-  {
-    id: 'tokyo-neon-nights',
-    title: 'Tokyo Neon Nights',
-    image: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=800&q=80',
-    duration: '8 Days / 7 Nights',
-    rating: 4.6,
-    price: 1699,
-    currency: 'USD',
+    id: '2',
+    name: 'Tokyo Adventure',
+    description: 'Discover ancient traditions blend with futuristic technology in Japan vibrant capital',
     location: 'Tokyo, Japan',
-    featured: false,
-    trending: true,
-    description: "Immerse yourself in the electric energy, culture, and cuisine of Japan's capital.",
-  },
-  {
-    id: 'machu-picchu-trek',
-    title: 'Machu Picchu Trek',
-    image: 'https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=800&q=80',
-    duration: '9 Days / 8 Nights',
-    rating: 4.9,
     price: 1899,
     currency: 'USD',
-    location: 'Cusco, Peru',
-    featured: true,
-    trending: false,
-    description: 'Trek the legendary Inca Trail to the awe-inspiring ruins of Machu Picchu.',
+    image: '/images/packages/tokyo.jpg',
+    rating: 4.9,
+    duration: '7 days',
+    isTrending: true,
   },
   {
-    id: 'safari-serengeti',
-    title: 'Serengeti Safari',
-    image: 'https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=800&q=80',
-    duration: '6 Days / 5 Nights',
-    rating: 4.8,
-    price: 2199,
+    id: '3',
+    name: 'Bali Retreat',
+    description: 'Relax in tropical paradise with pristine beaches, ancient temples, and lush rice terraces',
+    location: 'Bali, Indonesia',
+    price: 899,
     currency: 'USD',
-    location: 'Serengeti, Tanzania',
-    featured: true,
-    trending: true,
-    description: 'Witness the Great Migration and spot the Big Five on an unforgettable safari.',
+    image: '/images/packages/bali.jpg',
+    rating: 4.7,
+    duration: '6 days',
+    isFeatured: true,
+  },
+  {
+    id: '4',
+    name: 'New York Explorer',
+    description: 'Experience the energy of the city that never sleeps with iconic landmarks and Broadway shows',
+    location: 'New York, USA',
+    price: 1099,
+    currency: 'USD',
+    image: '/images/packages/nyc.jpg',
+    rating: 4.6,
+    duration: '4 days',
+    isTrending: true,
+  },
+  {
+    id: '5',
+    name: 'Rome Historical',
+    description: 'Walk through centuries of history visiting the Colosseum, Vatican City, and ancient ruins',
+    location: 'Rome, Italy',
+    price: 1199,
+    currency: 'USD',
+    image: '/images/packages/rome.jpg',
+    rating: 4.8,
+    duration: '5 days',
+    isFeatured: true,
   },
 ];
 
-export const getFeaturedOrTrendingPackages = (): TravelPackage[] =>
-  packages.filter((pkg) => pkg.featured || pkg.trending);
+export const getPackageById = (id: string): TravelPackage | undefined => {
+  return packages.find((pkg) => pkg.id === id);
+};
 
-export const getPackageById = (id: string): TravelPackage | undefined =>
-  packages.find((pkg) => pkg.id === id);
+export const getFeaturedOrTrendingPackages = (): TravelPackage[] => {
+  return packages.filter((pkg) => pkg.isFeatured || pkg.isTrending);
+};

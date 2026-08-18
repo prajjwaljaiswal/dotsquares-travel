@@ -1,9 +1,11 @@
 import { FC } from 'react';
 import PackageCard from './PackageCard';
-import { featuredTrendingPackages } from '../data/packages';
+import { getFeaturedOrTrendingPackages, TravelPackage } from '../data/packages';
 import './FeaturedTrendingSection.css';
 
 const FeaturedTrendingSection: FC = () => {
+  const packages: TravelPackage[] = getFeaturedOrTrendingPackages();
+
   return (
     <section
       className="featured-trending-section"
@@ -17,7 +19,7 @@ const FeaturedTrendingSection: FC = () => {
         className="featured-trending-section__grid"
         data-testid="package-grid"
       >
-        {featuredTrendingPackages.map((pkg) => (
+        {packages.map((pkg) => (
           <PackageCard key={pkg.id} pkg={pkg} />
         ))}
       </div>
