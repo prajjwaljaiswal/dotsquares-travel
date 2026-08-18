@@ -16,11 +16,30 @@ export interface PackageStepData {
   travellerCount: number;
 }
 
+export interface TravellerInfo {
+  fullName: string;
+  dateOfBirth: string;
+  age: string;
+  gender: string;
+}
+
+export function createEmptyTraveller(): TravellerInfo {
+  return {
+    fullName: '',
+    dateOfBirth: '',
+    age: '',
+    gender: '',
+  };
+}
+
 export interface DetailsStepData {
   travellerName: string;
   email: string;
   phone: string;
   travellerCount: number;
+  primaryTraveller: TravellerInfo;
+  additionalTravellers: TravellerInfo[];
+  travellerDetailsValid: boolean;
 }
 
 export interface ReviewStepData {
@@ -43,7 +62,15 @@ interface BookingWizardState {
 const defaultFormData: BookingFormData = {
   destination: { destinationId: null, destinationName: null },
   package: { packageId: null, packageName: null, price: null, travelDate: null, travellerCount: 1 },
-  details: { travellerName: '', email: '', phone: '', travellerCount: 1 },
+  details: {
+    travellerName: '',
+    email: '',
+    phone: '',
+    travellerCount: 1,
+    primaryTraveller: createEmptyTraveller(),
+    additionalTravellers: [],
+    travellerDetailsValid: false,
+  },
   review: { agreedToTerms: false },
 };
 
