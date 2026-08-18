@@ -1,0 +1,23 @@
+.aboutUsPage {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.aboutUsPage > section {
+  width: 100%;
+  padding: 48px 16px;
+}
+
+@media (min-width: 768px) {
+  .aboutUsPage > section {
+    padding: 72px 48px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .aboutUsPage > section {
+    padding: 96px 120px;
+  }
+}

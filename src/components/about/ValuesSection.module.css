@@ -1,0 +1,51 @@
+.values {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.heading {
+  font-size: 1.75rem;
+  text-align: center;
+  margin: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.card {
+  background-color: #f5f7fa;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+
+.cardTitle {
+  font-size: 1.125rem;
+  margin: 0 0 8px 0;
+}
+
+.cardText {
+  font-size: 0.9rem;
+  color: #444444;
+  margin: 0;
+}
+
+@media (min-width: 600px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .heading {
+    font-size: 2.25rem;
+  }
+
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

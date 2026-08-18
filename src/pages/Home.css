@@ -1,0 +1,17 @@
+.home-page__hero {
+  text-align: center;
+  padding: 60px 24px 20px;
+  background: linear-gradient(135deg, #2563eb, #1e3a8a);
+  color: #ffffff;
+}
+
+.home-page__hero h1 {
+  margin: 0 0 12px;
+  font-size: 36px;
+}
+
+.home-page__hero p {
+  margin: 0;
+  font-size: 16px;
+  opacity: 0.9;
+}

@@ -1,18 +1,17 @@
-import type { Metadata } from 'next';
-import type { ReactNode } from 'react';
-import { AppProviders } from '@/store/app-providers';
+import React from 'react';
+import { GlobalProvider } from '../store/GlobalContext';
 import './globals.css';
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Dotsquares Travel',
-  description: 'Search, compare and book your next trip.',
+  description: 'Book your next adventure with Dotsquares Travel',
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <AppProviders>{children}</AppProviders>
+        <GlobalProvider>{children}</GlobalProvider>
       </body>
     </html>
   );

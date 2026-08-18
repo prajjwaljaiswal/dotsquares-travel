@@ -1,13 +1,25 @@
 import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
+import DestinationDetailPage from './pages/DestinationDetailPage';
+import { destinations } from './data/destinationsData';
 
 function App() {
+  const defaultSlug = destinations[0]?.slug ?? '';
+
   return (
     <Layout>
-      <main className="page-content">
-        <h1>Welcome to Dotsquares Travel</h1>
-        <p>Discover amazing destinations and plan your next adventure.</p>
-      </main>
+      <Routes>
+        <Route
+          path="/"
+          element={<Navigate to={`/destinations/${defaultSlug}`} replace />}
+        />
+        <Route path="/destinations/:slug" element={<DestinationDetailPage />} />
+        <Route
+          path="*"
+          element={<Navigate to={`/destinations/${defaultSlug}`} replace />}
+        />
+      </Routes>
     </Layout>
   );
 }

@@ -1,0 +1,81 @@
+.explore-page {
+  padding: 2rem 1rem;
+}
+
+.explore-page__container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.explore-page__title {
+  margin-bottom: 1rem;
+}
+
+.explore-page__results {
+  margin-top: 1.5rem;
+}
+
+.explore-page__results-title {
+  font-size: 1.1rem;
+  color: #444;
+  margin-bottom: 1rem;
+}
+
+.explore-page__empty {
+  color: #777;
+}
+
+.explore-page__card-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.explore-page__card {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.explore-page__card-name {
+  margin: 0 0 0.4rem;
+  font-size: 1rem;
+}
+
+.explore-page__card-location {
+  margin: 0 0 0.2rem;
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.explore-page__card-type {
+  margin: 0 0 0.2rem;
+  text-transform: capitalize;
+  font-size: 0.8rem;
+  color: #2f6fed;
+}
+
+.explore-page__card-price {
+  margin: 0;
+  font-weight: 600;
+}
+
+.explore-page__summary {
+  background: #f5f7fa;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.explore-page__summary ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
