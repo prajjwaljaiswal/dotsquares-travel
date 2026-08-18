@@ -1,78 +1,92 @@
-.detailsStep {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  max-width: 640px;
+.container {
+  max-width: 800px;
   margin: 0 auto;
+  padding: 2rem;
 }
 
 .title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin: 0;
-  color: #1a1a1a;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  color: var(--ds-color-text-primary);
 }
 
-.subtitle {
-  margin: 0;
-  color: #555555;
-  font-size: 0.95rem;
+.section {
+  margin-bottom: 2.5rem;
+  padding: 1.5rem;
+  background: var(--ds-color-background-secondary);
+  border-radius: var(--ds-border-radius-lg);
+  border: 1px solid var(--ds-color-border);
 }
 
-.fieldset {
-  border: 1px solid #e2e2e2;
-  border-radius: 8px;
-  padding: 1.25rem;
-  display: flex;
-  flex-direction: column;
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: var(--ds-color-text-primary);
+}
+
+.fieldsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1rem;
 }
 
-.legend {
+.additionalTraveller {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: var(--ds-color-background-primary);
+  border-radius: var(--ds-border-radius-md);
+  border: 1px solid var(--ds-color-border-light);
+}
+
+.additionalTraveller:last-child {
+  margin-bottom: 0;
+}
+
+.travellerNumber {
+  font-size: 1rem;
   font-weight: 600;
-  font-size: 1.05rem;
-  padding: 0 0.25rem;
-  color: #1a1a1a;
+  margin-bottom: 1rem;
+  color: var(--ds-color-text-secondary);
 }
 
-.additionalTravellers {
+.navigation {
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  justify-content: space-between;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--ds-color-border);
 }
 
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.label {
-  font-size: 0.9rem;
+.backButton {
+  padding: 0.75rem 1.5rem;
+  background: var(--ds-color-background-primary);
+  color: var(--ds-color-text-secondary);
+  border: 1px solid var(--ds-color-border);
+  border-radius: var(--ds-border-radius-md);
   font-weight: 500;
-  color: #333333;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.input,
-.select {
-  padding: 0.6rem 0.75rem;
-  border: 1px solid #cccccc;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  background-color: #ffffff;
+.backButton:hover {
+  background: var(--ds-color-background-secondary);
+  border-color: var(--ds-color-border-hover);
 }
 
-.input:focus,
-.select:focus {
-  outline: 2px solid #2563eb;
-  outline-offset: 1px;
+.nextButton {
+  padding: 0.75rem 2rem;
+  background: var(--ds-color-primary);
+  color: var(--ds-color-text-inverted);
+  border: none;
+  border-radius: var(--ds-border-radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.input[aria-invalid='true'] {
-  border-color: #d92d20;
-}
-
-.errorText {
-  color: #d92d20;
-  font-size: 0.8rem;
+.nextButton:hover {
+  background: var(--ds-color-primary-hover);
+  transform: translateY(-1px);
 }
