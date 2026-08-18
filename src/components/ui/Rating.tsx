@@ -1,97 +1,84 @@
 import React, { useState } from 'react';
-import { cn } from './utils';
 
 export type RatingSize = 'sm' | 'md' | 'lg';
 
 export interface RatingProps {
-  /** Current rating value. */
   value: number;
-  /** Maximum number of stars. Defaults to 5. */
   max?: number;
-  /** Called with the new value when a star is selected. */
-  onChange?: (value: number) => void;
-  /** When true, the rating cannot be changed by the user. Defaults to false. */
-  readOnly?: boolean;
-  /** Size of the stars. Defaults to 'md'. */
   size?: RatingSize;
-  /** Accessible label describing what is being rated. */
-  'aria-label'?: string;
-  className?: string;
+  readOnly?: boolean;
+  onChange?: (value: number) => void;
+  label?: string;
 }
 
+const sizeClasses: Record<RatingSize, string> = {
+  sm: 'text-lg',
+  md: 'text-2xl',
+  lg: 'text-3xl',
+};
+
 /**
- * Rating renders an interactive or read-only star rating control.
+ * Rating
  *
- * @example Interactive
- * const [value, setValue] = useState(3);
- * <Rating value={value} onChange={setValue} aria-label="Rate this hotel" />
+ * A star rating control. In interactive mode it exposes a radiogroup with
+ * arrow-key support; in read-only mode it renders as an accessible image
+ * with a descriptive label for screen readers.
  *
- * @example Read-only display
- * <Rating value={4} readOnly aria-label="Average guest rating" />
+ * @example
+ * <Rating value={rating} onChange={setRating} label="Trip rating" />
+ *
+ * @example
+ * <Rating value={4} readOnly label="Average review score" />
  */
-export function Rating({
+export const Rating: React.FC<RatingProps> = ({
   value,
   max = 5,
-  onChange,
-  readOnly = false,
   size = 'md',
-  className,
-  ...rest
-}: RatingProps) {
+  readOnly = false,
+  onChange,
+  label = 'Rating',
+}) => {
   const [hoverValue, setHoverValue] = useState<number | null>(null);
   const displayValue = hoverValue ?? value;
-  const ariaLabel = rest['aria-label'] ?? 'Rating';
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (readOnly || !onChange) return;
-
-    if (event.key === 'ArrowRight' || event.key === 'ArrowUp') {
-      event.preventDefault();
-      onChange(Math.min(max, value + 1));
-    }
-    if (event.key === 'ArrowLeft' || event.key === 'ArrowDown') {
-      event.preventDefault();
-      onChange(Math.max(0, value - 1));
+  const handleKeyDown = (e: React.KeyboardEvent, current: number) => {
+    if (readOnly) return;
+    if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      onChange?.(Math.min(max, current + 1));
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      onChange?.(Math.max(1, current - 1));
     }
   };
 
   return (
-    <div
-      className={cn('ds-rating', `ds-rating--${size}`, className)}
-      role={readOnly ? 'img' : 'slider'}
-      aria-label={ariaLabel}
-      aria-valuemin={readOnly ? undefined : 0}
-      aria-valuemax={readOnly ? undefined : max}
-      aria-valuenow={readOnly ? undefined : value}
-      aria-valuetext={`${value} out of ${max} stars`}
-      tabIndex={readOnly ? -1 : 0}
-      onKeyDown={handleKeyDown}
-      onMouseLeave={() => setHoverValue(null)}
-    >
-      {Array.from({ length: max }, (_, index) => {
-        const starValue = index + 1;
-        const filled = starValue <= displayValue;
-
-        return (
-          <button
-            key={starValue}
-            type="button"
-            className={cn(
-              'ds-rating__star',
-              'ds-focusable',
-              filled && 'ds-rating__star--filled',
-              readOnly && 'ds-rating__star--readonly'
-            )}
-            disabled={readOnly}
-            tabIndex={-1}
-            aria-hidden="true"
-            onMouseEnter={() => !readOnly && setHoverValue(starValue)}
-            onClick={() => !readOnly && onChange?.(starValue)}
-          >
-            ★
-          </button>
-        );
-      })}
+    <div role={readOnly ? 'img' : 'radiogroup'} aria-label={label} className="inline-flex items-center gap-1">
+      {Array.from({ length: max }, (_, i) => i + 1).map((star) => (
+        <button
+          key={star}
+          type="button"
+          role={readOnly ? undefined : 'radio'}
+          aria-checked={readOnly ? undefined : value === star}
+          aria-label={`${star} star${star > 1 ? 's' : ''}`}
+          disabled={readOnly}
+          tabIndex={readOnly ? -1 : value === star ? 0 : -1}
+          onClick={() => onChange?.(star)}
+          onMouseEnter={() => !readOnly && setHoverValue(star)}
+          onMouseLeave={() => !readOnly && setHoverValue(null)}
+          onKeyDown={(e) => handleKeyDown(e, value)}
+          className={`${sizeClasses[size]} ${
+            readOnly ? 'cursor-default' : 'cursor-pointer'
+          } focus:outline-none focus:ring-2 focus:ring-blue-500 rounded ${
+            star <= displayValue ? 'text-yellow-400' : 'text-gray-300'
+          }`}
+        >
+          ★
+        </button>
+      ))}
+      <span className="sr-only">{`${value} out of ${max} stars`}</span>
     </div>
   );
-}
+};
+
+export default Rating;

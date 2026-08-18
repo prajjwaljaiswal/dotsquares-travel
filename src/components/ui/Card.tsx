@@ -1,123 +1,78 @@
-import React, { HTMLAttributes, ReactNode } from 'react';
+import React from 'react';
 
-/**
- * Card component
- *
- * A reusable, accessible container component used to group related content
- * (e.g. trip summaries, hotel listings, dashboard stats).
- *
- * Usage examples:
- *
- * tsx
- * <Card title="Paris Getaway" subtitle="5 nights" variant="elevated">
- *   <p>Explore the city of lights with our curated package.</p>
- * </Card>
- *
- * <Card
- *   variant="outlined"
- *   size="lg"
- *   title={<span className="text-primary-600">Custom Title Node</span>}
- *   footer={<Button variant="primary">Book now</Button>}
- * >
- *   Card body content goes here.
- * </Card>
- * 
- */
+export type CardVariant = 'elevated' | 'outlined' | 'filled';
+export type CardPadding = 'none' | 'sm' | 'md' | 'lg';
 
-export type CardVariant = 'default' | 'outlined' | 'elevated' | 'flat';
-export type CardSize = 'sm' | 'md' | 'lg';
-
-// We omit the native `title` attribute (typed as `string | undefined`)
-// from HTMLAttributes because Card's `title` prop supports rich ReactNode
-// content (e.g. icons, styled text) and would otherwise conflict in type.
-export interface CardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
-  /** Optional title rendered in the card header. Accepts any ReactNode. */
-  title?: ReactNode;
-  /** Optional subtitle rendered below the title. */
-  subtitle?: ReactNode;
-  /** Optional footer content, typically actions/buttons. */
-  footer?: ReactNode;
-  /** Visual style variant of the card. */
+export interface CardProps {
+  children: React.ReactNode;
   variant?: CardVariant;
-  /** Padding/size variant of the card. */
-  size?: CardSize;
-  /** Marks the card as interactive/clickable (adds hover + focus styles). */
-  interactive?: boolean;
-  /** Accessible label for the card when no visible title is present. */
-  ariaLabel?: string;
+  padding?: CardPadding;
+  title?: string;
+  className?: string;
+  onClick?: () => void;
 }
 
-const variantStyles: Record<CardVariant, string> = {
-  default: 'bg-white border border-gray-200',
-  outlined: 'bg-white border-2 border-gray-300',
-  elevated: 'bg-white border border-gray-100 shadow-md',
-  flat: 'bg-gray-50 border border-transparent',
-};
-
-const sizeStyles: Record<CardSize, string> = {
+const paddingClasses: Record<CardPadding, string> = {
+  none: 'p-0',
   sm: 'p-3',
   md: 'p-5',
-  lg: 'p-7',
+  lg: 'p-8',
 };
 
-const headerSizeStyles: Record<CardSize, string> = {
-  sm: 'mb-2',
-  md: 'mb-3',
-  lg: 'mb-4',
+const variantClasses: Record<CardVariant, string> = {
+  elevated: 'bg-white shadow-lg border border-transparent',
+  outlined: 'bg-white border border-gray-300 shadow-none',
+  filled: 'bg-gray-100 border border-transparent shadow-none',
 };
 
+/**
+ * Card
+ *
+ * A container component supporting elevated, outlined, and filled variants
+ * plus configurable padding. When an onClick handler is supplied the card
+ * becomes keyboard-interactive (Enter/Space triggers the click).
+ *
+ * @example
+ * <Card variant="elevated" padding="lg" title="Trip summary">
+ *   Your itinerary details go here.
+ * </Card>
+ *
+ * @example
+ * <Card variant="filled" padding="sm" onClick={() => selectDestination('paris')}>
+ *   Paris
+ * </Card>
+ */
 export const Card: React.FC<CardProps> = ({
-  title,
-  subtitle,
-  footer,
-  variant = 'default',
-  size = 'md',
-  interactive = false,
-  ariaLabel,
-  className = '',
   children,
-  ...rest
+  variant = 'elevated',
+  padding = 'md',
+  title,
+  className = '',
+  onClick,
 }) => {
-  const baseStyles =
-    'rounded-lg transition-shadow duration-150 focus:outline-none';
-  const interactiveStyles = interactive
-    ? 'cursor-pointer hover:shadow-lg focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2'
-    : '';
+  const interactive = typeof onClick === 'function';
 
   return (
     <div
-      className={[
-        baseStyles,
-        variantStyles[variant],
-        sizeStyles[size],
-        interactiveStyles,
-        className,
-      ]
-        .filter(Boolean)
-        .join(' ')}
-      role={interactive ? 'button' : 'group'}
+      className={`rounded-lg transition-shadow duration-200 ${variantClasses[variant]} ${paddingClasses[padding]} ${
+        interactive ? 'cursor-pointer hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-blue-500' : ''
+      } ${className}`}
+      onClick={onClick}
+      role={interactive ? 'button' : undefined}
       tabIndex={interactive ? 0 : undefined}
-      aria-label={ariaLabel ?? (typeof title === 'string' ? title : undefined)}
-      {...rest}
+      onKeyDown={
+        interactive
+          ? (e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                onClick?.();
+              }
+            }
+          : undefined
+      }
     >
-      {(title || subtitle) && (
-        <div className={headerSizeStyles[size]}>
-          {title && (
-            <div className="text-lg font-semibold text-gray-900">{title}</div>
-          )}
-          {subtitle && (
-            <div className="text-sm text-gray-500 mt-1">{subtitle}</div>
-          )}
-        </div>
-      )}
-
-      <div className="text-gray-700">{children}</div>
-
-      {footer && (
-        <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-end gap-2">
-          {footer}
-        </div>
-      )}
+      {title && <h3 className="text-lg font-semibold mb-2 text-gray-900">{title}</h3>}
+      {children}
     </div>
   );
 };

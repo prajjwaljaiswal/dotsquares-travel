@@ -1,159 +1,101 @@
-import React, { createContext, useContext, useId, useState } from 'react';
-import { cn } from './utils';
+import React, { useId, useState, type KeyboardEvent } from 'react';
 
-interface TabsContextValue {
-  activeValue: string;
-  setActiveValue: (value: string) => void;
-  idPrefix: string;
-}
-
-const TabsContext = createContext<TabsContextValue | null>(null);
-
-function useTabsContext(componentName: string): TabsContextValue {
-  const context = useContext(TabsContext);
-  if (!context) {
-    throw new Error(`${componentName} must be used within a <Tabs> component`);
-  }
-  return context;
+export interface TabItem {
+  id: string;
+  label: string;
+  content: React.ReactNode;
+  disabled?: boolean;
 }
 
 export interface TabsProps {
-  /** Value of the initially active tab. */
-  defaultValue: string;
-  /** Called whenever the active tab changes. */
-  onChange?: (value: string) => void;
-  children?: React.ReactNode;
+  items: TabItem[];
+  defaultTabId?: string;
+  onChange?: (tabId: string) => void;
   className?: string;
 }
 
 /**
- * Tabs is an accessible tabbed navigation container. Compose it with
- * TabList, Tab, and TabPanel.
+ * Tabs
+ *
+ * An accessible tabs component implementing the WAI-ARIA tabs pattern with
+ * roving tabindex and arrow-key/Home/End keyboard navigation.
  *
  * @example
- * <Tabs defaultValue="flights">
- *   <TabList aria-label="Search categories">
- *     <Tab value="flights">Flights</Tab>
- *     <Tab value="hotels">Hotels</Tab>
- *   </TabList>
- *   <TabPanel value="flights">Flight results...</TabPanel>
- *   <TabPanel value="hotels">Hotel results...</TabPanel>
- * </Tabs>
+ * <Tabs
+ *   items={[
+ *     { id: 'overview', label: 'Overview', content: <p>Overview</p> },
+ *     { id: 'usage', label: 'Usage', content: <p>Usage</p> },
+ *   ]}
+ *   defaultTabId="overview"
+ * />
  */
-export function Tabs({ defaultValue, onChange, children, className }: TabsProps) {
-  const [activeValue, setActiveValueState] = useState(defaultValue);
-  const idPrefix = useId();
+export const Tabs: React.FC<TabsProps> = ({ items, defaultTabId, onChange, className = '' }) => {
+  const [activeId, setActiveId] = useState<string>(defaultTabId ?? items[0]?.id);
+  const baseId = useId();
 
-  const setActiveValue = (value: string) => {
-    setActiveValueState(value);
-    onChange?.(value);
+  const selectTab = (id: string) => {
+    setActiveId(id);
+    onChange?.(id);
   };
 
-  return (
-    <TabsContext.Provider value={{ activeValue, setActiveValue, idPrefix }}>
-      <div className={className}>{children}</div>
-    </TabsContext.Provider>
-  );
-}
-
-export interface TabListProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Accessible label describing the group of tabs. */
-  'aria-label': string;
-}
-
-export function TabList({ className, children, ...rest }: TabListProps) {
-  const { setActiveValue } = useTabsContext('TabList');
-
-  const tabValues = React.Children.toArray(children)
-    .filter(React.isValidElement)
-    .map((child) => (child as React.ReactElement<TabProps>).props.value);
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)) {
-      return;
-    }
-    event.preventDefault();
-    const currentIndex = tabValues.findIndex(
-      (value) => value === (event.target as HTMLElement).getAttribute('data-value')
-    );
-
+  const handleKeyDown = (e: KeyboardEvent<HTMLButtonElement>, index: number) => {
+    const enabledItems = items.filter((item) => !item.disabled);
+    const currentIndex = enabledItems.findIndex((item) => item.id === items[index].id);
     let nextIndex = currentIndex;
-    if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % tabValues.length;
-    if (event.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + tabValues.length) % tabValues.length;
-    if (event.key === 'Home') nextIndex = 0;
-    if (event.key === 'End') nextIndex = tabValues.length - 1;
 
-    const nextValue = tabValues[nextIndex];
-    if (nextValue) {
-      setActiveValue(nextValue);
-      const nextEl = (event.currentTarget.querySelector(
-        `[data-value="${nextValue}"]`
-      ) as HTMLElement | null);
-      nextEl?.focus();
+    if (e.key === 'ArrowRight') nextIndex = (currentIndex + 1) % enabledItems.length;
+    else if (e.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + enabledItems.length) % enabledItems.length;
+    else if (e.key === 'Home') nextIndex = 0;
+    else if (e.key === 'End') nextIndex = enabledItems.length - 1;
+    else return;
+
+    e.preventDefault();
+    const nextTab = enabledItems[nextIndex];
+    if (nextTab) {
+      selectTab(nextTab.id);
+      document.getElementById(`${baseId}-tab-${nextTab.id}`)?.focus();
     }
   };
 
   return (
-    <div
-      role="tablist"
-      className={cn('ds-tabs__list', className)}
-      onKeyDown={handleKeyDown}
-      {...rest}
-    >
-      {children}
+    <div className={className}>
+      <div role="tablist" aria-orientation="horizontal" className="flex border-b border-gray-200">
+        {items.map((item, index) => (
+          <button
+            key={item.id}
+            id={`${baseId}-tab-${item.id}`}
+            role="tab"
+            type="button"
+            aria-selected={activeId === item.id}
+            aria-controls={`${baseId}-panel-${item.id}`}
+            tabIndex={activeId === item.id ? 0 : -1}
+            disabled={item.disabled}
+            onClick={() => selectTab(item.id)}
+            onKeyDown={(e) => handleKeyDown(e, index)}
+            className={`px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-40 disabled:cursor-not-allowed ${
+              activeId === item.id
+                ? 'border-blue-600 text-blue-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            {item.label}
+          </button>
+        ))}
+      </div>
+      {items.map((item) => (
+        <div
+          key={item.id}
+          id={`${baseId}-panel-${item.id}`}
+          role="tabpanel"
+          aria-labelledby={`${baseId}-tab-${item.id}`}
+          hidden={activeId !== item.id}
+          className="pt-4"
+        >
+          {activeId === item.id && item.content}
+        </div>
+      ))}
     </div>
   );
-}
+};
 
-export interface TabProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'value'> {
-  /** Unique identifier matching a TabPanel's value. */
-  value: string;
-}
-
-export function Tab({ value, className, children, ...rest }: TabProps) {
-  const { activeValue, setActiveValue, idPrefix } = useTabsContext('Tab');
-  const isSelected = activeValue === value;
-
-  return (
-    <button
-      type="button"
-      role="tab"
-      data-value={value}
-      id={`${idPrefix}-tab-${value}`}
-      aria-selected={isSelected}
-      aria-controls={`${idPrefix}-panel-${value}`}
-      tabIndex={isSelected ? 0 : -1}
-      className={cn('ds-tabs__tab', 'ds-focusable', className)}
-      onClick={() => setActiveValue(value)}
-      {...rest}
-    >
-      {children}
-    </button>
-  );
-}
-
-export interface TabPanelProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Value matching the corresponding Tab. */
-  value: string;
-}
-
-export function TabPanel({ value, className, children, ...rest }: TabPanelProps) {
-  const { activeValue, idPrefix } = useTabsContext('TabPanel');
-
-  if (activeValue !== value) {
-    return null;
-  }
-
-  return (
-    <div
-      role="tabpanel"
-      id={`${idPrefix}-panel-${value}`}
-      aria-labelledby={`${idPrefix}-tab-${value}`}
-      className={cn('ds-tabs__panel', className)}
-      tabIndex={0}
-      {...rest}
-    >
-      {children}
-    </div>
-  );
-}
+export default Tabs;

@@ -1,68 +1,55 @@
-import React, { useState } from 'react';
-import { cn } from './utils';
+import React from 'react';
 
 export type AlertVariant = 'info' | 'success' | 'warning' | 'error';
 
-export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Semantic severity of the alert. Defaults to 'info'. */
+export interface AlertProps {
   variant?: AlertVariant;
-  /** Optional bold title shown above the message. */
   title?: string;
-  /** Allows the user to dismiss the alert. Defaults to false. */
-  dismissible?: boolean;
-  /** Called when the alert is dismissed. */
-  onDismiss?: () => void;
+  children: React.ReactNode;
+  onClose?: () => void;
+  className?: string;
 }
 
+const variantClasses: Record<AlertVariant, string> = {
+  info: 'bg-blue-50 border-blue-400 text-blue-800',
+  success: 'bg-green-50 border-green-400 text-green-800',
+  warning: 'bg-yellow-50 border-yellow-400 text-yellow-800',
+  error: 'bg-red-50 border-red-400 text-red-800',
+};
+
 /**
- * Alert communicates important, contextual feedback messages.
+ * Alert
+ *
+ * An inline notification banner with role="alert" so screen readers announce
+ * it immediately. Supports an optional dismiss button.
  *
  * @example
- * <Alert variant="error" title="Booking failed" dismissible onDismiss={() => {}}>
+ * <Alert variant="error" title="Booking failed" onClose={() => setShow(false)}>
  *   Please check your payment details and try again.
  * </Alert>
  */
-export function Alert({
-  variant = 'info',
-  title,
-  dismissible = false,
-  onDismiss,
-  className,
-  children,
-  ...rest
-}: AlertProps) {
-  const [visible, setVisible] = useState(true);
-
-  if (!visible) {
-    return null;
-  }
-
-  const handleDismiss = () => {
-    setVisible(false);
-    onDismiss?.();
-  };
-
+export const Alert: React.FC<AlertProps> = ({ variant = 'info', title, children, onClose, className = '' }) => {
   return (
     <div
-      className={cn('ds-alert', `ds-alert--${variant}`, className)}
-      role={variant === 'error' ? 'alert' : 'status'}
-      aria-live={variant === 'error' ? 'assertive' : 'polite'}
-      {...rest}
+      role="alert"
+      className={`flex items-start gap-3 rounded-md border-l-4 p-4 ${variantClasses[variant]} ${className}`}
     >
-      <div className="ds-alert__content">
-        {title && <div className="ds-alert__title">{title}</div>}
-        <div>{children}</div>
+      <div className="flex-1">
+        {title && <p className="mb-1 font-semibold">{title}</p>}
+        <div className="text-sm">{children}</div>
       </div>
-      {dismissible && (
+      {onClose && (
         <button
           type="button"
-          className="ds-alert__close ds-focusable"
+          onClick={onClose}
           aria-label="Dismiss alert"
-          onClick={handleDismiss}
+          className="rounded-md p-1 hover:bg-black/5 focus:outline-none focus:ring-2 focus:ring-current"
         >
-          ×
+          ✕
         </button>
       )}
     </div>
   );
-}
+};
+
+export default Alert;

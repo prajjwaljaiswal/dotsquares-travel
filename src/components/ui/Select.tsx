@@ -1,90 +1,88 @@
-import React, { forwardRef, useId } from 'react';
-import { cn } from './utils';
+import React, { useId } from 'react';
+
+export interface SelectOption {
+  value: string;
+  label: string;
+  disabled?: boolean;
+}
 
 export type SelectSize = 'sm' | 'md' | 'lg';
 
-export interface SelectOption {
-  label: string;
-  value: string;
-}
-
 export interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'size'> {
-  /** Visible label associated with the select via htmlFor/id. */
   label?: string;
-  /** Size of the select control. Defaults to 'md'. */
   size?: SelectSize;
-  /** Validation error message. When present, the field is marked invalid. */
-  error?: string;
-  /** Helper text shown below the field when there is no error. */
-  helperText?: string;
-  /** Options rendered inside the select. */
   options: SelectOption[];
-  /** Optional placeholder shown as a disabled first option. */
+  error?: string;
   placeholder?: string;
 }
 
+const sizeClasses: Record<SelectSize, string> = {
+  sm: 'px-2.5 py-1.5 text-sm',
+  md: 'px-3 py-2 text-base',
+  lg: 'px-4 py-3 text-lg',
+};
+
 /**
- * Select is a labeled, accessible dropdown built on the native <select> element.
+ * Select
+ *
+ * A labelled native select with a typed options list and optional
+ * placeholder. Error state is announced via aria-invalid.
  *
  * @example
  * <Select
- *   label="Trip Type"
- *   placeholder="Choose a trip type"
- *   options={[{ label: 'One-way', value: 'one-way' }, { label: 'Round-trip', value: 'round-trip' }]}
+ *   label="Trip type"
+ *   placeholder="Select a trip type"
+ *   options={[{ value: 'one-way', label: 'One way' }, { value: 'round-trip', label: 'Round trip' }]}
  * />
  */
-export const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ label, size = 'md', error, helperText, options, placeholder, id, className, ...rest }, ref) => {
-    const generatedId = useId();
-    const selectId = id ?? generatedId;
-    const helperId = `${selectId}-helper`;
+export const Select: React.FC<SelectProps> = ({
+  label,
+  size = 'md',
+  options,
+  error,
+  placeholder,
+  id,
+  className = '',
+  ...rest
+}) => {
+  const generatedId = useId();
+  const selectId = id ?? generatedId;
+  const errorId = `${selectId}-error`;
 
-    return (
-      <div className="ds-field">
-        {label && (
-          <label className="ds-field__label" htmlFor={selectId}>
-            {label}
-          </label>
+  return (
+    <div className="flex flex-col gap-1">
+      {label && (
+        <label htmlFor={selectId} className="text-sm font-medium text-gray-700">
+          {label}
+        </label>
+      )}
+      <select
+        id={selectId}
+        aria-invalid={!!error}
+        aria-describedby={error ? errorId : undefined}
+        className={`w-full rounded-md border bg-white ${
+          error ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500'
+        } ${sizeClasses[size]} focus:outline-none focus:ring-2 disabled:bg-gray-100 disabled:cursor-not-allowed ${className}`}
+        {...rest}
+      >
+        {placeholder && (
+          <option value="" disabled hidden>
+            {placeholder}
+          </option>
         )}
-        <select
-          ref={ref}
-          id={selectId}
-          className={cn(
-            'ds-field__control',
-            'ds-focusable',
-            `ds-field__control--${size}`,
-            error && 'ds-field__control--error',
-            className
-          )}
-          aria-invalid={Boolean(error) || undefined}
-          aria-describedby={error || helperText ? helperId : undefined}
-          defaultValue={rest.defaultValue ?? (placeholder ? '' : undefined)}
-          {...rest}
-        >
-          {placeholder && (
-            <option value="" disabled hidden>
-              {placeholder}
-            </option>
-          )}
-          {options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-        {error && (
-          <span id={helperId} className="ds-field__error" role="alert">
-            {error}
-          </span>
-        )}
-        {!error && helperText && (
-          <span id={helperId} className="ds-field__helper">
-            {helperText}
-          </span>
-        )}
-      </div>
-    );
-  }
-);
+        {options.map((option) => (
+          <option key={option.value} value={option.value} disabled={option.disabled}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      {error && (
+        <p id={errorId} className="text-sm text-red-600" role="alert">
+          {error}
+        </p>
+      )}
+    </div>
+  );
+};
 
-Select.displayName = 'Select';
+export default Select;

@@ -1,74 +1,70 @@
-import React, { forwardRef, useId } from 'react';
-import { cn } from './utils';
+import React, { useId } from 'react';
 
 export type DatePickerSize = 'sm' | 'md' | 'lg';
 
-export interface DatePickerProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size' | 'type'> {
-  /** Visible label associated with the date field via htmlFor/id. */
+export interface DatePickerProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type' | 'size'> {
   label?: string;
-  /** Size of the control. Defaults to 'md'. */
   size?: DatePickerSize;
-  /** Validation error message. When present, the field is marked invalid. */
   error?: string;
-  /** Helper text shown below the field when there is no error. */
-  helperText?: string;
-  /** Minimum selectable date in ISO format (YYYY-MM-DD). */
-  min?: string;
-  /** Maximum selectable date in ISO format (YYYY-MM-DD). */
-  max?: string;
+  minDate?: string;
+  maxDate?: string;
 }
 
+const sizeClasses: Record<DatePickerSize, string> = {
+  sm: 'px-2.5 py-1.5 text-sm',
+  md: 'px-3 py-2 text-base',
+  lg: 'px-4 py-3 text-lg',
+};
+
 /**
- * DatePicker is an accessible wrapper around the native HTML date input,
- * providing a consistent label, sizing, and validation API with the rest
- * of the design system. It intentionally avoids a heavy calendar widget so
- * it inherits full native keyboard and screen-reader support.
+ * DatePicker
+ *
+ * A thin, accessible wrapper around the native date input, providing a
+ * consistent label/error/helper API with the rest of the form components.
  *
  * @example
- * <DatePicker label="Departure Date" min="2024-01-01" size="md" />
+ * <DatePicker label="Departure date" minDate="2024-01-01" onChange={(e) => setDate(e.target.value)} />
  */
-export const DatePicker = forwardRef<HTMLInputElement, DatePickerProps>(
-  ({ label, size = 'md', error, helperText, id, className, ...rest }, ref) => {
-    const generatedId = useId();
-    const inputId = id ?? generatedId;
-    const helperId = `${inputId}-helper`;
+export const DatePicker: React.FC<DatePickerProps> = ({
+  label,
+  size = 'md',
+  error,
+  minDate,
+  maxDate,
+  id,
+  className = '',
+  ...rest
+}) => {
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
+  const errorId = `${inputId}-error`;
 
-    return (
-      <div className="ds-field">
-        {label && (
-          <label className="ds-field__label" htmlFor={inputId}>
-            {label}
-          </label>
-        )}
-        <input
-          ref={ref}
-          id={inputId}
-          type="date"
-          className={cn(
-            'ds-field__control',
-            'ds-focusable',
-            `ds-field__control--${size}`,
-            error && 'ds-field__control--error',
-            className
-          )}
-          aria-invalid={Boolean(error) || undefined}
-          aria-describedby={error || helperText ? helperId : undefined}
-          {...rest}
-        />
-        {error && (
-          <span id={helperId} className="ds-field__error" role="alert">
-            {error}
-          </span>
-        )}
-        {!error && helperText && (
-          <span id={helperId} className="ds-field__helper">
-            {helperText}
-          </span>
-        )}
-      </div>
-    );
-  }
-);
+  return (
+    <div className="flex flex-col gap-1">
+      {label && (
+        <label htmlFor={inputId} className="text-sm font-medium text-gray-700">
+          {label}
+        </label>
+      )}
+      <input
+        id={inputId}
+        type="date"
+        min={minDate}
+        max={maxDate}
+        aria-invalid={!!error}
+        aria-describedby={error ? errorId : undefined}
+        className={`w-full rounded-md border bg-white ${
+          error ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-blue-500'
+        } ${sizeClasses[size]} focus:outline-none focus:ring-2 disabled:bg-gray-100 disabled:cursor-not-allowed ${className}`}
+        {...rest}
+      />
+      {error && (
+        <p id={errorId} className="text-sm text-red-600" role="alert">
+          {error}
+        </p>
+      )}
+    </div>
+  );
+};
 
-DatePicker.displayName = 'DatePicker';
+export default DatePicker;

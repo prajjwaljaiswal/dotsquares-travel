@@ -1,94 +1,78 @@
 import React, { useEffect, useRef } from 'react';
-import { cn } from './utils';
 
-export type ModalSize = 'sm' | 'md' | 'lg';
+export type ModalSize = 'sm' | 'md' | 'lg' | 'xl';
 
 export interface ModalProps {
-  /** Controls whether the modal is rendered/visible. */
   isOpen: boolean;
-  /** Called when the user requests to close the modal (Escape key, overlay click, close button). */
   onClose: () => void;
-  /** Title rendered in the modal header and used for aria-labelledby. */
-  title: string;
-  /** Size of the modal dialog. Defaults to 'md'. */
+  title?: string;
   size?: ModalSize;
-  children?: React.ReactNode;
-  /** Optional extra className applied to the dialog element. */
-  className?: string;
+  children: React.ReactNode;
 }
 
+const sizeClasses: Record<ModalSize, string> = {
+  sm: 'max-w-sm',
+  md: 'max-w-md',
+  lg: 'max-w-lg',
+  xl: 'max-w-2xl',
+};
+
 /**
- * Modal is an accessible dialog overlay with focus management and Escape-to-close.
+ * Modal
+ *
+ * An accessible dialog overlay. Closes on Escape or overlay click, focuses
+ * itself on open, and exposes aria-modal/aria-labelledby for screen readers.
  *
  * @example
- * const [open, setOpen] = useState(false);
- * <Modal isOpen={open} onClose={() => setOpen(false)} title="Confirm Booking" size="md">
- *   <p>Are you sure you want to confirm this booking?</p>
+ * <Modal isOpen={open} onClose={() => setOpen(false)} title="Confirm booking" size="md">
+ *   <p>Are you sure you want to book this trip?</p>
  * </Modal>
  */
-export function Modal({ isOpen, onClose, title, size = 'md', children, className }: ModalProps) {
+export const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, size = 'md', children }) => {
   const dialogRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
-
-    const previouslyFocused = document.activeElement as HTMLElement | null;
-    dialogRef.current?.focus();
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
     };
-
     document.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      previouslyFocused?.focus();
-    };
+    dialogRef.current?.focus();
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
-  if (!isOpen) {
-    return null;
-  }
-
-  const titleId = 'ds-modal-title';
+  if (!isOpen) return null;
 
   return (
-    <div
-      className="ds-modal-overlay"
-      onMouseDown={(event) => {
-        if (event.target === event.currentTarget) {
-          onClose();
-        }
-      }}
-    >
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
       <div
         ref={dialogRef}
-        className={cn('ds-modal', 'ds-focusable', `ds-modal--${size}`, className)}
         role="dialog"
         aria-modal="true"
-        aria-labelledby={titleId}
+        aria-labelledby={title ? 'modal-title' : undefined}
         tabIndex={-1}
+        className={`w-full ${sizeClasses[size]} rounded-lg bg-white p-6 shadow-xl focus:outline-none`}
+        onClick={(e) => e.stopPropagation()}
       >
-        <div className="ds-modal__header">
-          <h2 id={titleId} className="ds-modal__title">
-            {title}
-          </h2>
+        <div className="mb-4 flex items-center justify-between">
+          {title && (
+            <h2 id="modal-title" className="text-lg font-semibold text-gray-900">
+              {title}
+            </h2>
+          )}
           <button
             type="button"
-            className="ds-modal__close ds-focusable"
-            aria-label="Close dialog"
             onClick={onClose}
+            aria-label="Close modal"
+            className="ml-auto rounded-md p-1 text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            ×
+            ✕
           </button>
         </div>
-        <div className="ds-modal__body">{children}</div>
+        {children}
       </div>
     </div>
   );
-}
+};
+
+export default Modal;
