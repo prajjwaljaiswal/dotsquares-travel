@@ -1,11 +1,8 @@
 function Home() {
   return (
     <section className="page">
-      <h1>Discover Your Next Adventure</h1>
-      <p>
-        Welcome to TravelCo &mdash; explore curated trips, destinations, and
-        experiences around the globe.
-      </p>
+      <h1>Welcome to Dotsquares Travel</h1>
+      <p>Discover curated journeys, handpicked stays, and unforgettable destinations around the world.</p>
     </section>
   )
 }

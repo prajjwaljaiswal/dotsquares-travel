@@ -1,11 +1,8 @@
 function About() {
   return (
     <section className="page">
-      <h1>About TravelCo</h1>
-      <p>
-        We are a team of travel enthusiasts dedicated to helping you plan
-        unforgettable journeys.
-      </p>
+      <h1>About Us</h1>
+      <p>Dotsquares Travel is dedicated to crafting memorable travel experiences for every kind of explorer.</p>
     </section>
   )
 }

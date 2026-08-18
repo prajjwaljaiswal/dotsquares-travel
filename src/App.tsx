@@ -4,10 +4,11 @@ import Home from './pages/Home'
 import Explore from './pages/Explore'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import './App.css'
 
 function App() {
   return (
-    <>
+    <div className="app">
       <Header />
       <main className="main-content">
         <Routes>
@@ -17,7 +18,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
         </Routes>
       </main>
-    </>
+    </div>
   )
 }
 
