@@ -1,12 +1,6 @@
 # dotsquares-travel
 
-A travel booking web application built with Next.js, TypeScript and Tailwind CSS.
-
-## Features
-
-- **Featured & Trending Packages Section** — Displays a curated grid of at least 6 featured/trending travel packages sourced from demo data. Each package card shows an image, title, duration, rating and price, along with **View Details** and **Book Now** actions.
-  - **View Details** navigates to `/packages/:id` to show the full package detail page.
-  - **Book Now** navigates to `/booking/:packageId`, pre-selecting the chosen package inside the booking flow.
+A React + TypeScript travel site.
 
 ## Supporting Pages
 
@@ -34,58 +28,6 @@ npx serve .
 
 Then navigate to `http://localhost:3000` (or the port shown) to view the
 site.
-
-## Getting Started
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Run the development server:
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) to view the app.
-
-## Available Scripts
-
-- `npm run dev` — start the local development server
-- `npm run build` — build the production bundle
-- `npm run start` — run the production build
-- `npm run lint` — run ESLint
-- `npm run format` — format the codebase with Prettier
-- `npm run type-check` — run the TypeScript compiler in check mode
-- `npm test` — run the unit test suite
-
-## Project Structure
-
-```
-.
-├── components/   # Reusable React components
-│   ├── PackageCard/            # Reusable package card UI
-│   └── FeaturedTrendingSection/ # Homepage section listing featured/trending packages
-├── data/         # Static/sample data used by pages
-│   └── packages.ts              # Demo package data flagged as featured/trending
-├── lib/          # Shared utility functions
-├── pages/        # Next.js pages and routing
-│   ├── Home.tsx                 # Homepage hosting the featured/trending section
-│   ├── PackageDetail.tsx        # Package detail page
-│   └── Booking.tsx              # Booking flow page with pre-selected package
-├── styles/       # Global and Tailwind CSS styles
-└── types/        # Shared TypeScript types
-    └── package.ts                # Shared TravelPackage type
-```
-
-## Tech Stack
-
-- [Next.js](https://nextjs.org/) 14
-- [TypeScript](https://www.typescriptlang.org/) (strict mode)
-- [Tailwind CSS](https://tailwindcss.com/)
-- ESLint + Prettier
 
 ## FAQ Page
 
@@ -120,7 +62,13 @@ Note: All imagery currently uses via.placeholder.com placeholders and should be 
 
 ## Destination Detail Page
 
-The Destination Detail Page includes a map section that shows the
+The destination detail page (`/destinations/:slug`) renders a large hero banner
+with the destination's image, name, and tagline, followed by an overview and
+highlights section. Both sections pull from demo data in
+`src/data/destinations.ts` based on the `slug` route parameter, and are fully
+responsive with appropriate image cropping on smaller screens.
+
+The Destination Detail Page also includes a map section that shows the
 destination's location.
 
 ### Map Section (Placeholder)
@@ -144,5 +92,23 @@ comments (`PLACEHOLDER COMPONENT`).
   consuming pages (e.g., `DestinationDetailPage`) will not need to be
   updated since the props contract stays the same.
 
-See `src/pages/DestinationDetailPage.tsx` for usage of the map section
-within the destination detail page.
+See `src/pages/DestinationDetailPage/DestinationDetailPage.tsx` for usage of
+the map section within the destination detail page.
+
+## Getting Started
+
+Install dependencies and start the development server:
+
+```bash
+npm install
+npm start
+```
+
+Run the test suite:
+
+```bash
+npm test
+```
+
+Available demo destinations: `bali`, `santorini`, `kyoto` (e.g.
+`/destinations/santorini`).
