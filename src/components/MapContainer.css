@@ -1,0 +1,57 @@
+/*
+ * Styles for the MapContainer PLACEHOLDER component.
+ * This visual styling mimics a map area using a gradient background
+ * and grid pattern. It should be removed/replaced once a real map
+ * library (e.g., Google Maps, Mapbox) is integrated.
+ */
+
+.map-container-placeholder {
+  width: 100%;
+  min-height: 280px;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  background-color: #e8f0e8;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+  border: 1px solid #d0dcd0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.map-container-placeholder__overlay {
+  text-align: center;
+  padding: 16px 24px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.map-container-placeholder__icon {
+  font-size: 28px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.map-container-placeholder__label {
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0 0 4px 0;
+  color: #2f3b2f;
+}
+
+.map-container-placeholder__coords {
+  font-size: 12px;
+  color: #6b7a6b;
+  margin: 0 0 8px 0;
+}
+
+.map-container-placeholder__notice {
+  font-size: 12px;
+  font-style: italic;
+  color: #8a978a;
+  margin: 0;
+}
