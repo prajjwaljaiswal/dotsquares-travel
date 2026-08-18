@@ -96,3 +96,6 @@ export const packages: TravelPackage[] = [
 
 export const getFeaturedOrTrendingPackages = (): TravelPackage[] =>
   packages.filter((pkg) => pkg.featured || pkg.trending);
+
+export const getPackageById = (id: string): TravelPackage | undefined =>
+  packages.find((pkg) => pkg.id === id);
