@@ -1,71 +1,41 @@
-export interface DestinationPhoto {
-  id: string;
-  url: string;
-  thumbnailUrl: string;
-  alt: string;
-  caption: string;
-}
+import { DestinationPhoto } from '../types/destination';
 
-/**
- * Demo stock images representing a destination's photo gallery.
- * Uses picsum.photos as a stable placeholder image source with
- * deterministic seeds so the same images render on every load.
- */
+// Demo stock images (Unsplash source URLs) used to populate the destination gallery.
 export const destinationPhotos: DestinationPhoto[] = [
   {
     id: 'photo-1',
-    url: 'https://picsum.photos/seed/destination-1/1200/800',
-    thumbnailUrl: 'https://picsum.photos/seed/destination-1/400/300',
-    alt: 'Scenic coastline at sunset',
-    caption: 'Sunset over the coastline',
+    url: 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=1600&q=80',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=400&q=60',
+    alt: 'Scenic mountain range at sunset',
   },
   {
     id: 'photo-2',
-    url: 'https://picsum.photos/seed/destination-2/1200/800',
-    thumbnailUrl: 'https://picsum.photos/seed/destination-2/400/300',
-    alt: 'Historic old town streets',
-    caption: 'Wandering the old town',
+    url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&q=80',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&q=60',
+    alt: 'Tropical beach with turquoise water',
   },
   {
     id: 'photo-3',
-    url: 'https://picsum.photos/seed/destination-3/1200/800',
-    thumbnailUrl: 'https://picsum.photos/seed/destination-3/400/300',
-    alt: 'Mountain range at dawn',
-    caption: 'Dawn over the mountains',
+    url: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1600&q=80',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=400&q=60',
+    alt: 'Historic city street at golden hour',
   },
   {
     id: 'photo-4',
-    url: 'https://picsum.photos/seed/destination-4/1200/800',
-    thumbnailUrl: 'https://picsum.photos/seed/destination-4/400/300',
-    alt: 'Local market with fresh produce',
-    caption: 'The bustling local market',
+    url: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1600&q=80',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=400&q=60',
+    alt: 'Lush green rice terraces',
   },
   {
     id: 'photo-5',
-    url: 'https://picsum.photos/seed/destination-5/1200/800',
-    thumbnailUrl: 'https://picsum.photos/seed/destination-5/400/300',
-    alt: 'Beachfront with turquoise water',
-    caption: 'Turquoise waters at the beach',
+    url: 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=1600&q=80',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=400&q=60',
+    alt: 'Desert dunes under a clear sky',
   },
   {
     id: 'photo-6',
-    url: 'https://picsum.photos/seed/destination-6/1200/800',
-    thumbnailUrl: 'https://picsum.photos/seed/destination-6/400/300',
-    alt: 'City skyline at night',
-    caption: 'City lights after dark',
-  },
-  {
-    id: 'photo-7',
-    url: 'https://picsum.photos/seed/destination-7/1200/800',
-    thumbnailUrl: 'https://picsum.photos/seed/destination-7/400/300',
-    alt: 'Traditional architecture detail',
-    caption: 'Details of traditional architecture',
-  },
-  {
-    id: 'photo-8',
-    url: 'https://picsum.photos/seed/destination-8/1200/800',
-    thumbnailUrl: 'https://picsum.photos/seed/destination-8/400/300',
-    alt: 'Forest trail in the hills',
-    caption: 'A quiet trail through the hills',
+    url: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=1600&q=80',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=400&q=60',
+    alt: 'Snow-capped peaks reflected in a lake',
   },
 ];

@@ -1,17 +1,19 @@
 import React from 'react';
-import Gallery from './components/Gallery/Gallery';
+import Gallery from './components/Gallery';
 import { destinationPhotos } from './data/destinationPhotos';
+import './App.css';
 
-const App: React.FC = () => {
+function App() {
   return (
-    <main className="page">
-      <h1 className="page__title">Santorini, Greece</h1>
-      <p className="page__subtitle">
-        Explore photos from this destination. Tap any image to view it in full size.
-      </p>
-      <Gallery photos={destinationPhotos} title="Destination photos" />
-    </main>
+    <div className="app">
+      <header className="app__header">
+        <h1>Destination Detail</h1>
+      </header>
+      <main className="app__main">
+        <Gallery photos={destinationPhotos} title="Destination Photo Gallery" />
+      </main>
+    </div>
   );
-};
+}
 
 export default App;
