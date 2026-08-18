@@ -1,88 +1,89 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import SearchBar from '../components/SearchBar';
-import { demoPlaces } from '../data/demoPlaces';
+import { destinations } from '../data/destinations';
 import './ExplorePage.css';
 
-export default function ExplorePage() {
+function ExplorePage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [query, setQuery] = useState(searchParams.get('q') || '');
+  const initialQuery = searchParams.get('q') || '';
+  const [activeQuery, setActiveQuery] = useState(initialQuery);
 
-  useEffect(() => {
-    const paramQuery = searchParams.get('q') || '';
-    setQuery(paramQuery);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const updateUrl = useCallback(
+  const updateUrlQuery = useCallback(
     (nextQuery) => {
-      setSearchParams(
-        (prev) => {
-          const params = new URLSearchParams(prev);
-          if (nextQuery) {
-            params.set('q', nextQuery);
-          } else {
-            params.delete('q');
-          }
-          return params;
-        },
-        { replace: true }
-      );
+      setSearchParams((previousParams) => {
+        const params = new URLSearchParams(previousParams);
+
+        if (nextQuery) {
+          params.set('q', nextQuery);
+        } else {
+          params.delete('q');
+        }
+
+        return params;
+      });
     },
     [setSearchParams]
   );
 
-  const handleDebouncedChange = useCallback(
+  const handleQueryChange = useCallback(
     (nextQuery) => {
-      setQuery(nextQuery);
-      updateUrl(nextQuery);
+      setActiveQuery(nextQuery);
+      updateUrlQuery(nextQuery);
     },
-    [updateUrl]
+    [updateUrlQuery]
   );
 
   const handleSelectSuggestion = useCallback(
-    (item) => {
-      setQuery(item.name);
-      updateUrl(item.name);
+    (suggestion) => {
+      setActiveQuery(suggestion.name);
+      updateUrlQuery(suggestion.name);
     },
-    [updateUrl]
+    [updateUrlQuery]
   );
 
-  const filteredPlaces = useMemo(() => {
-    const trimmed = query.trim().toLowerCase();
-    if (!trimmed) return demoPlaces;
-    return demoPlaces.filter((place) => place.name.toLowerCase().includes(trimmed));
-  }, [query]);
+  const filteredDestinations = useMemo(() => {
+    const trimmed = activeQuery.trim().toLowerCase();
+
+    if (!trimmed) {
+      return destinations;
+    }
+
+    return destinations.filter((destination) =>
+      destination.name.toLowerCase().includes(trimmed)
+    );
+  }, [activeQuery]);
 
   return (
     <div className="explore-page">
-      <header className="explore-page__header">
-        <h1>Explore Places</h1>
-        <p>Search demo destinations and packages below.</p>
-        <SearchBar
-          value={query}
-          allItems={demoPlaces}
-          onDebouncedChange={handleDebouncedChange}
-          onSelect={handleSelectSuggestion}
-        />
-      </header>
-
-      <section className="explore-page__results" aria-live="polite">
-        {filteredPlaces.length === 0 ? (
-          <p className="explore-page__empty">No matches found for "{query}".</p>
-        ) : (
-          <ul className="explore-page__grid">
-            {filteredPlaces.map((place) => (
-              <li key={place.id} className="explore-page__card">
-                <h3>{place.name}</h3>
-                <p className="explore-page__card-location">{place.location}</p>
-                <p className="explore-page__card-type">{place.type}</p>
-                <p className="explore-page__card-price">${place.price}</p>
+      <div className="explore-page__container">
+        <header className="explore-page__header">
+          <h1 className="explore-page__title">Explore Destinations &amp; Packages</h1>
+          <SearchBar
+            initialValue={initialQuery}
+            suggestionsSource={destinations}
+            onQueryChange={handleQueryChange}
+            onSelectSuggestion={handleSelectSuggestion}
+          />
+        </header>
+        <section className="explore-page__results">
+          <ul className="explore-page__card-list">
+            {filteredDestinations.map((destination) => (
+              <li key={destination.id} className="explore-page__card">
+                <h2 className="explore-page__card-name">{destination.name}</h2>
+                <p className="explore-page__card-location">{destination.location}</p>
+                <p className="explore-page__card-type">{destination.type}</p>
+                <p className="explore-page__card-price">{`$${destination.price}`}</p>
               </li>
             ))}
           </ul>
-        )}
-      </section>
+          {filteredDestinations.length === 0 && (
+            <p className="explore-page__no-results">No destinations match your search.</p>
+          )}
+        </section>
+      </div>
     </div>
   );
 }
+
+export default ExplorePage;

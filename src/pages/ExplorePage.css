@@ -1,50 +1,62 @@
+.explore-page {
+  min-height: 100vh;
+  padding: 2rem 1.5rem;
+}
+
+.explore-page__container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
 .explore-page__header {
-  margin-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
 }
 
-.explore-page__header h1 {
-  margin-bottom: 4px;
+.explore-page__title {
+  font-size: 1.75rem;
+  margin: 0;
 }
 
-.explore-page__header p {
-  color: #667085;
-  margin-top: 0;
-  margin-bottom: 16px;
-}
-
-.explore-page__grid {
+.explore-page__card-list {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
 }
 
 .explore-page__card {
-  border: 1px solid #e4e7ec;
-  border-radius: 10px;
-  padding: 16px;
   background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 1rem;
 }
 
-.explore-page__card h3 {
-  margin: 0 0 8px;
+.explore-page__card-name {
+  font-size: 1.05rem;
+  margin: 0 0 0.35rem;
 }
 
-.explore-page__card-location,
+.explore-page__card-location {
+  color: #6b7280;
+  margin: 0 0 0.35rem;
+}
+
 .explore-page__card-type {
-  margin: 0 0 4px;
-  color: #667085;
-  font-size: 14px;
+  text-transform: capitalize;
+  color: #3f6fef;
+  margin: 0 0 0.35rem;
 }
 
 .explore-page__card-price {
-  margin: 8px 0 0;
   font-weight: 700;
-  color: #1f2933;
+  margin: 0;
 }
 
-.explore-page__empty {
-  color: #667085;
+.explore-page__no-results {
+  color: #6b7280;
 }

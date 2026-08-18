@@ -1,118 +1,97 @@
 import { useEffect, useRef, useState } from 'react';
-import { useDebounce } from '../hooks/useDebounce';
 import './SearchBar.css';
 
-export default function SearchBar({
-  value,
-  allItems,
-  onDebouncedChange,
-  onSelect,
-  placeholder = 'Search destinations or packages...',
-}) {
-  const [inputValue, setInputValue] = useState(value || '');
+const DEBOUNCE_DELAY = 300;
+
+function SearchBar({ initialValue = '', suggestionsSource = [], onQueryChange, onSelectSuggestion }) {
+  const [inputValue, setInputValue] = useState(initialValue);
   const [suggestions, setSuggestions] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(-1);
-  const containerRef = useRef(null);
-
-  const debouncedValue = useDebounce(inputValue, 300);
+  const debounceRef = useRef(null);
 
   useEffect(() => {
-    setInputValue(value || '');
-  }, [value]);
-
-  useEffect(() => {
-    const trimmed = debouncedValue.trim();
-
-    if (!trimmed) {
-      setSuggestions([]);
-      setIsOpen(false);
-      onDebouncedChange('');
-      return;
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
     }
 
-    const matches = allItems
-      .filter((item) => item.name.toLowerCase().includes(trimmed.toLowerCase()))
-      .slice(0, 6);
+    debounceRef.current = setTimeout(() => {
+      const trimmed = inputValue.trim().toLowerCase();
 
-    setSuggestions(matches);
-    setIsOpen(matches.length > 0);
-    setActiveIndex(-1);
-    onDebouncedChange(trimmed);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedValue, allItems]);
-
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (containerRef.current && !containerRef.current.contains(event.target)) {
-        setIsOpen(false);
+      if (onQueryChange) {
+        onQueryChange(inputValue);
       }
-    }
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+      if (!trimmed) {
+        setSuggestions([]);
+        setIsOpen(false);
+        return;
+      }
 
-  function handleChange(event) {
+      const matches = suggestionsSource.filter((item) =>
+        item.name.toLowerCase().includes(trimmed)
+      );
+
+      setSuggestions(matches);
+      setIsOpen(matches.length > 0);
+    }, DEBOUNCE_DELAY);
+
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+    };
+  }, [inputValue, suggestionsSource, onQueryChange]);
+
+  const handleChange = (event) => {
     setInputValue(event.target.value);
-  }
+  };
 
-  function handleSelect(item) {
-    setInputValue(item.name);
+  const handleSelect = (suggestion) => {
+    setInputValue(suggestion.name);
     setSuggestions([]);
     setIsOpen(false);
-    setActiveIndex(-1);
-    onSelect(item);
-  }
 
-  function handleKeyDown(event) {
-    if (!isOpen || suggestions.length === 0) return;
-
-    if (event.key === 'ArrowDown') {
-      event.preventDefault();
-      setActiveIndex((prev) => (prev + 1) % suggestions.length);
-    } else if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      setActiveIndex((prev) => (prev - 1 + suggestions.length) % suggestions.length);
-    } else if (event.key === 'Enter') {
-      if (activeIndex >= 0 && activeIndex < suggestions.length) {
-        event.preventDefault();
-        handleSelect(suggestions[activeIndex]);
-      }
-    } else if (event.key === 'Escape') {
-      setIsOpen(false);
+    if (onSelectSuggestion) {
+      onSelectSuggestion(suggestion);
     }
-  }
+  };
+
+  const handleFocus = () => {
+    if (suggestions.length > 0) {
+      setIsOpen(true);
+    }
+  };
+
+  const handleBlur = () => {
+    setIsOpen(false);
+  };
 
   return (
-    <div className="search-bar" ref={containerRef}>
+    <div className="search-bar">
       <input
-        type="text"
+        type="search"
         className="search-bar__input"
+        placeholder="Search destinations or packages..."
         value={inputValue}
         onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        onFocus={() => suggestions.length > 0 && setIsOpen(true)}
-        placeholder={placeholder}
-        aria-label="Search destinations or packages"
+        onFocus={handleFocus}
+        onBlur={handleBlur}
         aria-autocomplete="list"
         aria-expanded={isOpen}
-        role="combobox"
       />
-      {isOpen && (
+      {isOpen && suggestions.length > 0 && (
         <ul className="search-bar__suggestions" role="listbox">
-          {suggestions.map((item, index) => (
+          {suggestions.map((suggestion) => (
             <li
-              key={item.id}
+              key={suggestion.id}
               role="option"
-              aria-selected={index === activeIndex}
-              className={`search-bar__suggestion ${
-                index === activeIndex ? 'search-bar__suggestion--active' : ''
-              }`}
-              onMouseDown={() => handleSelect(item)}
+              aria-selected="false"
+              aria-label={`${suggestion.name}, ${suggestion.location}`}
+              className="search-bar__suggestion"
+              onMouseDown={() => handleSelect(suggestion)}
             >
-              <span className="search-bar__suggestion-name">{item.name}</span>
-              <span className="search-bar__suggestion-location">{item.location}</span>
+              <span className="search-bar__suggestion-name">{suggestion.name}</span>
+              <span className="search-bar__suggestion-location">{suggestion.location}</span>
             </li>
           ))}
         </ul>
@@ -120,3 +99,5 @@ export default function SearchBar({
     </div>
   );
 }
+
+export default SearchBar;
