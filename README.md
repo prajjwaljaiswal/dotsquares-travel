@@ -1,6 +1,6 @@
 # dotsquares-travel
 
-A Next.js + TypeScript travel booking application styled with Tailwind CSS.
+A Next.js + TypeScript travel application starter with Tailwind CSS.
 
 ## Getting Started
 
@@ -20,27 +20,28 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 
 ## Available Scripts
 
-- `npm run dev` – start the development server
-- `npm run build` – build the production bundle
-- `npm run start` – start the production server
-- `npm run lint` – run ESLint
-- `npm run format` – format code with Prettier
-- `npm test` – run the test suite
+- `npm run dev` — start the local development server
+- `npm run build` — build the production bundle
+- `npm run start` — run the production build
+- `npm run lint` — run ESLint
+- `npm run format` — format the codebase with Prettier
+- `npm run type-check` — run the TypeScript compiler in check mode
 
 ## Project Structure
 
 ```
-components/   Reusable React components
-data/         Sample/static data sources
-lib/          Shared utility functions
-pages/        Next.js pages (routes)
-styles/       Global CSS and Tailwind entry point
-types/        Shared TypeScript types and interfaces
+.
+├── components/   # Reusable React components
+├── data/         # Static/sample data used by pages
+├── lib/          # Shared utility functions
+├── pages/        # Next.js pages and routing
+├── styles/       # Global and Tailwind CSS styles
+└── types/        # Shared TypeScript types
 ```
 
 ## Tech Stack
 
-- Next.js 14 (Pages Router)
-- TypeScript (strict mode)
-- Tailwind CSS
+- [Next.js](https://nextjs.org/) 14
+- [TypeScript](https://www.typescriptlang.org/) (strict mode)
+- [Tailwind CSS](https://tailwindcss.com/)
 - ESLint + Prettier

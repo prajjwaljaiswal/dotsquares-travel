@@ -1,37 +1,38 @@
-import type { GetStaticProps, NextPage } from 'next';
+import type { NextPage } from 'next';
+import Head from 'next/head';
 import Layout from '@/components/Layout';
-import DestinationCard from '@/components/DestinationCard';
-import { destinations as allDestinations } from '@/data/destinations';
-import { Destination } from '@/types/index';
+import { sampleDestinations } from '@/data/destinations';
+import type { Destination } from '@/types';
 
-interface HomeProps {
-  destinations: Destination[];
-}
-
-const Home: NextPage<HomeProps> = ({ destinations }) => {
+const Home: NextPage = () => {
   return (
     <Layout>
-      <section className="mx-auto max-w-6xl px-4 py-12">
-        <h1 className="text-3xl font-bold text-gray-900">Explore Top Destinations</h1>
-        <p className="mt-2 max-w-2xl text-gray-600">
-          Handpicked getaways from around the world, ready for your next adventure.
+      <Head>
+        <title>Dotsquares Travel</title>
+        <meta name="description" content="Dotsquares Travel starter application" />
+      </Head>
+      <main className="mx-auto max-w-4xl px-4 py-16">
+        <h1 className="text-4xl font-bold text-primary sm:text-5xl">
+          Welcome to Dotsquares Travel
+        </h1>
+        <p className="mt-4 text-lg text-gray-600">
+          This is the starter page confirming Next.js, TypeScript, and Tailwind CSS are configured
+          correctly.
         </p>
-        <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {destinations.map((destination) => (
-            <DestinationCard key={destination.id} destination={destination} />
+        <ul className="mt-8 grid gap-4 sm:grid-cols-2">
+          {sampleDestinations.map((destination: Destination) => (
+            <li
+              key={destination.id}
+              className="rounded-lg border border-gray-200 p-4 shadow-sm transition hover:shadow-md"
+            >
+              <h2 className="text-xl font-semibold text-primary-dark">{destination.name}</h2>
+              <p className="mt-1 text-sm text-gray-500">{destination.country}</p>
+            </li>
           ))}
-        </div>
-      </section>
+        </ul>
+      </main>
     </Layout>
   );
-};
-
-export const getStaticProps: GetStaticProps<HomeProps> = async () => {
-  return {
-    props: {
-      destinations: allDestinations,
-    },
-  };
 };
 
 export default Home;

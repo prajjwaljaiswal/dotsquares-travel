@@ -2,8 +2,4 @@ export interface Destination {
   id: string;
   name: string;
   country: string;
-  description: string;
-  imageUrl: string;
-  pricePerNight: number;
-  rating: number;
 }

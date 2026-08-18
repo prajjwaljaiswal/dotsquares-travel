@@ -10,9 +10,8 @@ module.exports = {
         primary: {
           DEFAULT: '#0f766e',
           light: '#14b8a6',
-          dark: '#0d5c56',
+          dark: '#0d5f58',
         },
-        accent: '#f59e0b',
       },
     },
   },
