@@ -1,0 +1,63 @@
+.container {
+  width: 100%;
+}
+
+.progressLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: #667085;
+  margin-bottom: 12px;
+}
+
+.stepList {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 12px;
+}
+
+.stepItem {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: #98a2b3;
+}
+
+.stepNumber {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #d0d5dd;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.stepLabel {
+  font-size: 12px;
+  text-align: center;
+}
+
+.active {
+  color: #1a1a1a;
+}
+
+.active .stepNumber {
+  border-color: #2e60f5;
+  color: #2e60f5;
+}
+
+.completed {
+  color: #1a1a1a;
+}
+
+.completed .stepNumber {
+  background: #2e60f5;
+  border-color: #2e60f5;
+  color: #ffffff;
+}
