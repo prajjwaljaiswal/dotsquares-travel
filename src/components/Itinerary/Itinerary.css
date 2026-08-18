@@ -1,0 +1,127 @@
+.itinerary {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.itinerary__heading {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.itinerary__empty {
+  color: #666;
+}
+
+.itinerary__list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.itinerary__item {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.itinerary__item:last-child {
+  border-bottom: none;
+}
+
+.itinerary__header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  background: #fafafa;
+  border: none;
+  padding: 1rem;
+  font-size: 1rem;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.itinerary__header:hover,
+.itinerary__header:focus {
+  background: #f0f0f0;
+}
+
+.itinerary__item--active .itinerary__header {
+  background: #e8f4ff;
+}
+
+.itinerary__day-label {
+  font-weight: 700;
+  color: #0066cc;
+  flex-shrink: 0;
+}
+
+.itinerary__title {
+  flex: 1;
+  font-weight: 600;
+}
+
+.itinerary__icon {
+  font-size: 1.25rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.itinerary__panel {
+  padding: 0 1rem 1rem 1rem;
+  background: #ffffff;
+}
+
+.itinerary__panel[hidden] {
+  display: none;
+}
+
+.itinerary__description {
+  margin: 0;
+  line-height: 1.5;
+  color: #333;
+}
+
+/* Tabbed layout on larger screens, accordion layout on mobile */
+@media (min-width: 768px) {
+  .itinerary__list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-radius: 8px;
+  }
+
+  .itinerary__item {
+    flex: 1 0 auto;
+    border-bottom: none;
+    border-right: 1px solid #e0e0e0;
+  }
+
+  .itinerary__item:last-child {
+    border-right: none;
+  }
+
+  .itinerary__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .itinerary__panel {
+    flex-basis: 100%;
+    order: 999;
+  }
+
+  .itinerary__item--active {
+    order: -1;
+  }
+}
+
+@media (max-width: 767px) {
+  .itinerary__list {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,53 @@
+.popular-destinations {
+  padding: 40px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.popular-destinations__header {
+  margin-bottom: 24px;
+}
+
+.popular-destinations__title {
+  margin: 0 0 8px;
+  font-size: 1.75rem;
+  color: #1f2933;
+}
+
+.popular-destinations__subtitle {
+  margin: 0;
+  color: #52606d;
+}
+
+.popular-destinations__list {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.popular-destinations__list::-webkit-scrollbar {
+  height: 6px;
+}
+
+.popular-destinations__list::-webkit-scrollbar-thumb {
+  background: #cbd2d9;
+  border-radius: 3px;
+}
+
+@media (min-width: 768px) {
+  .popular-destinations__list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    overflow-x: visible;
+    gap: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .popular-destinations__list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
