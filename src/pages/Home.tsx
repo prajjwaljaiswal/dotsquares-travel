@@ -1,16 +1,15 @@
-import FeaturedTrendingSection from '../components/FeaturedTrendingSection/FeaturedTrendingSection';
-import './Home.css';
+import PopularDestinations from '../components/PopularDestinations'
 
 function Home() {
   return (
-    <main className="home-page">
-      <header className="home-page__hero">
+    <main>
+      <header className="hero">
         <h1>Discover Your Next Adventure</h1>
-        <p>Explore curated travel packages designed around your dream destinations.</p>
+        <p>Explore the world&apos;s most breathtaking destinations.</p>
       </header>
-      <FeaturedTrendingSection minimumCards={6} />
+      <PopularDestinations />
     </main>
-  );
+  )
 }
 
-export default Home;
+export default Home
