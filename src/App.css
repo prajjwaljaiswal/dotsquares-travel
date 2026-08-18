@@ -4,6 +4,14 @@
   min-height: 100vh;
 }
 
+.app__header {
+  margin-bottom: 1.5rem;
+}
+
+.app__main {
+  width: 100%;
+}
+
 .main-content {
   flex: 1;
   padding-top: 72px;

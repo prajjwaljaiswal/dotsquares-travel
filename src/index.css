@@ -84,6 +84,16 @@ img {
   text-align: center;
 }
 
+.page__title {
+  font-size: 1.75rem;
+  margin-bottom: 4px;
+}
+
+.page__subtitle {
+  color: #666;
+  margin-bottom: 24px;
+}
+
 .btn {
   display: inline-block;
   padding: 0.75rem 1.5rem;
