@@ -1,5 +1,57 @@
 # dotsquares-travel
 
+A React + TypeScript travel site.
+
+## Supporting Pages
+
+This repository includes static supporting pages for the Dotsquares Travel
+site:
+
+- `index.html` — Home/landing page
+- `privacy-policy.html` — Privacy Policy (placeholder legal content)
+- `terms.html` — Terms & Conditions (placeholder legal content)
+
+Shared styles for consistent typography and layout live in
+`css/styles.css`. Every page includes a header and footer, and the footer
+on every page links to both the Privacy Policy and Terms & Conditions
+pages.
+
+### Viewing Locally
+
+Since these are static HTML files with no build step, you can open
+`index.html` directly in a browser, or serve the directory with any
+static file server, e.g.:
+
+```bash
+npx serve .
+```
+
+Then navigate to `http://localhost:3000` (or the port shown) to view the
+site.
+
+## FAQ Page
+
+The FAQ page (`faq.html`) provides an accordion-style list of frequently asked questions relevant to travel booking (flights, cancellations, payments, visas, luggage, refunds, and support).
+
+### Viewing the page
+
+Open `faq.html` directly in a browser, or serve the repository root with any static file server, e.g.:
+
+```
+npx serve .
+```
+
+Then navigate to `/faq.html`.
+
+### Running tests
+
+Install dependencies and run the Jest test suite, which covers the accordion expand/collapse behavior in `js/faq.js`:
+
+```
+npm install
+npm test
+```
+
 ## About Us Page — Company Stats & Trust Indicators
 
 This feature adds an animated/static stats counter and trust badges section for the About Us page,
@@ -81,9 +133,23 @@ including Jest + React Testing Library with `jest-dom`). Ensure the following de
 present in `package.json`: `react`, `react-dom`, `prop-types`, `@testing-library/react`,
 `@testing-library/jest-dom`, and `jest`.
 
+## About Us Page
+
+The About Us page (`about-us/index.html`) is a self-contained page featuring a hero section, our-story narrative, mission & vision cards, and a travel-philosophy section, all populated with placeholder copy and imagery. It is built with semantic HTML5 and styled with a dedicated stylesheet (`about-us/styles.css`) that uses a mobile-first responsive layout (flexbox/grid) with breakpoints at 480px, 768px, and 1024px so all sections reflow cleanly across phone, tablet, and desktop widths.
+
+Open `about-us/index.html` directly in a browser, or serve the repository root with any static file server and navigate to `/about-us/`.
+
+Note: All imagery currently uses via.placeholder.com placeholders and should be swapped for final brand assets before production launch.
+
 ## Destination Detail Page
 
-The Destination Detail Page includes a map section that shows the
+The destination detail page (`/destinations/:slug`) renders a large hero banner
+with the destination's image, name, and tagline, followed by an overview and
+highlights section. Both sections pull from demo data in
+`src/data/destinations.ts` based on the `slug` route parameter, and are fully
+responsive with appropriate image cropping on smaller screens.
+
+The Destination Detail Page also includes a map section that shows the
 destination's location.
 
 ### Map Section (Placeholder)
@@ -107,5 +173,23 @@ comments (`PLACEHOLDER COMPONENT`).
   consuming pages (e.g., `DestinationDetailPage`) will not need to be
   updated since the props contract stays the same.
 
-See `src/pages/DestinationDetailPage.tsx` for usage of the map section
-within the destination detail page.
+See `src/pages/DestinationDetailPage/DestinationDetailPage.tsx` for usage of
+the map section within the destination detail page.
+
+## Getting Started
+
+Install dependencies and start the development server:
+
+```bash
+npm install
+npm start
+```
+
+Run the test suite:
+
+```bash
+npm test
+```
+
+Available demo destinations: `bali`, `santorini`, `kyoto` (e.g.
+`/destinations/santorini`).
