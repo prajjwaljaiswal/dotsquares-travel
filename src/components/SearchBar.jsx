@@ -1,97 +1,128 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import './SearchBar.css';
 
-const DEBOUNCE_DELAY = 300;
+function computeSuggestions(places, value) {
+  const trimmed = value.trim().toLowerCase();
+  if (!trimmed) {
+    return [];
+  }
 
-function SearchBar({ initialValue = '', suggestionsSource = [], onQueryChange, onSelectSuggestion }) {
-  const [inputValue, setInputValue] = useState(initialValue);
+  return places
+    .filter(
+      (place) =>
+        place.name.toLowerCase().includes(trimmed) ||
+        place.location.toLowerCase().includes(trimmed)
+    )
+    .slice(0, 6);
+}
+
+export default function SearchBar({
+  places,
+  initialQuery = '',
+  onQueryChange,
+  onSelect,
+  placeholder = 'Search destinations or packages...',
+  debounceMs = 300,
+}) {
+  const [inputValue, setInputValue] = useState(initialQuery);
   const [suggestions, setSuggestions] = useState([]);
-  const [isOpen, setIsOpen] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const debounceRef = useRef(null);
 
   useEffect(() => {
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
+    setInputValue(initialQuery);
+  }, [initialQuery]);
 
-    debounceRef.current = setTimeout(() => {
-      const trimmed = inputValue.trim().toLowerCase();
-
-      if (onQueryChange) {
-        onQueryChange(inputValue);
-      }
-
-      if (!trimmed) {
-        setSuggestions([]);
-        setIsOpen(false);
-        return;
-      }
-
-      const matches = suggestionsSource.filter((item) =>
-        item.name.toLowerCase().includes(trimmed)
-      );
-
-      setSuggestions(matches);
-      setIsOpen(matches.length > 0);
-    }, DEBOUNCE_DELAY);
-
+  useEffect(() => {
     return () => {
       if (debounceRef.current) {
         clearTimeout(debounceRef.current);
       }
     };
-  }, [inputValue, suggestionsSource, onQueryChange]);
+  }, []);
 
   const handleChange = (event) => {
-    setInputValue(event.target.value);
+    const value = event.target.value;
+    setInputValue(value);
+
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+
+    debounceRef.current = setTimeout(() => {
+      const matches = computeSuggestions(places, value);
+      setSuggestions(matches);
+      setShowSuggestions(matches.length > 0);
+
+      if (onQueryChange) {
+        onQueryChange(value);
+      }
+    }, debounceMs);
   };
 
-  const handleSelect = (suggestion) => {
-    setInputValue(suggestion.name);
-    setSuggestions([]);
-    setIsOpen(false);
+  const handleSelect = (place) => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
 
-    if (onSelectSuggestion) {
-      onSelectSuggestion(suggestion);
+    setInputValue(place.name);
+    setSuggestions([]);
+    setShowSuggestions(false);
+
+    if (onSelect) {
+      onSelect(place);
+    }
+
+    if (onQueryChange) {
+      onQueryChange(place.name);
     }
   };
 
   const handleFocus = () => {
     if (suggestions.length > 0) {
-      setIsOpen(true);
+      setShowSuggestions(true);
     }
   };
 
   const handleBlur = () => {
-    setIsOpen(false);
+    setTimeout(() => {
+      setShowSuggestions(false);
+    }, 100);
   };
 
   return (
     <div className="search-bar">
       <input
-        type="search"
+        type="text"
+        role="combobox"
         className="search-bar__input"
-        placeholder="Search destinations or packages..."
+        aria-expanded={showSuggestions}
+        aria-autocomplete="list"
+        aria-controls="search-bar-suggestions"
         value={inputValue}
         onChange={handleChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
-        aria-autocomplete="list"
-        aria-expanded={isOpen}
+        placeholder={placeholder}
       />
-      {isOpen && suggestions.length > 0 && (
-        <ul className="search-bar__suggestions" role="listbox">
-          {suggestions.map((suggestion) => (
+      {showSuggestions && suggestions.length > 0 && (
+        <ul
+          id="search-bar-suggestions"
+          role="listbox"
+          className="search-bar__suggestions"
+        >
+          {suggestions.map((place) => (
             <li
-              key={suggestion.id}
+              key={place.id}
               role="option"
               aria-selected="false"
-              aria-label={`${suggestion.name}, ${suggestion.location}`}
               className="search-bar__suggestion"
-              onMouseDown={() => handleSelect(suggestion)}
+              onMouseDown={() => handleSelect(place)}
             >
-              <span className="search-bar__suggestion-name">{suggestion.name}</span>
-              <span className="search-bar__suggestion-location">{suggestion.location}</span>
+              <span className="search-bar__suggestion-name">{place.name}</span>
+              <span className="search-bar__suggestion-location">
+                {place.location}
+              </span>
             </li>
           ))}
         </ul>
@@ -99,5 +130,3 @@ function SearchBar({ initialValue = '', suggestionsSource = [], onQueryChange, o
     </div>
   );
 }
-
-export default SearchBar;

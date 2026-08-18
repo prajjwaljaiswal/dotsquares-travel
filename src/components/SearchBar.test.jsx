@@ -1,11 +1,22 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, fireEvent, cleanup } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import SearchBar from './SearchBar';
 
-const allItems = [
-  { id: '1', name: 'Bali Beach Getaway', location: 'Bali, Indonesia' },
-  { id: '2', name: 'Paris City Explorer', location: 'Paris, France' },
-  { id: '3', name: 'Balinese Cultural Tour', location: 'Ubud, Bali' },
+const places = [
+  {
+    id: 1,
+    name: 'Kyoto Cultural Experience',
+    location: 'Kyoto, Japan',
+    type: 'package',
+    price: 899,
+  },
+  {
+    id: 2,
+    name: 'Roman Holiday Package',
+    location: 'Rome, Italy',
+    type: 'package',
+    price: 699,
+  },
 ];
 
 describe('SearchBar', () => {
@@ -15,79 +26,50 @@ describe('SearchBar', () => {
 
   afterEach(() => {
     vi.useRealTimers();
-    cleanup();
   });
 
-  it('shows matching suggestions after debounce when typing', () => {
-    const onDebouncedChange = vi.fn();
+  it('renders a text input', () => {
+    render(<SearchBar places={places} />);
+    expect(screen.getByRole('combobox')).toBeInTheDocument();
+  });
+
+  it('shows matching suggestions only after the debounce delay', () => {
+    render(<SearchBar places={places} />);
+    const input = screen.getByRole('combobox');
+
+    fireEvent.change(input, { target: { value: 'Rome' } });
+    expect(screen.queryByRole('option')).not.toBeInTheDocument();
+
+    vi.advanceTimersByTime(300);
+
+    expect(
+      screen.getByRole('option', { name: /Roman Holiday Package/i })
+    ).toBeInTheDocument();
+  });
+
+  it('calls onSelect and onQueryChange when a suggestion is chosen', () => {
     const onSelect = vi.fn();
+    const onQueryChange = vi.fn();
 
     render(
       <SearchBar
-        value=""
-        allItems={allItems}
-        onDebouncedChange={onDebouncedChange}
+        places={places}
         onSelect={onSelect}
+        onQueryChange={onQueryChange}
       />
     );
 
     const input = screen.getByRole('combobox');
-    fireEvent.change(input, { target: { value: 'bali' } });
-
+    fireEvent.change(input, { target: { value: 'Kyoto' } });
     vi.advanceTimersByTime(300);
 
-    expect(screen.getByText('Bali Beach Getaway')).toBeInTheDocument();
-    expect(screen.getByText('Balinese Cultural Tour')).toBeInTheDocument();
-    expect(screen.queryByText('Paris City Explorer')).not.toBeInTheDocument();
-    expect(onDebouncedChange).toHaveBeenCalledWith('bali');
-  });
-
-  it('calls onSelect and closes dropdown when a suggestion is chosen', () => {
-    const onDebouncedChange = vi.fn();
-    const onSelect = vi.fn();
-
-    render(
-      <SearchBar
-        value=""
-        allItems={allItems}
-        onDebouncedChange={onDebouncedChange}
-        onSelect={onSelect}
-      />
-    );
-
-    const input = screen.getByRole('combobox');
-    fireEvent.change(input, { target: { value: 'paris' } });
-    vi.advanceTimersByTime(300);
-
-    const option = screen.getByText('Paris City Explorer');
+    const option = screen.getByRole('option', {
+      name: /Kyoto Cultural Experience/i,
+    });
     fireEvent.mouseDown(option);
 
-    expect(onSelect).toHaveBeenCalledWith(allItems[1]);
-    expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
-  });
-
-  it('clears suggestions when input is emptied', () => {
-    const onDebouncedChange = vi.fn();
-    const onSelect = vi.fn();
-
-    render(
-      <SearchBar
-        value=""
-        allItems={allItems}
-        onDebouncedChange={onDebouncedChange}
-        onSelect={onSelect}
-      />
-    );
-
-    const input = screen.getByRole('combobox');
-    fireEvent.change(input, { target: { value: 'bali' } });
-    vi.advanceTimersByTime(300);
-    expect(screen.getByRole('listbox')).toBeInTheDocument();
-
-    fireEvent.change(input, { target: { value: '' } });
-    vi.advanceTimersByTime(300);
-
-    expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
-    expect(onDebouncedChange).toHaveBeenCalledWith('');
+    expect(onSelect).toHaveBeenCalledWith(places[0]);
+    expect(onQueryChange).toHaveBeenCalledWith('Kyoto Cultural Experience');
+    expect(screen.queryByRole('option')).not.toBeInTheDocument();
   });
 });

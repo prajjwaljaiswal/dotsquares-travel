@@ -7,15 +7,15 @@
 .search-bar__input {
   width: 100%;
   padding: 0.65rem 0.9rem;
-  border: 1px solid #d3d6db;
-  border-radius: 8px;
   font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
   outline: none;
 }
 
 .search-bar__input:focus {
-  border-color: #3f6fef;
-  box-shadow: 0 0 0 3px rgba(63, 111, 239, 0.15);
+  border-color: #2f6fed;
+  box-shadow: 0 0 0 3px rgba(47, 111, 237, 0.15);
 }
 
 .search-bar__suggestions {
@@ -27,33 +27,31 @@
   margin: 0;
   padding: 0.25rem 0;
   list-style: none;
-  background: #ffffff;
-  border: 1px solid #d3d6db;
+  background: #fff;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   max-height: 260px;
   overflow-y: auto;
 }
 
 .search-bar__suggestion {
   display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
+  flex-direction: column;
   padding: 0.5rem 0.9rem;
   cursor: pointer;
 }
 
-.search-bar__suggestion:hover,
-.search-bar__suggestion:focus {
-  background-color: #f0f3ff;
+.search-bar__suggestion:hover {
+  background-color: #f2f6ff;
 }
 
 .search-bar__suggestion-name {
   font-weight: 600;
-  color: #1f2933;
+  font-size: 0.95rem;
 }
 
 .search-bar__suggestion-location {
-  color: #6b7280;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  color: #666;
 }

@@ -1,89 +1,78 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import SearchBar from '../components/SearchBar';
-import { destinations } from '../data/destinations';
+import { demoPlaces } from '../data/demoPlaces';
 import './ExplorePage.css';
 
-function ExplorePage() {
+export default function ExplorePage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const initialQuery = searchParams.get('q') || '';
-  const [activeQuery, setActiveQuery] = useState(initialQuery);
+  const [query, setQuery] = useState(searchParams.get('q') || '');
 
-  const updateUrlQuery = useCallback(
-    (nextQuery) => {
-      setSearchParams((previousParams) => {
-        const params = new URLSearchParams(previousParams);
+  useEffect(() => {
+    setQuery(searchParams.get('q') || '');
+  }, [searchParams]);
 
-        if (nextQuery) {
-          params.set('q', nextQuery);
-        } else {
-          params.delete('q');
-        }
+  const handleQueryChange = (value) => {
+    setQuery(value);
 
-        return params;
-      });
-    },
-    [setSearchParams]
-  );
+    const params = new URLSearchParams(searchParams);
+    if (value.trim()) {
+      params.set('q', value);
+    } else {
+      params.delete('q');
+    }
+    setSearchParams(params);
+  };
 
-  const handleQueryChange = useCallback(
-    (nextQuery) => {
-      setActiveQuery(nextQuery);
-      updateUrlQuery(nextQuery);
-    },
-    [updateUrlQuery]
-  );
+  const handleSelect = (place) => {
+    handleQueryChange(place.name);
+  };
 
-  const handleSelectSuggestion = useCallback(
-    (suggestion) => {
-      setActiveQuery(suggestion.name);
-      updateUrlQuery(suggestion.name);
-    },
-    [updateUrlQuery]
-  );
-
-  const filteredDestinations = useMemo(() => {
-    const trimmed = activeQuery.trim().toLowerCase();
-
+  const filteredPlaces = useMemo(() => {
+    const trimmed = query.trim().toLowerCase();
     if (!trimmed) {
-      return destinations;
+      return demoPlaces;
     }
 
-    return destinations.filter((destination) =>
-      destination.name.toLowerCase().includes(trimmed)
+    return demoPlaces.filter(
+      (place) =>
+        place.name.toLowerCase().includes(trimmed) ||
+        place.location.toLowerCase().includes(trimmed)
     );
-  }, [activeQuery]);
+  }, [query]);
 
   return (
     <div className="explore-page">
       <div className="explore-page__container">
-        <header className="explore-page__header">
-          <h1 className="explore-page__title">Explore Destinations &amp; Packages</h1>
-          <SearchBar
-            initialValue={initialQuery}
-            suggestionsSource={destinations}
-            onQueryChange={handleQueryChange}
-            onSelectSuggestion={handleSelectSuggestion}
-          />
-        </header>
+        <h1 className="explore-page__title">Explore Places</h1>
+        <SearchBar
+          places={demoPlaces}
+          initialQuery={query}
+          onQueryChange={handleQueryChange}
+          onSelect={handleSelect}
+        />
         <section className="explore-page__results">
-          <ul className="explore-page__card-list">
-            {filteredDestinations.map((destination) => (
-              <li key={destination.id} className="explore-page__card">
-                <h2 className="explore-page__card-name">{destination.name}</h2>
-                <p className="explore-page__card-location">{destination.location}</p>
-                <p className="explore-page__card-type">{destination.type}</p>
-                <p className="explore-page__card-price">{`$${destination.price}`}</p>
-              </li>
-            ))}
-          </ul>
-          {filteredDestinations.length === 0 && (
-            <p className="explore-page__no-results">No destinations match your search.</p>
+          <h2 className="explore-page__results-title">
+            {filteredPlaces.length} result{filteredPlaces.length !== 1 ? 's' : ''}
+          </h2>
+          {filteredPlaces.length === 0 ? (
+            <p className="explore-page__empty">No places match your search.</p>
+          ) : (
+            <ul className="explore-page__card-list">
+              {filteredPlaces.map((place) => (
+                <li key={place.id} className="explore-page__card">
+                  <h3 className="explore-page__card-name">{place.name}</h3>
+                  <p className="explore-page__card-location">{place.location}</p>
+                  <p className="explore-page__card-type">{place.type}</p>
+                  <p className="explore-page__card-price">
+                    {place.price > 0 ? `$${place.price}` : 'Free'}
+                  </p>
+                </li>
+              ))}
+            </ul>
           )}
         </section>
       </div>
     </div>
   );
 }
-
-export default ExplorePage;

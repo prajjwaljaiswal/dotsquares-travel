@@ -1,13 +1,12 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ExplorePage from './pages/ExplorePage';
 
-function App() {
+export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Navigate to="/explore" replace />} />
-      <Route path="/explore" element={<ExplorePage />} />
-    </Routes>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<ExplorePage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
-
-export default App;

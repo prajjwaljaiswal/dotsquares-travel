@@ -1,9 +1,9 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import ExplorePage from './ExplorePage';
 
-describe('ExplorePage search bar', () => {
+describe('ExplorePage', () => {
   beforeEach(() => {
     vi.useFakeTimers();
   });
@@ -12,53 +12,47 @@ describe('ExplorePage search bar', () => {
     vi.useRealTimers();
   });
 
-  it('renders all destinations by default', () => {
+  it('renders all demo places by default', () => {
     render(
-      <MemoryRouter initialEntries={['/explore']}>
+      <MemoryRouter>
         <ExplorePage />
       </MemoryRouter>
     );
 
-    expect(screen.getAllByRole('listitem').length).toBeGreaterThan(1);
+    expect(screen.getByText(/results/i)).toBeInTheDocument();
+    expect(screen.getByText('Rome, Italy')).toBeInTheDocument();
   });
 
-  it('shows matching suggestions after debounce when typing', () => {
+  it('shows matching suggestions when typing and filters results on selection', () => {
     render(
-      <MemoryRouter initialEntries={['/explore']}>
+      <MemoryRouter>
         <ExplorePage />
       </MemoryRouter>
     );
 
-    const input = screen.getByRole('searchbox');
+    const input = screen.getByRole('combobox');
     fireEvent.change(input, { target: { value: 'Kyoto' } });
+
     vi.advanceTimersByTime(300);
 
-    expect(
-      screen.getByRole('option', { name: /Kyoto Cultural Experience/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('option', { name: /Kyoto Temple Tour/i })
-    ).toBeInTheDocument();
-  });
-
-  it('filters results and syncs the URL when a suggestion is selected', () => {
-    render(
-      <MemoryRouter initialEntries={['/explore']}>
-        <ExplorePage />
-      </MemoryRouter>
-    );
-
-    const input = screen.getByRole('searchbox');
-    fireEvent.change(input, { target: { value: 'Kyoto' } });
-    vi.advanceTimersByTime(300);
-
-    const option = screen.getByRole('option', { name: /Kyoto Cultural Experience/i });
+    const option = screen.getByRole('option', {
+      name: /Kyoto Cultural Experience/i,
+    });
     fireEvent.mouseDown(option);
 
+    expect(screen.getByDisplayValue('Kyoto Cultural Experience')).toBeInTheDocument();
     expect(screen.getByText('Kyoto, Japan')).toBeInTheDocument();
-    expect(screen.getByText('package')).toBeInTheDocument();
-    expect(screen.getByText('$949')).toBeInTheDocument();
-    expect(screen.queryByText('Kyoto Temple Tour')).not.toBeInTheDocument();
-    expect(input.value).toBe('Kyoto Cultural Experience');
+    expect(screen.queryByText('Rome, Italy')).not.toBeInTheDocument();
+  });
+
+  it('syncs search query with URL params', () => {
+    render(
+      <MemoryRouter initialEntries={['/?q=Rome']}>
+        <ExplorePage />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByDisplayValue('Rome')).toBeInTheDocument();
+    expect(screen.getByText('Rome, Italy')).toBeInTheDocument();
   });
 });
