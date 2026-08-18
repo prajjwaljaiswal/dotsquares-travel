@@ -2,53 +2,105 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  width: 100%;
+}
+
+.mainImageWrapper {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0.75rem;
 }
 
 .mainImageButton {
-  border: none;
+  display: block;
+  width: 100%;
   padding: 0;
+  border: none;
   background: none;
-  border-radius: 12px;
-  overflow: hidden;
-  cursor: zoom-in;
+  cursor: pointer;
 }
 
 .mainImage {
+  display: block;
   width: 100%;
-  height: 420px;
+  height: 100%;
+  max-height: 28rem;
   object-fit: cover;
-  border-radius: 12px;
+  border-radius: 0.75rem;
 }
 
-.thumbnails {
+.thumbnailRow {
   display: flex;
   gap: 0.5rem;
   overflow-x: auto;
 }
 
 .thumbnailButton {
-  border: 2px solid transparent;
+  flex: 0 0 auto;
   padding: 0;
+  border: 2px solid transparent;
+  border-radius: 0.5rem;
   background: none;
-  border-radius: 8px;
-  overflow: hidden;
-  flex-shrink: 0;
+  cursor: pointer;
+  transition: border-color 0.15s ease-in-out;
 }
 
-.activeThumbnail {
-  border-color: #0f6b3d;
+.thumbnailButtonActive {
+  border-color: #2563eb;
 }
 
 .thumbnail {
-  width: 90px;
-  height: 64px;
+  display: block;
+  width: 5rem;
+  height: 3.5rem;
   object-fit: cover;
+  border-radius: 0.4rem;
 }
 
-.empty {
-  padding: 2rem;
-  text-align: center;
-  color: #888;
-  background: #f2f2f2;
-  border-radius: 12px;
+.lightboxOverlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 1000;
+}
+
+.lightboxImage {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 0.5rem;
+}
+
+.lightboxClose {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  font-size: 2rem;
+  color: #fff;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.lightboxPrev {
+  position: absolute;
+  left: 1.5rem;
+  font-size: 2.5rem;
+  color: #fff;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.lightboxNext {
+  position: absolute;
+  right: 1.5rem;
+  font-size: 2.5rem;
+  color: #fff;
+  background: none;
+  border: none;
+  cursor: pointer;
 }
