@@ -8,23 +8,22 @@ export interface AttractionCardProps {
 
 const AttractionCard: React.FC<AttractionCardProps> = ({ attraction }) => {
   return (
-    <article className={styles.card} data-testid="attraction-card">
-      <div className={styles.imageWrapper}>
+    <div className={styles.card} data-testid="attraction-card">
+      {attraction.imageUrl && (
         <img
-          className={styles.image}
           src={attraction.imageUrl}
           alt={attraction.name}
-          loading="lazy"
+          className={styles.image}
         />
+      )}
+      <div className={styles.content}>
+        <h3 className={styles.name}>{attraction.name}</h3>
         {attraction.category && (
-          <span className={styles.badge}>{attraction.category}</span>
+          <span className={styles.category}>{attraction.category}</span>
         )}
-      </div>
-      <div className={styles.body}>
-        <h3 className={styles.title}>{attraction.name}</h3>
         <p className={styles.description}>{attraction.description}</p>
       </div>
-    </article>
+    </div>
   );
 };
 
