@@ -1,0 +1,164 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background-color: #f7f8fa;
+  color: #222;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.site-header {
+  background-color: #0b3d91;
+  color: #fff;
+  padding: 1rem 0;
+}
+
+.site-header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.site-title {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.site-nav a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 1.25rem;
+  font-size: 0.95rem;
+}
+
+.site-nav a.active {
+  font-weight: bold;
+  border-bottom: 2px solid #fff;
+}
+
+.faq-page {
+  padding: 2.5rem 0 4rem;
+}
+
+.faq-heading {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.faq-subheading {
+  text-align: center;
+  color: #555;
+  margin-bottom: 2rem;
+}
+
+.faq-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.faq-item {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.faq-question {
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 1rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  color: #0b3d91;
+}
+
+.faq-question:hover {
+  background-color: #f0f4fb;
+}
+
+.faq-question:focus {
+  outline: 2px solid #0b3d91;
+  outline-offset: -2px;
+}
+
+.faq-icon {
+  font-size: 1.25rem;
+  transition: transform 0.2s ease-in-out;
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+
+.faq-item.open .faq-icon {
+  transform: rotate(45deg);
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease-in-out, padding 0.25s ease-in-out;
+  padding: 0 1.25rem;
+}
+
+.faq-item.open .faq-answer {
+  padding: 0 1.25rem 1rem;
+}
+
+.faq-answer p {
+  margin: 0;
+  color: #444;
+  line-height: 1.5;
+}
+
+.site-footer {
+  background-color: #0b3d91;
+  color: #fff;
+  text-align: center;
+  padding: 1.25rem 0;
+}
+
+@media (max-width: 600px) {
+  .site-header .container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .site-nav a {
+    margin-left: 0;
+    margin-right: 1rem;
+  }
+
+  .faq-heading {
+    font-size: 1.5rem;
+  }
+
+  .faq-question {
+    padding: 0.85rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .faq-answer {
+    padding: 0 1rem;
+  }
+
+  .faq-item.open .faq-answer {
+    padding: 0 1rem 0.85rem;
+  }
+}
