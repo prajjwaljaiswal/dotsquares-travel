@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo, useState, ChangeEvent } from 'react';
+import React, { useState } from 'react';
 import { useBookingWizard } from '../BookingContext';
 import { StepNavigation } from '../StepNavigation';
 
@@ -14,40 +14,31 @@ const AVAILABLE_PACKAGES = [
   { id: 'premium', name: 'Premium Package', price: 1499 },
 ];
 
-function getTodayDateString(): string {
-  return new Date().toISOString().split('T')[0];
+function getTodayIso(): string {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
 }
 
-function validateDate(value: string): string {
+function validateDate(value: string, todayIso: string): string {
   if (!value) {
     return 'Please select a travel date.';
   }
-
-  const selected = new Date(value);
-  if (Number.isNaN(selected.getTime())) {
-    return 'Please enter a valid travel date.';
+  if (value < todayIso) {
+    return 'Travel date cannot be in the past. Please choose a future date.';
   }
-
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  selected.setHours(0, 0, 0, 0);
-
-  if (selected < today) {
-    return 'Travel date cannot be in the past.';
-  }
-
   return '';
 }
 
 function validateTravellers(value: number): string {
-  if (Number.isNaN(value) || value < 1) {
+  if (!Number.isFinite(value) || value < 1) {
     return 'At least 1 traveller is required.';
   }
-
   if (!Number.isInteger(value)) {
-    return 'Traveller count must be a whole number.';
+    return 'Number of travellers must be a whole number.';
   }
-
   return '';
 }
 
@@ -55,37 +46,44 @@ export function PackageStep({ currentStepIndex }: PackageStepProps) {
   const { formData, updateStepData } = useBookingWizard();
   const { packageId, packageName, travelDate, travellers } = formData.package;
 
-  const [dateError, setDateError] = useState<string>(
-    travelDate ? validateDate(travelDate) : ''
-  );
-  const [travellersError, setTravellersError] = useState<string>(
-    typeof travellers === 'number' ? validateTravellers(travellers) : ''
-  );
-
-  const minDate = useMemo(() => getTodayDateString(), []);
+  const todayIso = getTodayIso();
+  const [dateError, setDateError] = useState('');
+  const [travellersError, setTravellersError] = useState('');
+  const [touched, setTouched] = useState(false);
 
   const handleSelect = (id: string, name: string, price: number) => {
     updateStepData('package', { packageId: id, packageName: name, price });
   };
 
-  const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     updateStepData('package', { travelDate: value });
-    setDateError(validateDate(value));
+    if (touched) {
+      setDateError(validateDate(value, todayIso));
+    }
   };
 
-  const handleTravellersChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = Number(event.target.value);
+  const handleTravellersChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value === '' ? NaN : Number(event.target.value);
     updateStepData('package', { travellers: value });
-    setTravellersError(validateTravellers(value));
+    if (touched) {
+      setTravellersError(validateTravellers(value));
+    }
+  };
+
+  const handleValidateBeforeNext = () => {
+    setTouched(true);
+    const dateValidationError = validateDate(travelDate ?? '', todayIso);
+    const travellersValidationError = validateTravellers(travellers ?? NaN);
+    setDateError(dateValidationError);
+    setTravellersError(travellersValidationError);
+    return !dateValidationError && !travellersValidationError;
   };
 
   const isNextDisabled =
     !packageId ||
-    !travelDate ||
-    !!dateError ||
-    typeof travellers !== 'number' ||
-    !!travellersError;
+    Boolean(validateDate(travelDate ?? '', todayIso)) ||
+    Boolean(validateTravellers(travellers ?? NaN));
 
   return (
     <div data-testid="package-step">
@@ -105,42 +103,60 @@ export function PackageStep({ currentStepIndex }: PackageStepProps) {
       </div>
       {packageName && <p data-testid="selected-package">Selected package: {packageName}</p>}
 
-      <div className="field">
-        <label htmlFor="travel-date">Travel Date</label>
+      <div className="package-step__field">
+        <label htmlFor="travel-date">Travel date</label>
         <input
           id="travel-date"
+          name="travelDate"
           type="date"
+          min={todayIso}
           value={travelDate ?? ''}
-          min={minDate}
           onChange={handleDateChange}
+          onBlur={() => {
+            setTouched(true);
+            setDateError(validateDate(travelDate ?? '', todayIso));
+          }}
+          aria-invalid={dateError ? 'true' : 'false'}
+          aria-describedby={dateError ? 'travel-date-error' : undefined}
           data-testid="travel-date-input"
         />
         {dateError && (
-          <p className="error" data-testid="date-error">
+          <p id="travel-date-error" role="alert" className="package-step__error">
             {dateError}
           </p>
         )}
       </div>
 
-      <div className="field">
-        <label htmlFor="travellers">Number of Travellers</label>
+      <div className="package-step__field">
+        <label htmlFor="travellers">Number of travellers</label>
         <input
           id="travellers"
+          name="travellers"
           type="number"
           min={1}
           step={1}
-          value={travellers ?? ''}
+          value={travellers === undefined || Number.isNaN(travellers) ? '' : travellers}
           onChange={handleTravellersChange}
+          onBlur={() => {
+            setTouched(true);
+            setTravellersError(validateTravellers(travellers ?? NaN));
+          }}
+          aria-invalid={travellersError ? 'true' : 'false'}
+          aria-describedby={travellersError ? 'travellers-error' : undefined}
           data-testid="travellers-input"
         />
         {travellersError && (
-          <p className="error" data-testid="travellers-error">
+          <p id="travellers-error" role="alert" className="package-step__error">
             {travellersError}
           </p>
         )}
       </div>
 
-      <StepNavigation currentStepIndex={currentStepIndex} isNextDisabled={isNextDisabled} />
+      <StepNavigation
+        currentStepIndex={currentStepIndex}
+        isNextDisabled={isNextDisabled}
+        onBeforeNext={handleValidateBeforeNext}
+      />
     </div>
   );
 }

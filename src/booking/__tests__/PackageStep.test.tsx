@@ -1,123 +1,78 @@
-import React, { useEffect } from 'react';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import { MemoryRouter } from 'react-router-dom';
 import PackageStep from '../steps/PackageStep';
-import { BookingProvider, useBooking } from '../BookingContext';
 
-function Wrapper({ children }: { children: React.ReactNode }) {
-  return <BookingProvider>{children}</BookingProvider>;
-}
-
-function SeedPackage() {
-  const { setSelectedPackage } = useBooking();
-  useEffect(() => {
-    setSelectedPackage({
-      id: 'pkg-1',
-      name: 'Bali Explorer',
-      destination: 'Bali, Indonesia',
-      price: 1200,
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  return null;
+function renderStep(props: Record<string, unknown> = {}) {
+  return render(
+    <MemoryRouter>
+      <PackageStep
+        packageName="Bali Bliss 5N/6D"
+        destination="Bali, Indonesia"
+        {...props}
+      />
+    </MemoryRouter>
+  );
 }
 
 describe('PackageStep', () => {
-  it('renders the selected package summary as read-only with a change option', () => {
-    render(
-      <Wrapper>
-        <SeedPackage />
-        <PackageStep />
-      </Wrapper>
-    );
-
-    expect(screen.getByText('Bali Explorer')).toBeInTheDocument();
-    expect(screen.getByText('Bali, Indonesia')).toBeInTheDocument();
-    expect(screen.getByTestId('change-package-button')).toBeInTheDocument();
+  it('displays the selected package and destination as read-only', () => {
+    renderStep();
+    expect(screen.getByTestId('package-step-destination')).toHaveTextContent('Bali, Indonesia');
+    expect(screen.getByTestId('package-step-package')).toHaveTextContent('Bali Bliss 5N/6D');
   });
 
-  it('calls onChangePackage when the change button is clicked', () => {
-    const onChangePackage = jest.fn();
-
-    render(
-      <Wrapper>
-        <SeedPackage />
-        <PackageStep onChangePackage={onChangePackage} />
-      </Wrapper>
-    );
-
-    fireEvent.click(screen.getByTestId('change-package-button'));
-    expect(onChangePackage).toHaveBeenCalledTimes(1);
+  it('provides a link to change the selected package', () => {
+    renderStep();
+    const link = screen.getByRole('link', { name: /change package/i });
+    expect(link).toHaveAttribute('href', '/booking/destination');
   });
 
-  it('shows a message when no package has been selected', () => {
-    render(
-      <Wrapper>
-        <PackageStep />
-      </Wrapper>
-    );
-
-    expect(screen.getByText('No package selected.')).toBeInTheDocument();
-    expect(screen.queryByTestId('change-package-button')).not.toBeInTheDocument();
+  it('respects a custom change link destination', () => {
+    renderStep({ changeHref: '/booking/package' });
+    const link = screen.getByRole('link', { name: /change package/i });
+    expect(link).toHaveAttribute('href', '/booking/package');
   });
 
-  it('rejects a past travel date', () => {
-    render(
-      <Wrapper>
-        <PackageStep />
-      </Wrapper>
-    );
-
-    const dateInput = screen.getByTestId('travel-date-input');
-    fireEvent.change(dateInput, { target: { value: '2000-01-01' } });
-
-    expect(screen.getByTestId('date-error')).toHaveTextContent(
-      'Travel date cannot be in the past.'
-    );
+  it('requires a travel date to be selected before continuing', () => {
+    renderStep();
+    fireEvent.click(screen.getByRole('button', { name: /continue/i }));
+    expect(screen.getByText(/please select a travel date/i)).toBeInTheDocument();
   });
 
-  it('accepts a valid future travel date without showing an error', () => {
-    render(
-      <Wrapper>
-        <PackageStep />
-      </Wrapper>
-    );
-
-    const futureDate = new Date();
-    futureDate.setDate(futureDate.getDate() + 10);
-    const futureDateString = futureDate.toISOString().split('T')[0];
-
-    const dateInput = screen.getByTestId('travel-date-input');
-    fireEvent.change(dateInput, { target: { value: futureDateString } });
-
-    expect(screen.queryByTestId('date-error')).not.toBeInTheDocument();
+  it('rejects past travel dates', () => {
+    renderStep();
+    fireEvent.change(screen.getByLabelText(/travel date/i), { target: { value: '2000-01-01' } });
+    fireEvent.click(screen.getByRole('button', { name: /continue/i }));
+    expect(screen.getByText(/cannot be in the past/i)).toBeInTheDocument();
   });
 
-  it('requires at least 1 traveller', () => {
-    render(
-      <Wrapper>
-        <PackageStep />
-      </Wrapper>
-    );
-
-    const travellersInput = screen.getByTestId('travellers-input');
-    fireEvent.change(travellersInput, { target: { value: '0' } });
-
-    expect(screen.getByTestId('travellers-error')).toHaveTextContent(
-      'At least 1 traveller is required.'
-    );
+  it('rejects fewer than 1 traveller', () => {
+    renderStep();
+    fireEvent.change(screen.getByLabelText(/number of travellers/i), { target: { value: '0' } });
+    fireEvent.click(screen.getByRole('button', { name: /continue/i }));
+    expect(screen.getByText(/at least 1 traveller/i)).toBeInTheDocument();
   });
 
-  it('accepts a valid traveller count without showing an error', () => {
-    render(
-      <Wrapper>
-        <PackageStep />
-      </Wrapper>
-    );
+  it('rejects an empty travellers value', () => {
+    renderStep();
+    fireEvent.change(screen.getByLabelText(/number of travellers/i), { target: { value: '' } });
+    fireEvent.click(screen.getByRole('button', { name: /continue/i }));
+    expect(screen.getByText(/at least 1 traveller/i)).toBeInTheDocument();
+  });
 
-    const travellersInput = screen.getByTestId('travellers-input');
-    fireEvent.change(travellersInput, { target: { value: '3' } });
+  it('submits valid data with a future date and valid traveller count', () => {
+    const onSubmit = vi.fn();
+    renderStep({ onSubmit, initialTravellers: 2 });
 
-    expect(screen.queryByTestId('travellers-error')).not.toBeInTheDocument();
+    const future = new Date();
+    future.setDate(future.getDate() + 5);
+    const iso = future.toISOString().slice(0, 10);
+
+    fireEvent.change(screen.getByLabelText(/travel date/i), { target: { value: iso } });
+    fireEvent.click(screen.getByRole('button', { name: /continue/i }));
+
+    expect(onSubmit).toHaveBeenCalledWith({ travelDate: iso, travellers: 2 });
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 });
