@@ -1,0 +1,94 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 640px;
+}
+
+.heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.packageSummary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #e2e2e2;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.packageInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.packageName {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.packageDestination {
+  font-size: 0.95rem;
+  color: #555;
+  margin: 0;
+}
+
+.packagePrice {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a7f37;
+  margin: 0;
+}
+
+.noPackage {
+  color: #888;
+  margin: 0;
+}
+
+.changeButton {
+  border: 1px solid #0a6cff;
+  background-color: transparent;
+  color: #0a6cff;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.changeButton:hover {
+  background-color: #0a6cff;
+  color: #fff;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.input {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  max-width: 260px;
+}
+
+.error {
+  color: #d32f2f;
+  font-size: 0.85rem;
+  margin: 0;
+}

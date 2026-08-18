@@ -12,6 +12,8 @@ export interface PackageStepData {
   packageId: string | null;
   packageName: string | null;
   price: number | null;
+  travelDate: string | null;
+  travellerCount: number;
 }
 
 export interface DetailsStepData {
@@ -40,7 +42,7 @@ interface BookingWizardState {
 
 const defaultFormData: BookingFormData = {
   destination: { destinationId: null, destinationName: null },
-  package: { packageId: null, packageName: null, price: null },
+  package: { packageId: null, packageName: null, price: null, travelDate: null, travellerCount: 1 },
   details: { travellerName: '', email: '', phone: '', travellerCount: 1 },
   review: { agreedToTerms: false },
 };
@@ -57,7 +59,13 @@ export function BookingProvider({ children }: { children: ReactNode }) {
         ? { destinationId: selectedDestination.id, destinationName: selectedDestination.name }
         : defaultFormData.destination,
       package: selectedPackage
-        ? { packageId: selectedPackage.id, packageName: selectedPackage.name, price: selectedPackage.price }
+        ? {
+            packageId: selectedPackage.id,
+            packageName: selectedPackage.name,
+            price: selectedPackage.price,
+            travelDate: defaultFormData.package.travelDate,
+            travellerCount: defaultFormData.package.travellerCount,
+          }
         : defaultFormData.package,
     }),
     [selectedDestination, selectedPackage]
