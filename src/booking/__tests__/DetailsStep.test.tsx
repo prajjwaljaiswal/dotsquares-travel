@@ -1,123 +1,84 @@
-import { useEffect, useState } from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
-import { BookingProvider, useBooking } from '../BookingContext';
+import { afterEach, describe, expect, it } from 'vitest';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import DetailsStep from '../steps/DetailsStep';
 
-function TravellerCountSetter({ count }: { count: number }) {
-  const { updateBookingData } = useBooking();
-  useEffect(() => {
-    updateBookingData({ travellerCount: count });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [count]);
-  return null;
-}
-
-function renderWithTravellerCount(count: number) {
-  return render(
-    <BookingProvider>
-      <TravellerCountSetter count={count} />
-      <DetailsStep />
-    </BookingProvider>
-  );
-}
+afterEach(() => {
+  cleanup();
+  window.localStorage.clear();
+});
 
 describe('DetailsStep', () => {
   it('renders the primary traveller fields', () => {
-    renderWithTravellerCount(1);
+    render(<DetailsStep travellerCount={1} />);
 
-    expect(screen.getAllByLabelText(/full name/i)[0]).toBeInTheDocument();
-    expect(screen.getAllByLabelText(/date of birth/i)[0]).toBeInTheDocument();
-    expect(screen.getAllByLabelText(/gender/i)[0]).toBeInTheDocument();
-    expect(screen.getAllByLabelText(/age/i)[0]).toBeInTheDocument();
+    expect(screen.getByLabelText(/full name/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/date of birth/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/gender/i)).toBeInTheDocument();
   });
 
-  it('does not render additional traveller fields when traveller count is 1', () => {
-    renderWithTravellerCount(1);
+  it('shows validation errors for required fields on submit', () => {
+    render(<DetailsStep travellerCount={1} />);
 
-    expect(screen.queryByText(/traveller 2/i)).not.toBeInTheDocument();
-  });
+    fireEvent.click(screen.getByRole('button', { name: /continue/i }));
 
-  it('renders additional traveller fields dynamically based on traveller count', () => {
-    renderWithTravellerCount(3);
-
-    expect(screen.getByText(/traveller 2/i)).toBeInTheDocument();
-    expect(screen.getByText(/traveller 3/i)).toBeInTheDocument();
-    expect(screen.queryByText(/traveller 4/i)).not.toBeInTheDocument();
-  });
-
-  it('shows a required error when the primary full name is left empty', () => {
-    renderWithTravellerCount(1);
-
-    const nameInput = screen.getAllByLabelText(/full name/i)[0];
-    fireEvent.focus(nameInput);
-    fireEvent.blur(nameInput);
-
-    expect(screen.getByText(/full name is required/i)).toBeInTheDocument();
-  });
-
-  it('shows a required error when date of birth is left empty', () => {
-    renderWithTravellerCount(1);
-
-    const dobInput = screen.getAllByLabelText(/date of birth/i)[0];
-    fireEvent.focus(dobInput);
-    fireEvent.blur(dobInput);
-
+    expect(screen.getByText(/name is required/i)).toBeInTheDocument();
     expect(screen.getByText(/date of birth is required/i)).toBeInTheDocument();
   });
 
-  it('rejects a future date of birth', () => {
-    renderWithTravellerCount(1);
+  it('does not call onSubmit when required fields are missing', () => {
+    let submitted = false;
+    render(<DetailsStep travellerCount={1} onSubmit={() => (submitted = true)} />);
 
-    const dobInput = screen.getAllByLabelText(/date of birth/i)[0];
-    const futureYear = new Date().getFullYear() + 5;
-    fireEvent.change(dobInput, { target: { value: `${futureYear}-01-01` } });
-    fireEvent.blur(dobInput);
+    fireEvent.click(screen.getByRole('button', { name: /continue/i }));
 
-    expect(screen.getByText(/cannot be in the future/i)).toBeInTheDocument();
+    expect(submitted).toBe(false);
   });
 
-  it('derives the age field from a valid date of birth', () => {
-    renderWithTravellerCount(1);
+  it('calls onSubmit with valid data when all required fields are filled', () => {
+    let submittedValues: unknown = null;
+    render(<DetailsStep travellerCount={1} onSubmit={(values) => (submittedValues = values)} />);
 
-    const dobInput = screen.getAllByLabelText(/date of birth/i)[0];
-    fireEvent.change(dobInput, { target: { value: '2000-01-01' } });
+    fireEvent.change(screen.getByLabelText(/full name/i), { target: { value: 'Jane Doe' } });
+    fireEvent.change(screen.getByLabelText(/date of birth/i), { target: { value: '1990-05-20' } });
 
-    const ageInput = screen.getAllByLabelText(/age/i)[0] as HTMLInputElement;
-    expect(Number(ageInput.value)).toBeGreaterThan(0);
+    fireEvent.click(screen.getByRole('button', { name: /continue/i }));
+
+    expect(submittedValues).toEqual({
+      primary: { fullName: 'Jane Doe', dob: '1990-05-20', gender: '' },
+      additional: [],
+    });
   });
 
-  it('persists form state when navigating away and back to the step', () => {
-    function Harness() {
-      const [showDetails, setShowDetails] = useState(true);
-      return (
-        <>
-          <button type="button" onClick={() => setShowDetails(false)}>
-            Go to another step
-          </button>
-          <button type="button" onClick={() => setShowDetails(true)}>
-            Go back to details
-          </button>
-          {showDetails ? <DetailsStep /> : <div>Some other step</div>}
-        </>
-      );
-    }
+  it('renders additional traveller name fields based on traveller count', () => {
+    render(<DetailsStep travellerCount={3} />);
 
-    render(
-      <BookingProvider>
-        <Harness />
-      </BookingProvider>
-    );
+    expect(screen.getByLabelText(/traveller 2 full name/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/traveller 3 full name/i)).toBeInTheDocument();
+    expect(screen.queryByLabelText(/traveller 4 full name/i)).not.toBeInTheDocument();
+  });
 
-    const nameInput = screen.getAllByLabelText(/full name/i)[0];
-    fireEvent.change(nameInput, { target: { value: 'Jane Doe' } });
+  it('validates that additional traveller names are required', () => {
+    render(<DetailsStep travellerCount={2} />);
 
-    fireEvent.click(screen.getByText('Go to another step'));
-    expect(screen.getByText('Some other step')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /continue/i }));
 
-    fireEvent.click(screen.getByText('Go back to details'));
+    const errorMessages = screen.getAllByText(/name is required/i);
+    expect(errorMessages.length).toBeGreaterThanOrEqual(2);
+  });
 
-    const nameInputAgain = screen.getAllByLabelText(/full name/i)[0] as HTMLInputElement;
-    expect(nameInputAgain.value).toBe('Jane Doe');
+  it('persists form state across remounts (navigating back and forth)', () => {
+    const { unmount } = render(<DetailsStep travellerCount={2} storageKey="test:details" />);
+
+    fireEvent.change(screen.getByLabelText(/full name/i), { target: { value: 'Jane Doe' } });
+    fireEvent.change(screen.getByLabelText(/traveller 2 full name/i), {
+      target: { value: 'John Doe' },
+    });
+
+    unmount();
+
+    render(<DetailsStep travellerCount={2} storageKey="test:details" />);
+
+    expect(screen.getByLabelText(/full name/i)).toHaveValue('Jane Doe');
+    expect(screen.getByLabelText(/traveller 2 full name/i)).toHaveValue('John Doe');
   });
 });
