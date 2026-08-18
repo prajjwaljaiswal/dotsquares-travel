@@ -1,18 +1,30 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
-import { AppProviders } from '@/store/app-providers';
+import { Providers } from '@/providers/Providers';
+import { Header } from '@/components/Header';
+import { Footer } from '@/components/Footer';
 import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Dotsquares Travel',
-  description: 'Search, compare and book your next trip.',
+  description: 'Plan and book your next trip with Dotsquares Travel.',
 };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+interface RootLayoutProps {
+  children: ReactNode;
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <body>
-        <AppProviders>{children}</AppProviders>
+      <body data-theme="light">
+        <Providers>
+          <div className="app-shell">
+            <Header />
+            <main className="app-shell__content">{children}</main>
+            <Footer />
+          </div>
+        </Providers>
       </body>
     </html>
   );

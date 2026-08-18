@@ -1,8 +1,8 @@
 export default function HomePage() {
   return (
-    <main>
-      <h1>Dotsquares Travel</h1>
-      <p>Search and booking state is now available app-wide.</p>
-    </main>
+    <section>
+      <h1>Welcome to Dotsquares Travel</h1>
+      <p>Discover and plan your next journey with us.</p>
+    </section>
   );
 }
