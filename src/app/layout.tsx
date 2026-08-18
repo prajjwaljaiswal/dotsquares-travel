@@ -1,30 +1,17 @@
-import type { Metadata } from 'next';
-import type { ReactNode } from 'react';
-import { Providers } from '@/providers/Providers';
-import { Header } from '@/components/Header';
-import { Footer } from '@/components/Footer';
+import React from 'react';
+import { GlobalProvider } from '../store/GlobalContext';
 import './globals.css';
 
-export const metadata: Metadata = {
+export const metadata = {
   title: 'Dotsquares Travel',
-  description: 'Plan and book your next trip with Dotsquares Travel.',
+  description: 'Book your next adventure with Dotsquares Travel',
 };
 
-interface RootLayoutProps {
-  children: ReactNode;
-}
-
-export default function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body data-theme="light">
-        <Providers>
-          <div className="app-shell">
-            <Header />
-            <main className="app-shell__content">{children}</main>
-            <Footer />
-          </div>
-        </Providers>
+      <body>
+        <GlobalProvider>{children}</GlobalProvider>
       </body>
     </html>
   );
