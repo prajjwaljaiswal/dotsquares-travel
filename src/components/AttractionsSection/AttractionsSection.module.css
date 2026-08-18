@@ -1,10 +1,12 @@
 .section {
   width: 100%;
-  padding: 40px 0;
+  padding: 40px 24px;
+  box-sizing: border-box;
 }
 
 .header {
   margin-bottom: 24px;
+  text-align: left;
 }
 
 .heading {
@@ -17,7 +19,7 @@
 .subheading {
   margin: 0;
   font-size: 1rem;
-  color: #6b6b6b;
+  color: #666666;
 }
 
 .grid {
@@ -26,25 +28,28 @@
   gap: 20px;
 }
 
-.emptyState {
-  color: #6b6b6b;
-  font-size: 0.95rem;
-}
-
-@media (max-width: 1024px) {
+@media (max-width: 1100px) {
   .grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 800px) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 520px) {
   .grid {
     grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding: 24px 16px;
+  }
+
+  .heading {
+    font-size: 1.4rem;
   }
 }

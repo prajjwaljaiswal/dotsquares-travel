@@ -5,56 +5,50 @@ import { Attraction } from '../../types/destination';
 
 const mockAttractions: Attraction[] = [
   {
-    id: 'a1',
+    id: 'attraction-1',
     name: 'Attraction One',
-    description: 'Description one.',
+    description: 'Description for attraction one.',
     imageUrl: 'https://example.com/one.jpg',
-    category: 'Nature'
+    category: 'Landmark',
   },
   {
-    id: 'a2',
+    id: 'attraction-2',
     name: 'Attraction Two',
-    description: 'Description two.',
+    description: 'Description for attraction two.',
     imageUrl: 'https://example.com/two.jpg',
-    category: 'Culture'
-  }
+    category: 'Museum',
+  },
 ];
 
 describe('AttractionsSection', () => {
-  it('renders the section heading with the destination name', () => {
+  it('renders the section heading', () => {
     render(
-      <AttractionsSection
-        destinationName="Bali"
-        attractions={mockAttractions}
-      />
+      <AttractionsSection destinationName="Paris" attractions={mockAttractions} />
     );
-
     expect(
       screen.getByText('Top Attractions & Recommended Experiences')
     ).toBeInTheDocument();
-    expect(screen.getByText(/Bali/)).toBeInTheDocument();
   });
 
-  it('renders a card for each attraction dynamically', () => {
+  it('renders the destination name in the subheading', () => {
     render(
-      <AttractionsSection
-        destinationName="Bali"
-        attractions={mockAttractions}
-      />
+      <AttractionsSection destinationName="Paris" attractions={mockAttractions} />
     );
+    expect(screen.getByText(/Paris/)).toBeInTheDocument();
+  });
 
-    const cards = screen.getAllByTestId('attraction-card');
-    expect(cards).toHaveLength(2);
+  it('renders a card for each attraction', () => {
+    render(
+      <AttractionsSection destinationName="Paris" attractions={mockAttractions} />
+    );
     expect(screen.getByText('Attraction One')).toBeInTheDocument();
     expect(screen.getByText('Attraction Two')).toBeInTheDocument();
   });
 
-  it('renders an empty state when no attractions are provided', () => {
-    render(<AttractionsSection destinationName="Paris" attractions={[]} />);
-
-    expect(
-      screen.getByText('No attractions available for Paris yet.')
-    ).toBeInTheDocument();
-    expect(screen.queryByTestId('attractions-grid')).not.toBeInTheDocument();
+  it('renders nothing when there are no attractions', () => {
+    const { container } = render(
+      <AttractionsSection destinationName="Paris" attractions={[]} />
+    );
+    expect(container).toBeEmptyDOMElement();
   });
 });

@@ -4,42 +4,44 @@ import AttractionCard from './AttractionCard';
 import { Attraction } from '../../types/destination';
 
 const mockAttraction: Attraction = {
-  id: 'attr-1',
-  name: 'Sample Attraction',
-  description: 'A short description of the attraction.',
+  id: 'test-attraction',
+  name: 'Test Attraction',
+  description: 'A wonderful place to visit for testing purposes.',
   imageUrl: 'https://example.com/image.jpg',
-  category: 'Nature'
+  category: 'Landmark',
 };
 
 describe('AttractionCard', () => {
-  it('renders the attraction name and description', () => {
+  it('renders the attraction name', () => {
     render(<AttractionCard attraction={mockAttraction} />);
-
-    expect(screen.getByText('Sample Attraction')).toBeInTheDocument();
-    expect(
-      screen.getByText('A short description of the attraction.')
-    ).toBeInTheDocument();
+    expect(screen.getByText('Test Attraction')).toBeInTheDocument();
   });
 
-  it('renders the attraction image with correct alt text', () => {
+  it('renders the attraction description', () => {
     render(<AttractionCard attraction={mockAttraction} />);
-
-    const image = screen.getByAltText('Sample Attraction') as HTMLImageElement;
-    expect(image).toBeInTheDocument();
-    expect(image.src).toBe('https://example.com/image.jpg');
+    expect(
+      screen.getByText('A wonderful place to visit for testing purposes.')
+    ).toBeInTheDocument();
   });
 
   it('renders the category badge when provided', () => {
     render(<AttractionCard attraction={mockAttraction} />);
-    expect(screen.getByText('Nature')).toBeInTheDocument();
+    expect(screen.getByText('Landmark')).toBeInTheDocument();
   });
 
-  it('does not render a badge when category is not provided', () => {
+  it('renders the image with correct alt text', () => {
+    render(<AttractionCard attraction={mockAttraction} />);
+    const image = screen.getByAltText('Test Attraction') as HTMLImageElement;
+    expect(image).toBeInTheDocument();
+    expect(image.src).toBe('https://example.com/image.jpg');
+  });
+
+  it('does not render badge when category is missing', () => {
     const attractionWithoutCategory: Attraction = {
       ...mockAttraction,
-      category: undefined
+      category: undefined,
     };
     render(<AttractionCard attraction={attractionWithoutCategory} />);
-    expect(screen.queryByText('Nature')).not.toBeInTheDocument();
+    expect(screen.queryByText('Landmark')).not.toBeInTheDocument();
   });
 });

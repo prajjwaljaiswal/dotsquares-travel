@@ -7,21 +7,17 @@ export interface AttractionCardProps {
 }
 
 const AttractionCard: React.FC<AttractionCardProps> = ({ attraction }) => {
+  const { name, description, imageUrl, category } = attraction;
+
   return (
-    <div className={styles.card} data-testid="attraction-card">
-      {attraction.imageUrl && (
-        <img
-          src={attraction.imageUrl}
-          alt={attraction.name}
-          className={styles.image}
-        />
-      )}
+    <div className={styles.card}>
+      <div className={styles.imageWrapper}>
+        <img className={styles.image} src={imageUrl} alt={name} loading="lazy" />
+        {category && <span className={styles.badge}>{category}</span>}
+      </div>
       <div className={styles.content}>
-        <h3 className={styles.name}>{attraction.name}</h3>
-        {attraction.category && (
-          <span className={styles.category}>{attraction.category}</span>
-        )}
-        <p className={styles.description}>{attraction.description}</p>
+        <h3 className={styles.title}>{name}</h3>
+        <p className={styles.description}>{description}</p>
       </div>
     </div>
   );
