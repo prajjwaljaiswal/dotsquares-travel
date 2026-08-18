@@ -1,17 +1,17 @@
-export interface PracticalInfo {
-  bestTimeToVisit?: string;
-  weatherNotes?: string;
-  currency?: string;
-  language?: string;
-  timezone?: string;
-  visaRequirements?: string;
-  emergencyNumber?: string;
+export interface Attraction {
+  id: string;
+  name: string;
+  description: string;
+  imageUrl: string;
+  category?: string;
 }
 
 export interface Destination {
   id: string;
+  slug: string;
   name: string;
   country: string;
-  description: string;
-  practicalInfo?: PracticalInfo;
+  heroImageUrl: string;
+  summary: string;
+  attractions: Attraction[];
 }
