@@ -1,6 +1,12 @@
 # dotsquares-travel
 
-A Next.js + TypeScript travel application starter with Tailwind CSS.
+A travel booking web application built with Next.js, TypeScript and Tailwind CSS.
+
+## Features
+
+- **Featured & Trending Packages Section** — Displays a curated grid of at least 6 featured/trending travel packages sourced from demo data. Each package card shows an image, title, duration, rating and price, along with **View Details** and **Book Now** actions.
+  - **View Details** navigates to `/packages/:id` to show the full package detail page.
+  - **Book Now** navigates to `/booking/:packageId`, pre-selecting the chosen package inside the booking flow.
 
 ## Supporting Pages
 
@@ -53,17 +59,25 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 - `npm run lint` — run ESLint
 - `npm run format` — format the codebase with Prettier
 - `npm run type-check` — run the TypeScript compiler in check mode
+- `npm test` — run the unit test suite
 
 ## Project Structure
 
 ```
 .
 ├── components/   # Reusable React components
+│   ├── PackageCard/            # Reusable package card UI
+│   └── FeaturedTrendingSection/ # Homepage section listing featured/trending packages
 ├── data/         # Static/sample data used by pages
+│   └── packages.ts              # Demo package data flagged as featured/trending
 ├── lib/          # Shared utility functions
 ├── pages/        # Next.js pages and routing
+│   ├── Home.tsx                 # Homepage hosting the featured/trending section
+│   ├── PackageDetail.tsx        # Package detail page
+│   └── Booking.tsx              # Booking flow page with pre-selected package
 ├── styles/       # Global and Tailwind CSS styles
 └── types/        # Shared TypeScript types
+    └── package.ts                # Shared TravelPackage type
 ```
 
 ## Tech Stack

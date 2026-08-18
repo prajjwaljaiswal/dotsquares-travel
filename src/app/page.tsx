@@ -1,8 +1,11 @@
+import Inspiration from '@/components/Inspiration';
+import Testimonials from '@/components/Testimonials';
+
 export default function HomePage() {
   return (
-    <section>
-      <h1>Welcome to Dotsquares Travel</h1>
-      <p>Discover and plan your next journey with us.</p>
-    </section>
+    <main className="flex flex-col">
+      <Inspiration />
+      <Testimonials />
+    </main>
   );
 }
