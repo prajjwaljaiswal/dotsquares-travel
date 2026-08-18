@@ -9,6 +9,21 @@ export interface Destination {
 
 export const destinations: Destination[] = [
   {
+    id: 'bali',
+    name: 'Bali',
+    tagline: 'Lush rice terraces, sacred temples and world-class surf breaks',
+    heroImage:
+      'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1600&q=80',
+    overview:
+      'Bali offers a mix of spiritual serenity and tropical adventure, from the emerald terraces of Ubud to the surf towns of Uluwatu and Canggu, all steeped in vibrant Balinese Hindu culture.',
+    highlights: [
+      'Explore the emerald rice terraces of Ubud',
+      'Visit the sea temple of Tanah Lot',
+      'Catch a wave at Uluwatu or Canggu',
+      'Take part in a traditional Balinese purification ceremony',
+    ],
+  },
+  {
     id: 'santorini',
     name: 'Santorini',
     tagline: 'Whitewashed cliffs above a sparkling Aegean caldera',
