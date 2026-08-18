@@ -1,3 +1,10 @@
+export interface DestinationPhoto {
+  id: string;
+  url: string;
+  thumbnailUrl: string;
+  alt: string;
+}
+
 export interface Attraction {
   id: string;
   name: string;

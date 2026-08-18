@@ -12,6 +12,7 @@
   --spacing-md: 1rem;
   --spacing-lg: 2rem;
   --spacing-xl: 4rem;
+  --header-height: 72px;
 }
 
 * {
@@ -30,6 +31,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: var(--color-text);
   background-color: var(--color-bg);
+  padding-top: var(--header-height);
 }
 
 code {
@@ -40,6 +42,10 @@ code {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+ul {
+  list-style: none;
 }
 
 button {
@@ -76,6 +82,16 @@ img {
   justify-content: center;
   padding: var(--spacing-lg);
   text-align: center;
+}
+
+.page__title {
+  font-size: 1.75rem;
+  margin-bottom: 4px;
+}
+
+.page__subtitle {
+  color: #666;
+  margin-bottom: 24px;
 }
 
 .btn {

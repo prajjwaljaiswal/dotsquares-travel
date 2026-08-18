@@ -1,4 +1,5 @@
 # dependencies
+node_modules
 /node_modules
 node_modules/
 /.pnp
@@ -15,10 +16,12 @@ coverage/
 out/
 
 # production
+dist
 /build
 
 # misc
 .DS_Store
+*.local
 *.pem
 
 # debug

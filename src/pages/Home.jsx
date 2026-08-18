@@ -1,10 +1,9 @@
-import HeroBanner from '../components/HeroBanner.jsx';
-
 function Home() {
   return (
-    <main>
-      <HeroBanner />
-    </main>
+    <section>
+      <h1>Home</h1>
+      <p>Welcome to Dotsquares Travel. Discover your next adventure.</p>
+    </section>
   );
 }
 
