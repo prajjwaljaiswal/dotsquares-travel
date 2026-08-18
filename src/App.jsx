@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home.jsx';
 import Explore from './pages/Explore.jsx';
+import NotFound from './pages/NotFound.jsx';
 import Itinerary from './components/Itinerary/Itinerary';
 import { itineraryData } from './data/itineraryData';
 
@@ -22,6 +23,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/explore" element={<Explore />} />
       <Route path="/package-detail" element={<PackageDetail />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
