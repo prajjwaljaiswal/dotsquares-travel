@@ -1,117 +1,126 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import type { KeyboardEvent } from 'react';
+import type { PackageGalleryImage, PackageGalleryProps } from './PackageGallery.types';
 import styles from './PackageGallery.module.css';
 
-export interface PackageGalleryImage {
-  src: string;
-  alt?: string;
-}
+export function PackageGallery({ images, className }: PackageGalleryProps) {
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-export interface PackageGalleryProps {
-  images: PackageGalleryImage[];
-}
+  const isLightboxOpen = activeIndex !== null;
 
-export function PackageGallery({ images }: PackageGalleryProps) {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const openLightbox = useCallback((index: number) => {
+    setActiveIndex(index);
+  }, []);
 
-  if (!images || images.length === 0) {
+  const closeLightbox = useCallback(() => {
+    setActiveIndex(null);
+  }, []);
+
+  const showPrevious = useCallback(() => {
+    setActiveIndex((current) => {
+      if (current === null || images.length === 0) return current;
+      return (current - 1 + images.length) % images.length;
+    });
+  }, [images.length]);
+
+  const showNext = useCallback(() => {
+    setActiveIndex((current) => {
+      if (current === null || images.length === 0) return current;
+      return (current + 1) % images.length;
+    });
+  }, [images.length]);
+
+  useEffect(() => {
+    if (!isLightboxOpen) return;
+
+    const handleKeyDown = (event: globalThis.KeyboardEvent) => {
+      if (event.key === 'Escape') closeLightbox();
+      if (event.key === 'ArrowLeft') showPrevious();
+      if (event.key === 'ArrowRight') showNext();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isLightboxOpen, closeLightbox, showPrevious, showNext]);
+
+  const handleThumbnailKeyDown = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openLightbox(index);
+    }
+  };
+
+  if (images.length === 0) {
     return null;
   }
 
-  const selectedImage = images[selectedIndex];
-
-  const handleThumbnailClick = (index: number) => {
-    setSelectedIndex(index);
-  };
-
-  const handleMainImageClick = () => {
-    setIsLightboxOpen(true);
-  };
-
-  const handleCloseLightbox = () => {
-    setIsLightboxOpen(false);
-  };
-
-  const handlePrev = () => {
-    setSelectedIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-  };
-
-  const handleNext = () => {
-    setSelectedIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
-  };
+  const activeImage: PackageGalleryImage | null = activeIndex !== null ? images[activeIndex] : null;
 
   return (
-    <div className={styles.gallery}>
-      <div className={styles.mainImageWrapper}>
-        <button
-          type="button"
-          className={styles.mainImageButton}
-          onClick={handleMainImageClick}
-          aria-label="Open image lightbox"
-        >
-          <img
-            src={selectedImage.src}
-            alt={selectedImage.alt ?? `Image ${selectedIndex + 1}`}
-            className={styles.mainImage}
-          />
-        </button>
-      </div>
-      <div className={styles.thumbnailRow}>
+    <div
+      className={className ? `${styles.gallery} ${className}` : styles.gallery}
+      data-testid="package-gallery"
+    >
+      <div className={styles.grid}>
         {images.map((image, index) => (
           <button
-            key={`${image.src}-${index}`}
+            key={image.id}
             type="button"
-            className={`${styles.thumbnailButton} ${
-              index === selectedIndex ? styles.thumbnailButtonActive : ''
-            }`.trim()}
-            aria-label={`View image ${index + 1}`}
-            onClick={() => handleThumbnailClick(index)}
+            className={styles.thumbnailButton}
+            onClick={() => openLightbox(index)}
+            onKeyDown={(event) => handleThumbnailKeyDown(event, index)}
+            data-testid={`gallery-thumbnail-${image.id}`}
+            aria-label={`Open image ${index + 1} of ${images.length}: ${image.alt}`}
           >
-            <img
-              src={image.src}
-              alt={`Thumbnail ${index + 1}`}
-              className={styles.thumbnail}
-            />
+            <img src={image.src} alt={image.alt} className={styles.thumbnailImage} loading="lazy" />
           </button>
         ))}
       </div>
 
-      {isLightboxOpen && (
+      {isLightboxOpen && activeImage && (
         <div
           className={styles.lightboxOverlay}
           role="dialog"
           aria-modal="true"
-          aria-label="Image lightbox"
+          aria-label="Image gallery lightbox"
+          data-testid="package-gallery-lightbox"
+          onClick={closeLightbox}
         >
-          <button
-            type="button"
-            className={styles.lightboxClose}
-            aria-label="Close lightbox"
-            onClick={handleCloseLightbox}
-          >
-            ×
-          </button>
-          <button
-            type="button"
-            className={styles.lightboxPrev}
-            aria-label="Previous image"
-            onClick={handlePrev}
-          >
-            ‹
-          </button>
-          <img
-            src={selectedImage.src}
-            alt={selectedImage.alt ?? `Image ${selectedIndex + 1}`}
-            className={styles.lightboxImage}
-          />
-          <button
-            type="button"
-            className={styles.lightboxNext}
-            aria-label="Next image"
-            onClick={handleNext}
-          >
-            ›
-          </button>
+          <div className={styles.lightboxContent} onClick={(event) => event.stopPropagation()}>
+            <button
+              type="button"
+              className={styles.closeButton}
+              onClick={closeLightbox}
+              aria-label="Close lightbox"
+              data-testid="lightbox-close"
+            >
+              &times;
+            </button>
+            {images.length > 1 && (
+              <button
+                type="button"
+                className={styles.navButtonPrevious}
+                onClick={showPrevious}
+                aria-label="Previous image"
+                data-testid="lightbox-previous"
+              >
+                &#8249;
+              </button>
+            )}
+            <img src={activeImage.src} alt={activeImage.alt} className={styles.lightboxImage} />
+            {activeImage.caption && <p className={styles.caption}>{activeImage.caption}</p>}
+            {images.length > 1 && (
+              <button
+                type="button"
+                className={styles.navButtonNext}
+                onClick={showNext}
+                aria-label="Next image"
+                data-testid="lightbox-next"
+              >
+                &#8250;
+              </button>
+            )}
+          </div>
         </div>
       )}
     </div>

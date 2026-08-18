@@ -1,69 +1,75 @@
 .hero {
-  display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 2rem;
-  align-items: start;
-}
-
-@media (max-width: 900px) {
-  .hero {
-    grid-template-columns: 1fr;
-  }
-}
-
-.galleryColumn {
-  min-width: 0;
-}
-
-.infoColumn {
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
+  gap: 24px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.availabilityBadge {
+  display: inline-block;
+  align-self: flex-start;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.available {
+  background: #e3f7e9;
+  color: #1a7f37;
+}
+
+.limited {
+  background: #fff4e0;
+  color: #b06a00;
+}
+
+.sold-out {
+  background: #fde3e3;
+  color: #c02626;
 }
 
 .title {
-  margin: 0;
-  font-size: 2rem;
-  line-height: 1.2;
-}
-
-.shortOverview {
-  margin: 0;
-  color: #4a4a4a;
-  font-size: 1rem;
-  line-height: 1.5;
-}
-
-.metaRow {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.duration {
-  font-weight: 600;
-  color: #2a2a2a;
-  background: #f0f0f0;
-  padding: 0.25rem 0.65rem;
-  border-radius: 999px;
-  font-size: 0.9rem;
-}
-
-.priceRow {
-  display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
-  margin-top: 0.25rem;
-}
-
-.price {
-  font-size: 1.75rem;
+  font-size: 32px;
   font-weight: 700;
-  color: #0f6b3d;
+  margin: 0;
 }
 
-.priceUnit {
-  color: #777;
-  font-size: 0.9rem;
+.overview {
+  font-size: 16px;
+  color: #444;
+  margin: 0;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 8px;
+}
+
+.metaItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metaLabel {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #888;
+}
+
+.metaValue {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111;
 }
