@@ -69,4 +69,13 @@ export const destinations: Destination[] = [
   },
 ];
 
+export function getDestinationById(id: string | undefined): Destination | undefined {
+  if (!id) return undefined;
+  return destinations.find((destination) => destination.id === id);
+}
+
+export function getDestinationBySlug(slug: string | undefined): Destination | undefined {
+  return getDestinationById(slug);
+}
+
 export default destinations;

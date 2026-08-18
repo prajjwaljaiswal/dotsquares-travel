@@ -1,45 +1,44 @@
-import React from 'react';
-import { getDestinationBySlug } from '../../data/destinations';
-import AttractionsSection from '../../components/AttractionsSection/AttractionsSection';
-import styles from './DestinationDetailPage.module.css';
+import React from "react";
+import { useParams, Link } from "react-router-dom";
+import DestinationHero from "../../components/DestinationHero/DestinationHero";
+import DestinationOverview from "../../components/DestinationOverview/DestinationOverview";
+import AttractionsSection from "../../components/AttractionsSection/AttractionsSection";
+import { getDestinationBySlug } from "../../data/destinations";
+import styles from "./DestinationDetailPage.module.css";
 
-export interface DestinationDetailPageProps {
-  destinationSlug: string;
-}
-
-const DestinationDetailPage: React.FC<DestinationDetailPageProps> = ({
-  destinationSlug
-}) => {
-  const destination = getDestinationBySlug(destinationSlug);
+const DestinationDetailPage: React.FC = () => {
+  const { slug } = useParams<{ slug: string }>();
+  const destination = slug ? getDestinationBySlug(slug) : undefined;
 
   if (!destination) {
     return (
-      <div className={styles.notFound}>
-        <p>Destination not found.</p>
+      <div className={styles.notFound} data-testid="destination-not-found">
+        <h1>Destination not found</h1>
+        <p>We couldn't find the destination you were looking for.</p>
+        <Link to="/">Back to home</Link>
       </div>
     );
   }
 
   return (
-    <main className={styles.page}>
-      <header
-        className={styles.hero}
-        style={{ backgroundImage: `url(${destination.heroImageUrl})` }}
-      >
-        <div className={styles.heroOverlay}>
-          <h1 className={styles.title}>{destination.name}</h1>
-          <p className={styles.country}>{destination.country}</p>
-        </div>
-      </header>
-
-      <div className={styles.content}>
-        <p className={styles.summary}>{destination.summary}</p>
-
+    <main>
+      <DestinationHero
+        name={destination.name}
+        tagline={destination.tagline}
+        desktopImage={destination.heroImage.desktop}
+        mobileImage={destination.heroImage.mobile}
+        imageAlt={destination.heroImage.alt}
+      />
+      <DestinationOverview
+        overview={destination.overview}
+        highlights={destination.highlights}
+      />
+      {destination.attractions && (
         <AttractionsSection
           destinationName={destination.name}
           attractions={destination.attractions}
         />
-      </div>
+      )}
     </main>
   );
 };
