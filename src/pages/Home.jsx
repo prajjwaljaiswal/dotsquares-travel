@@ -1,9 +1,9 @@
-import PopularDestinations from '../components/PopularDestinations/PopularDestinations.jsx';
+import HeroBanner from '../components/HeroBanner.jsx';
 
 function Home() {
   return (
     <main>
-      <PopularDestinations />
+      <HeroBanner />
     </main>
   );
 }

@@ -1,12 +1,12 @@
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home.jsx';
-import DestinationDetail from './pages/DestinationDetail.jsx';
+import Explore from './pages/Explore.jsx';
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/destinations/:slug" element={<DestinationDetail />} />
+      <Route path="/explore" element={<Explore />} />
     </Routes>
   );
 }
