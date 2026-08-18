@@ -1,38 +1,61 @@
 export interface InspirationOffer {
-  id: string
-  title: string
-  description: string
-  image: string
-  ctaLabel: string
-  ctaLink: string
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  ctaLabel: string;
+  ctaHref: string;
 }
+
+export interface InspirationHighlight {
+  title: string;
+  subtitle: string;
+  description: string;
+  image: string;
+  ctaLabel: string;
+  ctaHref: string;
+}
+
+export const inspirationHighlight: InspirationHighlight = {
+  subtitle: 'Summer Getaway Sale',
+  title: 'Save up to 30% on your next escape',
+  description:
+    'Explore sun-soaked beaches, vibrant cities, and hidden gems around the world. Book before the season ends and unlock exclusive seasonal savings.',
+  image:
+    'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+  ctaLabel: 'Explore Offers',
+  ctaHref: '/offers'
+};
 
 export const inspirationOffers: InspirationOffer[] = [
   {
-    id: 'i1',
-    title: 'Summer Escapes in Santorini',
-    description: 'Save up to 30% on beachfront stays and sunset cruises this season.',
+    id: 'offer-santorini',
+    title: 'Santorini Sunset Escape',
+    description:
+      'Whitewashed villages, caldera views, and unforgettable sunsets await in the Greek islands.',
     image:
-      'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?auto=format&fit=crop&w=800&q=80',
-    ctaLabel: 'Explore Santorini',
-    ctaLink: '/explore'
+      'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=800&q=80',
+    ctaLabel: 'View Package',
+    ctaHref: '/destinations/santorini'
   },
   {
-    id: 'i2',
-    title: 'Mountain Retreats in Switzerland',
-    description: 'Discover alpine adventures with our curated hiking and wellness packages.',
+    id: 'offer-bali',
+    title: 'Bali Rainforest Retreat',
+    description:
+      'Discover lush jungles, ancient temples, and tranquil rice terraces on this island getaway.',
     image:
-      'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?auto=format&fit=crop&w=800&q=80',
-    ctaLabel: 'Plan Your Trip',
-    ctaLink: '/explore'
+      'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&w=800&q=80',
+    ctaLabel: 'View Package',
+    ctaHref: '/destinations/bali'
   },
   {
-    id: 'i3',
-    title: 'Cultural Journeys Through Japan',
-    description: 'Immerse yourself in tradition with exclusive tea ceremony and temple tours.',
+    id: 'offer-kyoto',
+    title: 'Kyoto Cultural Journey',
+    description:
+      'Wander through historic temples, serene gardens, and vibrant streets steeped in tradition.',
     image:
-      'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80',
-    ctaLabel: 'Discover Japan',
-    ctaLink: '/explore'
+      'https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?auto=format&fit=crop&w=800&q=80',
+    ctaLabel: 'View Package',
+    ctaHref: '/destinations/kyoto'
   }
-]
+];
