@@ -1,28 +1,12 @@
-import React from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
-import DestinationDetailPage from './pages/DestinationDetailPage';
-import { destinations } from './data/destinations';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { PackageDetailPage } from './pages/PackageDetailPage';
 
-function App() {
+export function App() {
   return (
-    <div className="App">
-      <Routes>
-        <Route
-          path="/"
-          element={<Navigate to={`/destinations/${destinations[0].id}`} replace />}
-        />
-        <Route path="/destinations/:id" element={<DestinationDetailPage />} />
-        <Route
-          path="*"
-          element={
-            <div style={{ padding: '2rem', textAlign: 'center' }}>
-              <h1>Page not found</h1>
-            </div>
-          }
-        />
-      </Routes>
-    </div>
+    <Routes>
+      <Route path="/" element={<Navigate to="/packages/bali-adventure" replace />} />
+      <Route path="/packages/:packageId" element={<PackageDetailPage />} />
+      <Route path="*" element={<div style={{ padding: '2rem' }}>Page not found</div>} />
+    </Routes>
   );
 }
-
-export default App;

@@ -1,40 +1,23 @@
-import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { packages } from '../data/packages';
+import { usePackage } from '../hooks/usePackage';
+import { PackageHero } from '../components/PackageHero/PackageHero';
+import { PackageOverview } from '../components/PackageOverview/PackageOverview';
+import styles from './PackageDetailPage.module.css';
 
-const PackageDetailPage: React.FC = () => {
-  const { packageId } = useParams<{ packageId: string }>();
-  const navigate = useNavigate();
-  const pkg = packages.find((item) => item.id === packageId);
+export function PackageDetailPage() {
+  const { pkg, loading, error } = usePackage();
 
-  if (!pkg) {
-    return (
-      <main className="page-container" data-testid="package-detail-not-found">
-        <h2>Package not found</h2>
-        <button type="button" onClick={() => navigate('/')}>
-          Back to Home
-        </button>
-      </main>
-    );
+  if (loading) {
+    return <div className={styles.status}>Loading package details...</div>;
   }
 
-  const handleBookNow = (): void => {
-    navigate(`/booking?packageId=${pkg.id}`);
-  };
+  if (error || !pkg) {
+    return <div className={styles.status}>{error ?? 'Package not found'}</div>;
+  }
 
   return (
-    <main className="page-container" data-testid="package-detail-page">
-      <img src={pkg.image} alt={pkg.title} style={{ width: '100%', maxHeight: 360, objectFit: 'cover', borderRadius: 12 }} />
-      <h1>{pkg.title}</h1>
-      <p>{pkg.description}</p>
-      <p>Duration: {pkg.duration}</p>
-      <p>Rating: {pkg.rating.toFixed(1)}</p>
-      <p>Price: ${pkg.price.toLocaleString()} / person</p>
-      <button type="button" onClick={handleBookNow}>
-        Book Now
-      </button>
+    <main className={styles.page}>
+      <PackageHero pkg={pkg} />
+      <PackageOverview pkg={pkg} />
     </main>
   );
-};
-
-export default PackageDetailPage;
+}

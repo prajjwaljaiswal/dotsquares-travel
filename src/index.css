@@ -27,6 +27,16 @@ a {
   text-decoration: none;
 }
 
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
 .hero {
   padding: 3rem 1.5rem 1rem;
   text-align: center;
