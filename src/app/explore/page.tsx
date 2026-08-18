@@ -1,168 +1,110 @@
-'use client';
+import React, { useState, useMemo } from 'react';
+import { SortControls, SortOption } from '@/components/SortControls';
+import { FilterPanel } from '@/components/FilterPanel';
+import { DestinationCard } from '@/components/DestinationCard';
+import { destinations } from '@/data/destinations';
 
-import { useMemo, useState } from 'react';
-import FilterPanel from '../../components/FilterPanel/FilterPanel';
-import styles from './explore.module.css';
-import { FilterState, DEFAULT_FILTER_STATE } from '../../types/filters';
-
-interface ExplorePlace {
+interface Destination {
   id: string;
   name: string;
-  destination: string;
   price: number;
-  durationDays: number;
-  travelType: string;
   rating: number;
+  popularity: number;
+  createdAt: string;
+  image: string;
+  location: string;
+  duration: string;
 }
 
-const PLACES: ExplorePlace[] = [
-  {
-    id: 'bali-retreat',
-    name: 'Bali Beach Retreat',
-    destination: 'Bali',
-    price: 1200,
-    durationDays: 5,
-    travelType: 'Beach',
-    rating: 4.6,
-  },
-  {
-    id: 'swiss-alps',
-    name: 'Swiss Alps Adventure',
-    destination: 'Switzerland',
-    price: 2500,
-    durationDays: 8,
-    travelType: 'Adventure',
-    rating: 4.8,
-  },
-  {
-    id: 'paris-culture',
-    name: 'Paris Cultural Tour',
-    destination: 'Paris',
-    price: 1800,
-    durationDays: 4,
-    travelType: 'Cultural',
-    rating: 4.5,
-  },
-  {
-    id: 'dubai-luxury',
-    name: 'Dubai Luxury Escape',
-    destination: 'Dubai',
-    price: 3200,
-    durationDays: 6,
-    travelType: 'Luxury',
-    rating: 4.9,
-  },
-  {
-    id: 'maldives-family',
-    name: 'Maldives Family Getaway',
-    destination: 'Maldives',
-    price: 2800,
-    durationDays: 7,
-    travelType: 'Family',
-    rating: 4.7,
-  },
-  {
-    id: 'kashmir-adventure',
-    name: 'Kashmir Mountain Trek',
-    destination: 'Kashmir',
-    price: 900,
-    durationDays: 10,
-    travelType: 'Adventure',
-    rating: 4.3,
-  },
-  {
-    id: 'thailand-beach',
-    name: 'Thailand Island Hopping',
-    destination: 'Thailand',
-    price: 1100,
-    durationDays: 12,
-    travelType: 'Beach',
-    rating: 4.4,
-  },
-];
+const ExplorePage: React.FC = () => {
+  const [sortBy, setSortBy] = useState<SortOption>('popularity');
+  const [filteredDestinations, setFilteredDestinations] = useState<Destination[]>(destinations as Destination[]);
 
-const DESTINATION_OPTIONS = Array.from(
-  new Set(PLACES.map((place) => place.destination))
-).map((destination) => ({ label: destination, value: destination }));
+  const sortedDestinations = useMemo(() => {
+    const sorted = [...filteredDestinations];
+    
+    switch (sortBy) {
+      case 'popularity':
+        return sorted.sort((a, b) => (b.popularity || 0) - (a.popularity || 0));
+      case 'price-low-high':
+        return sorted.sort((a, b) => a.price - b.price);
+      case 'price-high-low':
+        return sorted.sort((a, b) => b.price - a.price);
+      case 'rating':
+        return sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+      case 'newest':
+        return sorted.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      default:
+        return sorted;
+    }
+  }, [filteredDestinations, sortBy]);
 
-function matchesDuration(durationDays: number, durationFilter: string): boolean {
-  if (!durationFilter) return true;
-  if (durationFilter === '15+') {
-    return durationDays >= 15;
-  }
-  const [minStr, maxStr] = durationFilter.split('-');
-  const min = Number(minStr);
-  const max = Number(maxStr);
-  return durationDays >= min && durationDays <= max;
-}
-
-export default function ExplorePage() {
-  const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTER_STATE);
-  const [isPanelOpen, setIsPanelOpen] = useState(false);
-
-  const filteredPlaces = useMemo(() => {
-    return PLACES.filter((place) => {
-      const destinationMatch =
-        !filters.destination || place.destination === filters.destination;
-      const durationMatch = matchesDuration(place.durationDays, filters.duration);
-      const priceMatch =
-        place.price >= filters.priceRange.min && place.price <= filters.priceRange.max;
-      const travelTypeMatch =
-        filters.travelType.length === 0 || filters.travelType.includes(place.travelType);
-      const ratingMatch = filters.rating === 0 || place.rating >= filters.rating;
-
-      return destinationMatch && durationMatch && priceMatch && travelTypeMatch && ratingMatch;
-    });
-  }, [filters]);
-
-  const handleReset = () => setFilters(DEFAULT_FILTER_STATE);
+  const handleFilterChange = (filters: any) => {
+    let filtered = destinations as Destination[];
+    
+    if (filters.location && filters.location !== 'all') {
+      filtered = filtered.filter(d => d.location.toLowerCase().includes(filters.location.toLowerCase()));
+    }
+    
+    if (filters.priceRange) {
+      const [min, max] = filters.priceRange;
+      filtered = filtered.filter(d => d.price >= min && d.price <= max);
+    }
+    
+    if (filters.rating) {
+      filtered = filtered.filter(d => (d.rating || 0) >= filters.rating);
+    }
+    
+    setFilteredDestinations(filtered);
+  };
 
   return (
-    <main className={styles.page}>
-      <div className={styles.mobileHeader}>
-        <h1 className={styles.heading}>Explore Places</h1>
-        <button
-          type="button"
-          className={styles.filterToggle}
-          onClick={() => setIsPanelOpen(true)}
-          data-testid="open-filters-button"
-        >
-          Filters
-        </button>
-      </div>
-
-      <div className={styles.layout}>
-        <FilterPanel
-          destinationOptions={DESTINATION_OPTIONS}
-          filters={filters}
-          onChange={setFilters}
-          onReset={handleReset}
-          isOpen={isPanelOpen}
-          onClose={() => setIsPanelOpen(false)}
-        />
-
-        <section className={styles.results} data-testid="results-list">
-          <h1 className={styles.headingDesktop}>Explore Places</h1>
-          <p className={styles.resultsCount}>
-            {filteredPlaces.length} {filteredPlaces.length === 1 ? 'place' : 'places'} found
-          </p>
-          <div className={styles.grid}>
-            {filteredPlaces.map((place) => (
-              <article key={place.id} className={styles.card}>
-                <h3 className={styles.cardTitle}>{place.name}</h3>
-                <p className={styles.cardMeta}>{place.destination}</p>
-                <p className={styles.cardMeta}>{place.durationDays} days</p>
-                <p className={styles.cardMeta}>${place.price}</p>
-                <p className={styles.cardMeta}>{place.travelType}</p>
-                <p className={styles.cardMeta}>{place.rating.toFixed(1)} &#9733;</p>
-              </article>
-            ))}
-            {filteredPlaces.length === 0 && (
-              <p className={styles.emptyState}>No places match your filters.</p>
+    <div className="min-h-screen bg-gray-50">
+      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Explore Destinations</h1>
+          <p className="mt-2 text-gray-600">Discover your next adventure from our curated selection</p>
+        </div>
+        
+        <div className="flex flex-col gap-8 lg:flex-row">
+          <aside className="w-full lg:w-64">
+            <FilterPanel onChange={handleFilterChange} />
+          </aside>
+          
+          <div className="flex-1">
+            <div className="mb-6 flex items-center justify-between">
+              <p className="text-sm text-gray-600">
+                Showing {sortedDestinations.length} {sortedDestinations.length === 1 ? 'result' : 'results'}
+              </p>
+              <SortControls value={sortBy} onChange={setSortBy} />
+            </div>
+            
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {sortedDestinations.map((destination) => (
+                <DestinationCard
+                  key={destination.id}
+                  id={destination.id}
+                  name={destination.name}
+                  location={destination.location}
+                  price={destination.price}
+                  rating={destination.rating}
+                  image={destination.image}
+                  duration={destination.duration}
+                />
+              ))}
+            </div>
+            
+            {sortedDestinations.length === 0 && (
+              <div className="flex flex-col items-center justify-center py-12">
+                <p className="text-lg font-medium text-gray-900">No destinations found</p>
+                <p className="text-gray-600">Try adjusting your filters or search criteria</p>
+              </div>
             )}
           </div>
-        </section>
+        </div>
       </div>
-    </main>
+    </div>
   );
-}
+};
+
+export default ExplorePage;
