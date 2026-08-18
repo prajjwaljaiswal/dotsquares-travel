@@ -1,11 +1,12 @@
 'use client';
 
-import { useSearchContext } from '@/context/SearchContext';
-import { useBookingContext } from '@/context/BookingContext';
+import { useSearchStore } from '@/store/search/search-provider';
+import { useBookingStore } from '@/store/booking/booking-provider';
 
 export default function HomePage() {
-  const { query, setQuery } = useSearchContext();
-  const { selectedPackage } = useBookingContext();
+  const query = useSearchStore((state) => state.query);
+  const setQuery = useSearchStore((state) => state.setQuery);
+  const selectedPackage = useBookingStore((state) => state.selectedPackage);
 
   return (
     <main style={{ padding: '2rem' }}>
