@@ -1,0 +1,40 @@
+.destination-detail {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+}
+
+.destination-detail__back {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.destination-detail__image {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+
+.destination-detail__name {
+  font-size: 2rem;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.destination-detail__teaser {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.destination-detail__description {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.destination-detail--not-found {
+  text-align: center;
+  padding-top: 4rem;
+}

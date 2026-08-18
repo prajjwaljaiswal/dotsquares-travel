@@ -1,6 +1,8 @@
 import type { TravelPackage } from '../types/package';
 
-const packages: TravelPackage[] = [
+export type { TravelPackage };
+
+export const packages: TravelPackage[] = [
   {
     id: 'bali-adventure',
     title: 'Bali Adventure Escape',

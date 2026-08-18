@@ -20,4 +20,6 @@ export interface TravelPackage {
   availability: AvailabilityStatus;
   availableSpots?: number;
   images: PackageImage[];
+  featured?: boolean;
+  trending?: boolean;
 }
