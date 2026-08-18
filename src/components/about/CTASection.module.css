@@ -1,0 +1,53 @@
+.cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  background-color: #023047;
+  color: #ffffff;
+  border-radius: 8px;
+}
+
+.heading {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.text {
+  font-size: 1rem;
+  max-width: 600px;
+  margin: 0;
+}
+
+.button {
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #023047;
+  background-color: #ffb703;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.button:hover,
+.button:focus {
+  background-color: #fca311;
+}
+
+@media (min-width: 768px) {
+  .heading {
+    font-size: 2rem;
+  }
+
+  .text {
+    font-size: 1.125rem;
+  }
+
+  .button {
+    padding: 14px 36px;
+    font-size: 1.125rem;
+  }
+}

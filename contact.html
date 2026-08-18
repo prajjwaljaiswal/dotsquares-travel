@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us | Dotsquares Travel</title>
+  <link rel="stylesheet" href="css/contact.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="logo">Dotsquares Travel</a>
+      <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="contact.html" class="active">Contact Us</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container contact-page">
+    <h1>Contact Us</h1>
+    <p class="page-intro">Have a question about your next trip? Reach out to us using the details below or send us an enquiry and our team will get back to you.</p>
+
+    <div class="contact-grid">
+      <section class="contact-info" aria-labelledby="contact-info-heading">
+        <h2 id="contact-info-heading">Our Details</h2>
+        <ul class="info-list">
+          <li>
+            <span class="info-label">Address</span>
+            <span class="info-value">123 Travel Lane, Suite 400, London, EC1A 1BB, United Kingdom</span>
+          </li>
+          <li>
+            <span class="info-label">Phone</span>
+            <span class="info-value"><a href="tel:+441234567890">+44 1234 567890</a></span>
+          </li>
+          <li>
+            <span class="info-label">Email</span>
+            <span class="info-value"><a href="mailto:enquiries@dotsquarestravel.example">enquiries@dotsquarestravel.example</a></span>
+          </li>
+          <li>
+            <span class="info-label">Office Hours</span>
+            <span class="info-value">Mon - Fri, 9:00 AM - 6:00 PM (GMT)</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="contact-form-section" aria-labelledby="enquiry-form-heading">
+        <h2 id="enquiry-form-heading">Send an Enquiry</h2>
+
+        <form id="enquiry-form" novalidate>
+          <div class="form-group">
+            <label for="name">Full Name <span class="required">*</span></label>
+            <input type="text" id="name" name="name" autocomplete="name" />
+            <span class="error-message" id="name-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address <span class="required">*</span></label>
+            <input type="email" id="email" name="email" autocomplete="email" />
+            <span class="error-message" id="email-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="subject">Subject <span class="required">*</span></label>
+            <input type="text" id="subject" name="subject" />
+            <span class="error-message" id="subject-error"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Message <span class="required">*</span></label>
+            <textarea id="message" name="message" rows="6"></textarea>
+            <span class="error-message" id="message-error"></span>
+          </div>
+
+          <button type="submit" class="submit-btn">Send Enquiry</button>
+        </form>
+
+        <div id="success-confirmation" class="success-confirmation" hidden>
+          <h3>Thank you!</h3>
+          <p>Your enquiry has been received. This is a demo confirmation — our team will be in touch with you shortly.</p>
+          <button type="button" id="send-another-btn" class="submit-btn secondary">Send Another Enquiry</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2024 Dotsquares Travel. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/contact.js"></script>
+</body>
+</html>

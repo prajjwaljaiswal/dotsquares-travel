@@ -1,0 +1,276 @@
+/* Base Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: #2b2b2b;
+  line-height: 1.6;
+  background-color: #ffffff;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.container {
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Header */
+.site-header {
+  background-color: #0f4c81;
+  color: #ffffff;
+  padding: 16px 0;
+}
+
+.site-header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.main-nav ul {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+.main-nav a {
+  font-size: 0.95rem;
+  padding: 6px 4px;
+}
+
+.main-nav a.active {
+  border-bottom: 2px solid #ffffff;
+}
+
+/* Hero */
+.about-hero {
+  background: linear-gradient(135deg, #0f4c81, #1b7a9c);
+  color: #ffffff;
+  padding: 80px 0;
+  text-align: center;
+}
+
+.about-hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+}
+
+.about-hero .subtitle {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* Our Story */
+.our-story {
+  padding: 70px 0;
+  background-color: #f9fafb;
+}
+
+.story-grid {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.story-image,
+.story-content {
+  flex: 1 1 45%;
+}
+
+.story-image img {
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.story-content h2 {
+  font-size: 2rem;
+  margin-bottom: 16px;
+  color: #0f4c81;
+}
+
+.story-content p {
+  margin-bottom: 16px;
+  font-size: 1rem;
+  color: #4a4a4a;
+}
+
+/* Mission & Vision */
+.mission-vision {
+  padding: 70px 0;
+  background-color: #ffffff;
+}
+
+.mv-grid {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.mv-card {
+  flex: 1 1 45%;
+  min-width: 280px;
+  background-color: #f5f7fa;
+  border-radius: 10px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.mv-card img {
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.mv-card h3 {
+  font-size: 1.4rem;
+  color: #0f4c81;
+  margin-bottom: 12px;
+}
+
+.mv-card p {
+  font-size: 0.95rem;
+  color: #4a4a4a;
+}
+
+/* Travel Philosophy */
+.philosophy {
+  padding: 70px 0;
+  background-color: #f9fafb;
+}
+
+.philosophy-grid {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.philosophy-content,
+.philosophy-image {
+  flex: 1 1 45%;
+}
+
+.philosophy-content h2 {
+  font-size: 2rem;
+  margin-bottom: 16px;
+  color: #0f4c81;
+}
+
+.philosophy-content p {
+  margin-bottom: 16px;
+  color: #4a4a4a;
+}
+
+.philosophy-list {
+  list-style: disc;
+  padding-left: 20px;
+  color: #4a4a4a;
+}
+
+.philosophy-list li {
+  margin-bottom: 10px;
+}
+
+.philosophy-image img {
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* Footer */
+.site-footer {
+  background-color: #0f4c81;
+  color: #ffffff;
+  text-align: center;
+  padding: 20px 0;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 1024px) {
+  .about-hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .story-content h2,
+  .philosophy-content h2 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-nav ul {
+    gap: 12px;
+  }
+
+  .story-grid,
+  .philosophy-grid {
+    flex-direction: column;
+  }
+
+  .story-image,
+  .story-content,
+  .philosophy-content,
+  .philosophy-image {
+    flex: 1 1 100%;
+  }
+
+  .mv-card {
+    flex: 1 1 100%;
+  }
+
+  .about-hero {
+    padding: 60px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-header .container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .main-nav ul {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .about-hero h1 {
+    font-size: 1.8rem;
+  }
+
+  .about-hero .subtitle {
+    font-size: 1rem;
+  }
+
+  .story-content h2,
+  .philosophy-content h2 {
+    font-size: 1.5rem;
+  }
+
+  .mv-card h3 {
+    font-size: 1.2rem;
+  }
+}
