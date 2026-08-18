@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home.jsx';
-import Explore from './pages/Explore.jsx';
+import ExplorePage from './pages/ExplorePage';
 import NotFound from './pages/NotFound.jsx';
 import Itinerary from './components/Itinerary/Itinerary';
 import { itineraryData } from './data/itineraryData';
@@ -21,7 +21,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/explore" element={<Explore />} />
+      <Route path="/explore" element={<ExplorePage />} />
       <Route path="/package-detail" element={<PackageDetail />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
