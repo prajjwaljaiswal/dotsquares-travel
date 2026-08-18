@@ -1,163 +1,198 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useFilters } from '../../hooks/useFilters';
-import { useMediaQuery } from '../../hooks/useMediaQuery';
-import { DEFAULT_FILTERS, FilterState } from '../../types/filters';
-import { FilterForm } from './FilterForm';
-import { FilterDrawer } from './FilterDrawer';
-import './FilterPanel.css';
+'use client';
+
+import { ChangeEvent } from 'react';
+import styles from './FilterPanel.module.css';
+import {
+  FilterState,
+  FilterOption,
+  DURATION_OPTIONS,
+  TRAVEL_TYPE_OPTIONS,
+  RATING_OPTIONS,
+} from '../../types/filters';
 
 export interface FilterPanelProps {
-  /** Called whenever the applied filters change so results can be re-fetched/filtered client-side. */
+  destinationOptions: FilterOption[];
+  filters: FilterState;
   onChange: (filters: FilterState) => void;
-  initialFilters?: Partial<FilterState>;
-  destinations?: string[];
-  /** Media query used to decide when to collapse into the drawer layout. */
-  mobileBreakpoint?: string;
+  onReset: () => void;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-/**
- * Combinable destination, duration, price range, travel type, and rating
- * filters. Renders as a persistent sidebar on desktop (live updates) and
- * as a drawer/modal on mobile (apply/reset staged changes).
- */
-export const FilterPanel: React.FC<FilterPanelProps> = ({
+export default function FilterPanel({
+  destinationOptions,
+  filters,
   onChange,
-  initialFilters,
-  destinations,
-  mobileBreakpoint = '(max-width: 768px)',
-}) => {
-  const isMobile = useMediaQuery(mobileBreakpoint);
-  const {
-    filters,
-    setDestination,
-    setDuration,
-    setPriceRange,
-    toggleTravelType,
-    setMinRating,
-    resetFilters,
-    setFilters,
-    activeFilterCount,
-  } = useFilters(initialFilters);
+  onReset,
+  isOpen,
+  onClose,
+}: FilterPanelProps) {
+  const handleDestinationChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    onChange({ ...filters, destination: event.target.value });
+  };
 
-  const [isDrawerOpen, setDrawerOpen] = useState(false);
-  const [draftFilters, setDraftFilters] = useState<FilterState>(filters);
+  const handleDurationChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    onChange({ ...filters, duration: event.target.value });
+  };
 
-  // Desktop sidebar filters are live: apply immediately without a full reload.
-  useEffect(() => {
-    if (!isMobile) {
-      onChange(filters);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters, isMobile]);
+  const handlePriceMinChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const min = Number(event.target.value);
+    onChange({ ...filters, priceRange: { ...filters.priceRange, min } });
+  };
 
-  // Keep the mobile draft in sync with the last applied filters whenever the drawer opens.
-  useEffect(() => {
-    if (isMobile && isDrawerOpen) {
-      setDraftFilters(filters);
-    }
-  }, [isMobile, isDrawerOpen, filters]);
+  const handlePriceMaxChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const max = Number(event.target.value);
+    onChange({ ...filters, priceRange: { ...filters.priceRange, max } });
+  };
 
-  const openDrawer = useCallback(() => setDrawerOpen(true), []);
-  const closeDrawer = useCallback(() => setDrawerOpen(false), []);
+  const handleTravelTypeToggle = (type: string) => {
+    const exists = filters.travelType.includes(type);
+    const nextTypes = exists
+      ? filters.travelType.filter((item) => item !== type)
+      : [...filters.travelType, type];
+    onChange({ ...filters, travelType: nextTypes });
+  };
 
-  const handleApply = useCallback(() => {
-    setFilters(draftFilters);
-    onChange(draftFilters);
-    setDrawerOpen(false);
-  }, [draftFilters, onChange, setFilters]);
-
-  const handleResetMobile = useCallback(() => {
-    setDraftFilters({ ...DEFAULT_FILTERS, ...initialFilters });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialFilters]);
-
-  const handleResetDesktop = useCallback(() => {
-    resetFilters();
-  }, [resetFilters]);
-
-  if (isMobile) {
-    return (
-      <div className="filter-panel filter-panel--mobile" data-testid="filter-panel-mobile">
-        <button
-          type="button"
-          className="filter-panel__trigger"
-          onClick={openDrawer}
-          data-testid="filter-panel-trigger"
-        >
-          Filters{activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}
-        </button>
-        <FilterDrawer isOpen={isDrawerOpen} onClose={closeDrawer} title="Filters">
-          <FilterForm
-            filters={draftFilters}
-            destinations={destinations}
-            onDestinationChange={(destination) =>
-              setDraftFilters((prev) => ({ ...prev, destination }))
-            }
-            onDurationChange={(duration) => setDraftFilters((prev) => ({ ...prev, duration }))}
-            onPriceRangeChange={(priceRange) =>
-              setDraftFilters((prev) => ({ ...prev, priceRange }))
-            }
-            onTravelTypeToggle={(type) =>
-              setDraftFilters((prev) => ({
-                ...prev,
-                travelTypes: prev.travelTypes.includes(type)
-                  ? prev.travelTypes.filter((t) => t !== type)
-                  : [...prev.travelTypes, type],
-              }))
-            }
-            onMinRatingChange={(minRating) =>
-              setDraftFilters((prev) => ({ ...prev, minRating }))
-            }
-            footer={
-              <div className="filter-form__actions">
-                <button
-                  type="button"
-                  className="filter-form__reset"
-                  onClick={handleResetMobile}
-                  data-testid="filter-reset-mobile"
-                >
-                  Reset
-                </button>
-                <button
-                  type="button"
-                  className="filter-form__apply"
-                  onClick={handleApply}
-                  data-testid="filter-apply-mobile"
-                >
-                  Apply Filters
-                </button>
-              </div>
-            }
-          />
-        </FilterDrawer>
-      </div>
-    );
-  }
+  const handleRatingChange = (rating: number) => {
+    onChange({ ...filters, rating: filters.rating === rating ? 0 : rating });
+  };
 
   return (
-    <aside className="filter-panel filter-panel--desktop" data-testid="filter-panel-desktop">
-      <div className="filter-panel__header">
-        <h2 className="filter-panel__title">Filters</h2>
-        {activeFilterCount > 0 && (
+    <>
+      {isOpen && (
+        <button
+          type="button"
+          aria-label="Close filters"
+          className={styles.overlay}
+          onClick={onClose}
+          data-testid="filter-panel-overlay"
+        />
+      )}
+      <aside
+        className={`${styles.panel} ${isOpen ? styles.panelOpen : ''}`}
+        data-testid="filter-panel"
+        aria-label="Filter places"
+      >
+        <div className={styles.header}>
+          <h2 className={styles.title}>Filters</h2>
           <button
             type="button"
-            className="filter-panel__clear"
-            onClick={handleResetDesktop}
-            data-testid="filter-reset-desktop"
+            className={styles.closeButton}
+            onClick={onClose}
+            aria-label="Close filter panel"
           >
-            Clear all
+            &times;
           </button>
-        )}
-      </div>
-      <FilterForm
-        filters={filters}
-        destinations={destinations}
-        onDestinationChange={setDestination}
-        onDurationChange={setDuration}
-        onPriceRangeChange={setPriceRange}
-        onTravelTypeToggle={toggleTravelType}
-        onMinRatingChange={setMinRating}
-      />
-    </aside>
+        </div>
+
+        <div className={styles.section}>
+          <label className={styles.label} htmlFor="filter-destination">
+            Destination
+          </label>
+          <select
+            id="filter-destination"
+            className={styles.select}
+            value={filters.destination}
+            onChange={handleDestinationChange}
+          >
+            <option value="">All destinations</option>
+            {destinationOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className={styles.section}>
+          <label className={styles.label} htmlFor="filter-duration">
+            Duration
+          </label>
+          <select
+            id="filter-duration"
+            className={styles.select}
+            value={filters.duration}
+            onChange={handleDurationChange}
+          >
+            {DURATION_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className={styles.section}>
+          <span className={styles.label}>Price range ($)</span>
+          <div className={styles.priceInputs}>
+            <label className={styles.priceLabel}>
+              Min
+              <input
+                type="number"
+                min={0}
+                data-testid="price-min-input"
+                className={styles.priceInput}
+                value={filters.priceRange.min}
+                onChange={handlePriceMinChange}
+              />
+            </label>
+            <label className={styles.priceLabel}>
+              Max
+              <input
+                type="number"
+                min={0}
+                data-testid="price-max-input"
+                className={styles.priceInput}
+                value={filters.priceRange.max}
+                onChange={handlePriceMaxChange}
+              />
+            </label>
+          </div>
+        </div>
+
+        <div className={styles.section}>
+          <span className={styles.label}>Travel type</span>
+          <div className={styles.checkboxGroup}>
+            {TRAVEL_TYPE_OPTIONS.map((type) => (
+              <label key={type} className={styles.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  checked={filters.travelType.includes(type)}
+                  onChange={() => handleTravelTypeToggle(type)}
+                />
+                {type}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div className={styles.section}>
+          <span className={styles.label}>Minimum rating</span>
+          <div className={styles.ratingGroup}>
+            {RATING_OPTIONS.map((rating) => (
+              <button
+                key={rating}
+                type="button"
+                className={`${styles.ratingButton} ${
+                  filters.rating === rating ? styles.ratingButtonActive : ''
+                }`}
+                onClick={() => handleRatingChange(rating)}
+              >
+                {rating}+ &#9733;
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className={styles.actions}>
+          <button type="button" className={styles.resetButton} onClick={onReset}>
+            Reset filters
+          </button>
+          <button type="button" className={styles.applyButton} onClick={onClose}>
+            Show results
+          </button>
+        </div>
+      </aside>
+    </>
   );
-};
+}

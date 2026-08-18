@@ -1,8 +1,3 @@
-export interface DurationRange {
-  min: number;
-  max: number;
-}
-
 export interface PriceRange {
   min: number;
   max: number;
@@ -10,31 +5,39 @@ export interface PriceRange {
 
 export interface FilterState {
   destination: string;
-  duration: DurationRange;
+  duration: string;
   priceRange: PriceRange;
-  travelTypes: string[];
-  minRating: number;
+  travelType: string[];
+  rating: number;
 }
 
-export const DURATION_LIMITS: DurationRange = { min: 1, max: 30 };
+export interface FilterOption {
+  label: string;
+  value: string;
+}
 
-export const PRICE_LIMITS: PriceRange = { min: 0, max: 10000 };
+export const DEFAULT_FILTER_STATE: FilterState = {
+  destination: '',
+  duration: '',
+  priceRange: { min: 0, max: 10000 },
+  travelType: [],
+  rating: 0,
+};
 
-export const TRAVEL_TYPES: string[] = [
-  'Adventure',
-  'Leisure',
-  'Business',
-  'Family',
-  'Solo',
-  'Luxury',
+export const DURATION_OPTIONS: FilterOption[] = [
+  { label: 'Any duration', value: '' },
+  { label: '1-3 days', value: '1-3' },
+  { label: '4-7 days', value: '4-7' },
+  { label: '8-14 days', value: '8-14' },
+  { label: '15+ days', value: '15+' },
 ];
 
-export const RATING_OPTIONS: number[] = [0, 1, 2, 3, 4, 5];
+export const TRAVEL_TYPE_OPTIONS: string[] = [
+  'Adventure',
+  'Beach',
+  'Cultural',
+  'Luxury',
+  'Family',
+];
 
-export const DEFAULT_FILTERS: FilterState = {
-  destination: '',
-  duration: { min: DURATION_LIMITS.min, max: DURATION_LIMITS.max },
-  priceRange: { min: PRICE_LIMITS.min, max: PRICE_LIMITS.max },
-  travelTypes: [],
-  minRating: 0,
-};
+export const RATING_OPTIONS: number[] = [4, 3, 2, 1];

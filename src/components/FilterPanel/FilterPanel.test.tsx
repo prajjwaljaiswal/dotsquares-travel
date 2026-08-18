@@ -1,127 +1,98 @@
-import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
-import { FilterPanel } from './FilterPanel';
-
-function mockMatchMedia(matches: boolean) {
-  window.matchMedia = jest.fn().mockImplementation((query: string) => ({
-    matches,
-    media: query,
-    onchange: null,
-    addListener: jest.fn(),
-    removeListener: jest.fn(),
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
-  }));
-}
+import { render, screen, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import FilterPanel from './FilterPanel';
+import { DEFAULT_FILTER_STATE } from '../../types/filters';
 
 describe('FilterPanel', () => {
-  afterEach(() => {
-    jest.clearAllMocks();
+  const destinationOptions = [
+    { label: 'Bali', value: 'Bali' },
+    { label: 'Paris', value: 'Paris' },
+  ];
+
+  it('renders all filter sections', () => {
+    render(
+      <FilterPanel
+        destinationOptions={destinationOptions}
+        filters={DEFAULT_FILTER_STATE}
+        onChange={jest.fn()}
+        onReset={jest.fn()}
+        isOpen={true}
+        onClose={jest.fn()}
+      />
+    );
+
+    expect(screen.getByLabelText('Destination')).toBeInTheDocument();
+    expect(screen.getByLabelText('Duration')).toBeInTheDocument();
+    expect(screen.getByText('Price range ($)')).toBeInTheDocument();
+    expect(screen.getByText('Travel type')).toBeInTheDocument();
+    expect(screen.getByText('Minimum rating')).toBeInTheDocument();
   });
 
-  it('renders as a sidebar on desktop with all filter types', () => {
-    mockMatchMedia(false);
+  it('calls onChange when destination changes', () => {
     const onChange = jest.fn();
-    render(<FilterPanel onChange={onChange} />);
+    render(
+      <FilterPanel
+        destinationOptions={destinationOptions}
+        filters={DEFAULT_FILTER_STATE}
+        onChange={onChange}
+        onReset={jest.fn()}
+        isOpen={true}
+        onClose={jest.fn()}
+      />
+    );
 
-    expect(screen.getByTestId('filter-panel-desktop')).toBeInTheDocument();
-    expect(screen.getByTestId('destination-filter')).toBeInTheDocument();
-    expect(screen.getByTestId('duration-filter')).toBeInTheDocument();
-    expect(screen.getByTestId('price-range-filter')).toBeInTheDocument();
-    expect(screen.getByTestId('travel-type-filter')).toBeInTheDocument();
-    expect(screen.getByTestId('rating-filter')).toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText('Destination'), { target: { value: 'Bali' } });
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ destination: 'Bali' }));
   });
 
-  it('applies a desktop filter change immediately without requiring a submit action', () => {
-    mockMatchMedia(false);
+  it('toggles travel type selection', () => {
     const onChange = jest.fn();
-    render(<FilterPanel onChange={onChange} />);
+    render(
+      <FilterPanel
+        destinationOptions={destinationOptions}
+        filters={DEFAULT_FILTER_STATE}
+        onChange={onChange}
+        onReset={jest.fn()}
+        isOpen={true}
+        onClose={jest.fn()}
+      />
+    );
 
-    const input = screen.getByLabelText('Destination') as HTMLInputElement;
-    fireEvent.change(input, { target: { value: 'Paris' } });
-
-    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ destination: 'Paris' }));
+    fireEvent.click(screen.getByLabelText('Adventure'));
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ travelType: ['Adventure'] }));
   });
 
-  it('combines multiple filter types together on desktop', () => {
-    mockMatchMedia(false);
-    const onChange = jest.fn();
-    render(<FilterPanel onChange={onChange} />);
+  it('calls onClose when overlay is clicked', () => {
+    const onClose = jest.fn();
+    render(
+      <FilterPanel
+        destinationOptions={destinationOptions}
+        filters={DEFAULT_FILTER_STATE}
+        onChange={jest.fn()}
+        onReset={jest.fn()}
+        isOpen={true}
+        onClose={onClose}
+      />
+    );
 
-    fireEvent.change(screen.getByLabelText('Destination'), { target: { value: 'Rome' } });
-    fireEvent.click(screen.getByText('Adventure'));
-    fireEvent.click(screen.getByText('4★+'));
-
-    const lastCall = onChange.mock.calls[onChange.mock.calls.length - 1][0];
-    expect(lastCall.destination).toBe('Rome');
-    expect(lastCall.travelTypes).toContain('Adventure');
-    expect(lastCall.minRating).toBe(4);
+    fireEvent.click(screen.getByTestId('filter-panel-overlay'));
+    expect(onClose).toHaveBeenCalled();
   });
 
-  it('clears all applied filters on desktop', () => {
-    mockMatchMedia(false);
-    const onChange = jest.fn();
-    render(<FilterPanel onChange={onChange} />);
+  it('calls onReset when reset button clicked', () => {
+    const onReset = jest.fn();
+    render(
+      <FilterPanel
+        destinationOptions={destinationOptions}
+        filters={DEFAULT_FILTER_STATE}
+        onChange={jest.fn()}
+        onReset={onReset}
+        isOpen={true}
+        onClose={jest.fn()}
+      />
+    );
 
-    fireEvent.change(screen.getByLabelText('Destination'), { target: { value: 'Rome' } });
-    expect(screen.getByTestId('filter-reset-desktop')).toBeInTheDocument();
-
-    fireEvent.click(screen.getByTestId('filter-reset-desktop'));
-
-    const lastCall = onChange.mock.calls[onChange.mock.calls.length - 1][0];
-    expect(lastCall.destination).toBe('');
-  });
-
-  it('renders a trigger button on mobile instead of the sidebar', () => {
-    mockMatchMedia(true);
-    const onChange = jest.fn();
-    render(<FilterPanel onChange={onChange} />);
-
-    expect(screen.getByTestId('filter-panel-mobile')).toBeInTheDocument();
-    expect(screen.queryByTestId('filter-panel-desktop')).not.toBeInTheDocument();
-    expect(screen.getByTestId('filter-panel-trigger')).toBeInTheDocument();
-    expect(onChange).not.toHaveBeenCalled();
-  });
-
-  it('opens the drawer on mobile and applies staged filters without a full reload', () => {
-    mockMatchMedia(true);
-    const onChange = jest.fn();
-    render(<FilterPanel onChange={onChange} />);
-
-    fireEvent.click(screen.getByTestId('filter-panel-trigger'));
-    expect(screen.getByTestId('filter-drawer')).toBeInTheDocument();
-
-    fireEvent.change(screen.getByLabelText('Destination'), { target: { value: 'Tokyo' } });
-    fireEvent.click(screen.getByTestId('filter-apply-mobile'));
-
-    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ destination: 'Tokyo' }));
-    expect(screen.queryByTestId('filter-drawer')).not.toBeInTheDocument();
-  });
-
-  it('closes the drawer via overlay click without applying unsaved changes', () => {
-    mockMatchMedia(true);
-    const onChange = jest.fn();
-    render(<FilterPanel onChange={onChange} />);
-
-    fireEvent.click(screen.getByTestId('filter-panel-trigger'));
-    fireEvent.change(screen.getByLabelText('Destination'), { target: { value: 'Cairo' } });
-    fireEvent.click(screen.getByTestId('filter-drawer-overlay'));
-
-    expect(screen.queryByTestId('filter-drawer')).not.toBeInTheDocument();
-    expect(onChange).not.toHaveBeenCalled();
-  });
-
-  it('resets staged mobile filters when Reset is clicked inside the drawer', () => {
-    mockMatchMedia(true);
-    const onChange = jest.fn();
-    render(<FilterPanel onChange={onChange} />);
-
-    fireEvent.click(screen.getByTestId('filter-panel-trigger'));
-    fireEvent.change(screen.getByLabelText('Destination'), { target: { value: 'Cairo' } });
-    fireEvent.click(screen.getByTestId('filter-reset-mobile'));
-
-    const input = screen.getByLabelText('Destination') as HTMLInputElement;
-    expect(input.value).toBe('');
+    fireEvent.click(screen.getByText('Reset filters'));
+    expect(onReset).toHaveBeenCalled();
   });
 });
