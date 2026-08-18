@@ -1,24 +1,27 @@
-'use client';
+import Header from './components/Header';
+import Hero from './components/Hero';
+import FeaturedDestinations from './components/FeaturedDestinations';
+import Testimonials from './components/Testimonials';
+import Newsletter from './components/Newsletter';
+import Footer from './components/Footer';
 
-import { useSearchStore } from '@/store/search/search-provider';
-import { useBookingStore } from '@/store/booking/booking-provider';
+export const metadata = {
+  title: 'Dotsquares Travel - Discover Your Next Adventure',
+  description:
+    'Explore featured destinations, read traveler testimonials, and subscribe to our newsletter for the best travel deals with Dotsquares Travel.',
+};
 
-export default function HomePage() {
-  const query = useSearchStore((state) => state.query);
-  const setQuery = useSearchStore((state) => state.setQuery);
-  const selectedPackage = useBookingStore((state) => state.selectedPackage);
-
+export default function Home() {
   return (
-    <main style={{ padding: '2rem' }}>
-      <h1>Dotsquares Travel</h1>
-      <p>Search and book your next adventure.</p>
-      <input
-        type="text"
-        value={query}
-        onChange={(event) => setQuery(event.target.value)}
-        placeholder="Search destinations..."
-      />
-      {selectedPackage ? <p>Selected package: {selectedPackage.name}</p> : null}
-    </main>
+    <>
+      <Header />
+      <main>
+        <Hero />
+        <FeaturedDestinations />
+        <Testimonials />
+        <Newsletter />
+      </main>
+      <Footer />
+    </>
   );
 }
