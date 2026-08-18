@@ -1,0 +1,35 @@
+.section {
+  width: 100%;
+  padding: 1.5rem 0;
+}
+
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #111827;
+}
+
+.tabsWrapper {
+  margin-top: 1rem;
+}
+
+.tabContent {
+  padding: 1.5rem 0;
+}
+
+@media (max-width: 768px) {
+  .heading {
+    font-size: 1.25rem;
+  }
+
+  .tabContent {
+    padding: 1rem 0;
+  }
+}

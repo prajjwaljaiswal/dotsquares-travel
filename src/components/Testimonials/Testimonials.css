@@ -1,0 +1,50 @@
+.testimonials {
+  padding: 48px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.testimonials__header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.testimonials__header h2 {
+  font-size: 28px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.testimonials__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.testimonials__card {
+  border-radius: 12px;
+  padding: 20px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.testimonials__avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 12px;
+}
+
+.testimonials__quote {
+  font-size: 14px;
+  color: #374151;
+  margin: 0 0 12px;
+}
+
+.testimonials__name {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 12px 0 0;
+}
