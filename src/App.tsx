@@ -5,6 +5,7 @@ import { PackageDetailPage } from './pages/PackageDetailPage';
 import { BookingStep1 } from './pages/booking/BookingStep1';
 import AboutUsPage from './pages/AboutUs/AboutUsPage';
 import ExplorePage from './pages/Explore/ExplorePage';
+import DestinationDetailPage from './pages/DestinationDetailPage/DestinationDetailPage';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/booking/step-1" element={<BookingStep1 />} />
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/explore" element={<ExplorePage />} />
+          <Route path="/destinations/:slug" element={<DestinationDetailPage destinationSlug="bali" />} />
           <Route path="*" element={<div style={{ padding: '2rem' }}>Page not found</div>} />
         </Routes>
       </BrowserRouter>

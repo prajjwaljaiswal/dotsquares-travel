@@ -1,0 +1,37 @@
+.practical-info {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  border-radius: 8px;
+  background-color: #f7f7f7;
+}
+
+.practical-info__title {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.practical-info__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 0;
+}
+
+.practical-info__item {
+  display: flex;
+  flex-direction: column;
+}
+
+.practical-info__label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 0.25rem;
+}
+
+.practical-info__value {
+  font-size: 1rem;
+  color: #222;
+  margin: 0;
+}

@@ -2,6 +2,7 @@ import React from "react";
 import { useParams, Link } from "react-router-dom";
 import DestinationHero from "../../components/DestinationHero/DestinationHero";
 import DestinationOverview from "../../components/DestinationOverview/DestinationOverview";
+import AttractionsSection from "../../components/AttractionsSection/AttractionsSection";
 import { getDestinationBySlug } from "../../data/destinations";
 import styles from "./DestinationDetailPage.module.css";
 
@@ -32,6 +33,12 @@ const DestinationDetailPage: React.FC = () => {
         overview={destination.overview}
         highlights={destination.highlights}
       />
+      {destination.attractions && (
+        <AttractionsSection
+          destinationName={destination.name}
+          attractions={destination.attractions}
+        />
+      )}
     </main>
   );
 };
