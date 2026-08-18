@@ -1,0 +1,69 @@
+.destination-hero {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  min-height: 420px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: flex-end;
+}
+
+.destination-hero__overlay {
+  width: 100%;
+  padding: 2.5rem;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.65) 0%,
+    rgba(0, 0, 0, 0.15) 60%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  color: #ffffff;
+}
+
+.destination-hero__title {
+  margin: 0 0 0.5rem 0;
+  font-size: 2.75rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.destination-hero__tagline {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 400;
+  max-width: 40rem;
+}
+
+@media (max-width: 768px) {
+  .destination-hero {
+    height: 42vh;
+    min-height: 280px;
+    background-position: center 30%;
+  }
+
+  .destination-hero__overlay {
+    padding: 1.5rem;
+  }
+
+  .destination-hero__title {
+    font-size: 1.9rem;
+  }
+
+  .destination-hero__tagline {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .destination-hero {
+    height: 34vh;
+    min-height: 220px;
+    background-position: center 25%;
+  }
+
+  .destination-hero__title {
+    font-size: 1.5rem;
+  }
+}
