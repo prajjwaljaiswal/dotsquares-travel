@@ -1,0 +1,37 @@
+.packages-page {
+  padding: 2rem 1.5rem 3rem;
+}
+
+.packages-page__container {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.packages-page__search-input {
+  width: 100%;
+  max-width: 480px;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  border: 1px solid #d5dae1;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+.packages-page__count {
+  color: #6b7684;
+  margin: 1rem 0;
+}
+
+.packages-page__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.package-card__destination {
+  margin: 0 0 0.15rem;
+  color: #0b5fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
