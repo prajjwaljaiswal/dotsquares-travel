@@ -1,0 +1,144 @@
+.package-detail {
+  max-width: 960px;
+  margin: 0 auto;
+  padding-bottom: 3rem;
+}
+
+.package-detail--not-found {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.package-detail__hero {
+  background-size: cover;
+  background-position: center;
+  min-height: 320px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.package-detail__hero-overlay {
+  width: 100%;
+  padding: 2rem 1.5rem;
+  color: #fff;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+}
+
+.package-detail__hero-overlay h1 {
+  margin: 0.25rem 0;
+  font-size: 2rem;
+}
+
+.package-detail__breadcrumb a {
+  color: #fff;
+  opacity: 0.85;
+  text-decoration: underline;
+}
+
+.package-detail__meta {
+  font-weight: 600;
+}
+
+.package-detail__section {
+  padding: 1.75rem 1.5rem 0;
+}
+
+.package-detail__section h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.package-detail__summary {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #3e4c59;
+}
+
+.package-detail__list {
+  padding-left: 1.25rem;
+  margin: 0;
+}
+
+.package-detail__list li {
+  margin-bottom: 0.4rem;
+  line-height: 1.5;
+}
+
+.package-detail__list--positive li::marker {
+  color: #1a9d5c;
+}
+
+.package-detail__list--negative li::marker {
+  color: #d64545;
+}
+
+.package-detail__itinerary {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.package-detail__itinerary-day h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.35rem;
+}
+
+.package-detail__itinerary-day ul {
+  margin-top: 0.4rem;
+  padding-left: 1.25rem;
+  color: #3e4c59;
+}
+
+.package-detail__inclusions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+}
+
+.package-detail__reviews {
+  display: grid;
+  gap: 1rem;
+}
+
+.review-card {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #e5e9ef;
+  border-radius: 10px;
+}
+
+.review-card__avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.review-card__author {
+  font-weight: 600;
+  margin: 0 0 0.15rem;
+}
+
+.review-card__rating {
+  color: #f5a623;
+  margin: 0 0 0.35rem;
+}
+
+.review-card__comment {
+  margin: 0;
+  color: #3e4c59;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .package-detail__section,
+  .package-detail__hero-overlay {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
