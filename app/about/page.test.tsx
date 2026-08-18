@@ -1,42 +1,42 @@
-import { render, screen } from "@testing-library/react";
-import "@testing-library/jest-dom";
-import AboutPage from "./page";
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import AboutPage from './page';
 
-describe("AboutPage", () => {
-  it("renders the story heading and placeholder copy", () => {
+describe('AboutPage', () => {
+  it('renders the main About Us heading', () => {
     render(<AboutPage />);
     expect(
-      screen.getByRole("heading", { name: /how dotsquares travel began/i }),
+      screen.getByRole('heading', { level: 1, name: /about dotsquares travel/i })
     ).toBeInTheDocument();
   });
 
-  it("renders the mission, vision, and philosophy heading", () => {
+  it('renders the Our Story section', () => {
     render(<AboutPage />);
-    expect(
-      screen.getByRole("heading", { name: /mission, vision & philosophy/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2, name: /our story/i })).toBeInTheDocument();
   });
 
-  it("renders all three pillar cards", () => {
+  it('renders the Mission & Vision section with both cards', () => {
     render(<AboutPage />);
     expect(
-      screen.getByRole("heading", { name: /our mission/i }),
+      screen.getByRole('heading', { level: 2, name: /our mission & vision/i })
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole("heading", { name: /our vision/i }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("heading", { name: /our travel philosophy/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 3, name: /our mission/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 3, name: /our vision/i })).toBeInTheDocument();
   });
 
-  it("renders placeholder imagery with descriptive alt text", () => {
+  it('renders the Travel Philosophy section with pillars', () => {
     render(<AboutPage />);
     expect(
-      screen.getByAltText(/placeholder image representing the dotsquares travel story/i),
+      screen.getByRole('heading', { level: 2, name: /our travel philosophy/i })
     ).toBeInTheDocument();
     expect(
-      screen.getByAltText(/placeholder image representing our mission/i),
+      screen.getByRole('heading', { level: 3, name: /authentic experiences/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 3, name: /responsible travel/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 3, name: /personalized care/i })
     ).toBeInTheDocument();
   });
 });
