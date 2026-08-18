@@ -1,60 +1,38 @@
-import { FC } from 'react';
-import './Inspiration.css';
+import { inspirationOffers } from '../../data/inspiration'
+import styles from './Inspiration.module.css'
 
-interface InspirationItem {
-  id: string;
-  title: string;
-  image: string;
-  description: string;
-}
-
-const inspirationItems: InspirationItem[] = [
-  {
-    id: 'mountains',
-    title: 'Mountain Escapes',
-    image: 'https://images.example.com/inspiration/mountains.jpg',
-    description: 'Breathtaking peaks and serene trails for the adventurous soul.',
-  },
-  {
-    id: 'beaches',
-    title: 'Tropical Beaches',
-    image: 'https://images.example.com/inspiration/beaches.jpg',
-    description: 'Sun-soaked shores and crystal-clear waters await.',
-  },
-  {
-    id: 'cities',
-    title: 'City Lights',
-    image: 'https://images.example.com/inspiration/cities.jpg',
-    description: 'Vibrant culture, food, and nightlife in the world’s top cities.',
-  },
-];
-
-const Inspiration: FC = () => {
+const Inspiration = () => {
   return (
-    <section className="inspiration" data-testid="inspiration-section">
-      <div className="inspiration__header">
-        <h2>Get Inspired</h2>
-        <p>Explore ideas for your next adventure</p>
+    <section className={styles.section} aria-labelledby="inspiration-heading">
+      <div className={styles.header}>
+        <h2 id="inspiration-heading" className={styles.heading}>
+          Travel Inspiration
+        </h2>
+        <p className={styles.subheading}>
+          Seasonal offers and curated ideas to spark your next journey.
+        </p>
       </div>
-      <div className="inspiration__grid">
-        {inspirationItems.map((item) => (
-          <div
-            className="inspiration__card"
-            key={item.id}
-            data-testid="inspiration-card"
-          >
-            <img
-              src={item.image}
-              alt={item.title}
-              className="inspiration__image"
+      <div className={styles.grid}>
+        {inspirationOffers.map((offer) => (
+          <article key={offer.id} className={styles.card}>
+            <div
+              className={styles.image}
+              style={{ backgroundImage: `url(${offer.image})` }}
+              role="img"
+              aria-label={offer.title}
             />
-            <h3 className="inspiration__title">{item.title}</h3>
-            <p className="inspiration__description">{item.description}</p>
-          </div>
+            <div className={styles.content}>
+              <h3 className={styles.title}>{offer.title}</h3>
+              <p className={styles.description}>{offer.description}</p>
+              <a href={offer.ctaLink} className={styles.cta}>
+                {offer.ctaLabel}
+              </a>
+            </div>
+          </article>
         ))}
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Inspiration;
+export default Inspiration

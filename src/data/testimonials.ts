@@ -1,39 +1,39 @@
 export interface Testimonial {
-  id: string;
-  name: string;
-  location?: string;
-  rating: number;
-  quote: string;
-  avatarUrl: string;
+  id: string
+  name: string
+  location: string
+  rating: number
+  quote: string
+  avatar: string
 }
 
 export const testimonials: Testimonial[] = [
   {
     id: 't1',
-    name: 'Sarah Mitchell',
-    location: 'London, UK',
+    name: 'Amelia Carter',
+    location: 'Sydney, Australia',
     rating: 5,
     quote:
-      'Booking with this team made our honeymoon absolutely unforgettable. Every detail was taken care of, from the airport transfer to the sunset dinner cruise.',
-    avatarUrl: 'https://randomuser.me/api/portraits/women/68.jpg',
+      'Booking with Dotsquares Travel made our honeymoon unforgettable. Every detail was perfectly planned!',
+    avatar: 'https://i.pravatar.cc/150?img=47'
   },
   {
     id: 't2',
-    name: 'James Carter',
-    location: 'Austin, USA',
+    name: 'Rahul Mehta',
+    location: 'Mumbai, India',
     rating: 4,
     quote:
-      'Great value for money and a really smooth booking process. The itinerary they suggested for Bali was spot on and saved us so much planning time.',
-    avatarUrl: 'https://randomuser.me/api/portraits/men/32.jpg',
+      'Great deals and a super smooth booking experience. The support team was fantastic throughout our trip.',
+    avatar: 'https://i.pravatar.cc/150?img=12'
   },
   {
     id: 't3',
-    name: 'Priya Nair',
-    location: 'Mumbai, India',
+    name: 'Sophie Turner',
+    location: 'London, UK',
     rating: 5,
     quote:
-      'From the first inquiry to landing back home, the support was fantastic. Our family trip to Switzerland felt completely stress-free.',
-    avatarUrl: 'https://randomuser.me/api/portraits/women/45.jpg',
+      'The recommended itinerary took us to hidden gems we never would have found on our own. Absolutely loved it!',
+    avatar: 'https://i.pravatar.cc/150?img=32'
   },
   {
     id: 't4',
@@ -41,25 +41,7 @@ export const testimonials: Testimonial[] = [
     location: 'Madrid, Spain',
     rating: 4,
     quote:
-      'Loved the personalized recommendations. We discovered hidden gems in Kyoto we never would have found on our own.',
-    avatarUrl: 'https://randomuser.me/api/portraits/men/76.jpg',
-  },
-  {
-    id: 't5',
-    name: 'Amelia Clarke',
-    location: 'Sydney, Australia',
-    rating: 5,
-    quote:
-      'Exceptional service from start to finish. The 24/7 support was a lifesaver when our connecting flight got delayed.',
-    avatarUrl: 'https://randomuser.me/api/portraits/women/12.jpg',
-  },
-  {
-    id: 't6',
-    name: 'Michael Osei',
-    location: 'Accra, Ghana',
-    rating: 4,
-    quote:
-      'The whole booking experience felt premium without the premium price tag. Will definitely be using this platform again.',
-    avatarUrl: 'https://randomuser.me/api/portraits/men/51.jpg',
-  },
-];
+      'From flights to hotels, everything was seamless. We will definitely be booking our next adventure here.',
+    avatar: 'https://i.pravatar.cc/150?img=15'
+  }
+]

@@ -1,21 +1,18 @@
-import { render, screen } from '@testing-library/react';
-import StarRating from './StarRating';
+import { describe, it, expect } from 'vitest'
+import { render, screen } from '@testing-library/react'
+import StarRating from './StarRating'
 
 describe('StarRating', () => {
-  it('renders the correct number of filled stars', () => {
-    render(<StarRating rating={4} />);
-    const filledStars = screen.getAllByTestId('star-filled');
-    expect(filledStars).toHaveLength(4);
-  });
+  it('renders the correct accessible label', () => {
+    render(<StarRating rating={4} />)
+    expect(
+      screen.getByRole('img', { name: 'Rated 4 out of 5 stars' })
+    ).toBeInTheDocument()
+  })
 
-  it('renders empty stars for the remainder', () => {
-    render(<StarRating rating={3} maxRating={5} />);
-    const emptyStars = screen.getAllByTestId('star-empty');
-    expect(emptyStars).toHaveLength(2);
-  });
-
-  it('displays the numeric rating value', () => {
-    render(<StarRating rating={4.5} />);
-    expect(screen.getByText('4.5')).toBeInTheDocument();
-  });
-});
+  it('renders five stars by default', () => {
+    render(<StarRating rating={3} />)
+    const container = screen.getByRole('img')
+    expect(container.children).toHaveLength(5)
+  })
+})

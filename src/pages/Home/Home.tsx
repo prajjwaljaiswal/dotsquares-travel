@@ -1,15 +1,18 @@
-import React from 'react';
-import styles from './Home.module.css';
-import Testimonials from '../../components/Testimonials/Testimonials';
-import Inspiration from '../../components/Inspiration/Inspiration';
+import HeroBanner from '../../components/HeroBanner/HeroBanner'
+import SearchWidget from '../../components/SearchWidget/SearchWidget'
+import Inspiration from '../../components/Inspiration/Inspiration'
+import Testimonials from '../../components/Testimonials/Testimonials'
+import styles from './Home.module.css'
 
-const Home: React.FC = () => {
+const Home = () => {
   return (
     <main className={styles.home}>
+      <HeroBanner />
+      <SearchWidget />
       <Inspiration />
       <Testimonials />
     </main>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

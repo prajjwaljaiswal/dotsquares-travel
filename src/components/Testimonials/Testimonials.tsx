@@ -1,65 +1,38 @@
-import { FC } from 'react';
-import StarRating from '../common/StarRating/StarRating';
-import './Testimonials.css';
+import { testimonials } from '../../data/testimonials'
+import StarRating from '../common/StarRating/StarRating'
+import styles from './Testimonials.module.css'
 
-interface Testimonial {
-  id: string;
-  name: string;
-  quote: string;
-  rating: number;
-  avatar: string;
-}
-
-const testimonials: Testimonial[] = [
-  {
-    id: 'jane-doe',
-    name: 'Jane Doe',
-    quote: 'An unforgettable experience from start to finish!',
-    rating: 5,
-    avatar: 'https://images.example.com/testimonials/jane.jpg',
-  },
-  {
-    id: 'john-smith',
-    name: 'John Smith',
-    quote: 'Great value and outstanding customer service.',
-    rating: 4.5,
-    avatar: 'https://images.example.com/testimonials/john.jpg',
-  },
-  {
-    id: 'mary-jones',
-    name: 'Mary Jones',
-    quote: 'Everything was seamless, from booking to the trip itself.',
-    rating: 5,
-    avatar: 'https://images.example.com/testimonials/mary.jpg',
-  },
-];
-
-const Testimonials: FC = () => {
+const Testimonials = () => {
   return (
-    <section className="testimonials" data-testid="testimonials-section">
-      <div className="testimonials__header">
-        <h2>What Our Travelers Say</h2>
+    <section className={styles.section} aria-labelledby="testimonials-heading">
+      <div className={styles.header}>
+        <h2 id="testimonials-heading" className={styles.heading}>
+          What Our Travelers Say
+        </h2>
+        <p className={styles.subheading}>
+          Real stories from real travelers who explored the world with us.
+        </p>
       </div>
-      <div className="testimonials__grid">
+      <div className={styles.grid}>
         {testimonials.map((testimonial) => (
-          <div
-            className="testimonials__card"
-            key={testimonial.id}
-            data-testid="testimonial-card"
-          >
+          <article key={testimonial.id} className={styles.card}>
             <img
               src={testimonial.avatar}
               alt={testimonial.name}
-              className="testimonials__avatar"
+              className={styles.avatar}
+              loading="lazy"
             />
-            <p className="testimonials__quote">&quot;{testimonial.quote}&quot;</p>
             <StarRating rating={testimonial.rating} />
-            <p className="testimonials__name">{testimonial.name}</p>
-          </div>
+            <p className={styles.quote}>&ldquo;{testimonial.quote}&rdquo;</p>
+            <div className={styles.author}>
+              <span className={styles.name}>{testimonial.name}</span>
+              <span className={styles.location}>{testimonial.location}</span>
+            </div>
+          </article>
         ))}
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default Testimonials;
+export default Testimonials

@@ -1,16 +1,14 @@
-@import '../../../styles/tokens.css';
-
-.starRating {
-  display: flex;
-  gap: 2px;
-  font-size: 18px;
-  line-height: 1;
+.stars {
+  display: inline-flex;
+  gap: 0.15rem;
 }
 
-.starFilled {
-  color: var(--color-star-filled);
+.filled {
+  color: #f5a623;
+  font-size: 1.1rem;
 }
 
-.starEmpty {
-  color: var(--color-star-empty);
+.empty {
+  color: #d8d8d8;
+  font-size: 1.1rem;
 }

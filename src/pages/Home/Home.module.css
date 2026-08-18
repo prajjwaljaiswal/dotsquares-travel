@@ -1,6 +1,5 @@
-@import '../../styles/tokens.css';
-
 .home {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
