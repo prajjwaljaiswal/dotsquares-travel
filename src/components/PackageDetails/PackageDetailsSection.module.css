@@ -1,23 +1,35 @@
-.packageDetailsSection {
+.section {
   width: 100%;
-  max-width: 1100px;
+  padding: 1.5rem 0;
+}
+
+.container {
+  max-width: 1080px;
   margin: 0 auto;
-  padding: 24px 16px;
+  padding: 0 1rem;
 }
 
-.sectionHeading {
-  font-size: 22px;
+.heading {
+  font-size: 1.5rem;
   font-weight: 700;
-  color: #111;
-  margin: 0 0 16px;
+  margin-bottom: 1rem;
+  color: #111827;
 }
 
-@media (max-width: 640px) {
-  .packageDetailsSection {
-    padding: 16px 12px;
+.tabsWrapper {
+  margin-top: 1rem;
+}
+
+.tabContent {
+  padding: 1.5rem 0;
+}
+
+@media (max-width: 768px) {
+  .heading {
+    font-size: 1.25rem;
   }
 
-  .sectionHeading {
-    font-size: 18px;
+  .tabContent {
+    padding: 1rem 0;
   }
 }
