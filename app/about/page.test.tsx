@@ -1,42 +1,30 @@
+import React from 'react';
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import AboutPage from './page';
 
 describe('AboutPage', () => {
-  it('renders the main About Us heading', () => {
+  it('renders all About Us sections in order', () => {
     render(<AboutPage />);
-    expect(
-      screen.getByRole('heading', { level: 1, name: /about dotsquares travel/i })
-    ).toBeInTheDocument();
+
+    const level1Headings = screen.getAllByRole('heading', { level: 1 });
+    const level2Headings = screen.getAllByRole('heading', { level: 2 });
+    const headingTexts = [...level1Headings, ...level2Headings].map(
+      (heading) => heading.textContent
+    );
+
+    expect(headingTexts).toEqual([
+      'About Us',
+      'Our Story',
+      'Our Mission & Values',
+      'Meet the Team',
+      'Ready for Your Next Adventure?',
+    ]);
   });
 
-  it('renders the Our Story section', () => {
+  it('renders a CTA button linking to /explore', () => {
     render(<AboutPage />);
-    expect(screen.getByRole('heading', { level: 2, name: /our story/i })).toBeInTheDocument();
-  });
 
-  it('renders the Mission & Vision section with both cards', () => {
-    render(<AboutPage />);
-    expect(
-      screen.getByRole('heading', { level: 2, name: /our mission & vision/i })
-    ).toBeInTheDocument();
-    expect(screen.getByRole('heading', { level: 3, name: /our mission/i })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { level: 3, name: /our vision/i })).toBeInTheDocument();
-  });
-
-  it('renders the Travel Philosophy section with pillars', () => {
-    render(<AboutPage />);
-    expect(
-      screen.getByRole('heading', { level: 2, name: /our travel philosophy/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { level: 3, name: /authentic experiences/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { level: 3, name: /responsible travel/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { level: 3, name: /personalized care/i })
-    ).toBeInTheDocument();
+    const link = screen.getByRole('link', { name: /explore destinations/i });
+    expect(link).toHaveAttribute('href', '/explore');
   });
 });

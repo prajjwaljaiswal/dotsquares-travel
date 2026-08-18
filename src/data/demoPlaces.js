@@ -1,0 +1,58 @@
+export const demoPlaces = [
+  {
+    id: 1,
+    name: 'Kyoto Cultural Experience',
+    location: 'Kyoto, Japan',
+    type: 'package',
+    price: 899,
+  },
+  {
+    id: 2,
+    name: 'Roman Holiday Package',
+    location: 'Rome, Italy',
+    type: 'package',
+    price: 699,
+  },
+  {
+    id: 3,
+    name: 'Santorini Sunset Getaway',
+    location: 'Santorini, Greece',
+    type: 'package',
+    price: 1099,
+  },
+  {
+    id: 4,
+    name: 'Bali Beach Retreat',
+    location: 'Bali, Indonesia',
+    type: 'package',
+    price: 799,
+  },
+  {
+    id: 5,
+    name: 'Paris City Explorer',
+    location: 'Paris, France',
+    type: 'destination',
+    price: 0,
+  },
+  {
+    id: 6,
+    name: 'New York Skyline Tour',
+    location: 'New York, USA',
+    type: 'destination',
+    price: 0,
+  },
+  {
+    id: 7,
+    name: 'Machu Picchu Trek',
+    location: 'Cusco, Peru',
+    type: 'package',
+    price: 1299,
+  },
+  {
+    id: 8,
+    name: 'Great Wall Adventure',
+    location: 'Beijing, China',
+    type: 'package',
+    price: 999,
+  },
+];
