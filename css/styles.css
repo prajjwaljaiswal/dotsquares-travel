@@ -11,6 +11,9 @@
   --max-width: 860px;
 }
 
+/* ============================
+   Base reset / layout helpers
+   ============================ */
 * {
   box-sizing: border-box;
 }
@@ -23,10 +26,22 @@ body {
   line-height: 1.6;
 }
 
+body.menu-open {
+  overflow: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 .site-header {
+  position: relative;
+  z-index: 1000;
   background-color: var(--color-primary);
   color: #fff;
   padding: 1.25rem 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .site-header .brand {
@@ -49,6 +64,203 @@ body {
 
 .site-nav a:hover {
   text-decoration: underline;
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px 20px;
+}
+
+.logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+/* ============================
+   Desktop nav
+   ============================ */
+.primary-nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #1a1a2e;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover,
+.nav-links a:focus {
+  color: #ff6b35;
+}
+
+.btn-cta {
+  display: inline-block;
+  background: #ff6b35;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: background 0.2s ease;
+}
+
+.btn-cta:hover,
+.btn-cta:focus {
+  background: #e0562a;
+}
+
+/* ============================
+   Hamburger button
+   ============================ */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1100;
+}
+
+.hamburger-bar {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #1a1a2e;
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.hamburger.is-active .hamburger-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger.is-active .hamburger-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.is-active .hamburger-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* ============================
+   Mobile menu overlay
+   ============================ */
+.mobile-menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 1050;
+}
+
+.mobile-menu-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* ============================
+   Mobile off-canvas menu
+   ============================ */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 80%;
+  max-width: 320px;
+  background: #ffffff;
+  box-shadow: -4px 0 16px rgba(0, 0, 0, 0.15);
+  transform: translateX(100%);
+  transition: transform 0.35s ease;
+  z-index: 1075;
+  display: flex;
+  flex-direction: column;
+  padding: 90px 24px 24px;
+  overflow-y: auto;
+}
+
+.mobile-menu.is-open {
+  transform: translateX(0);
+}
+
+.mobile-nav-links {
+  list-style: none;
+  margin: 0 0 24px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mobile-nav-link {
+  display: block;
+  padding: 14px 8px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: #1a1a2e;
+  border-bottom: 1px solid #f0f0f0;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link:focus {
+  color: #ff6b35;
+  background: #fafafa;
+}
+
+.mobile-cta {
+  text-align: center;
+}
+
+/* ============================
+   Responsive breakpoints
+   ============================ */
+@media (max-width: 767px) {
+  .primary-nav {
+    display: none;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+}
+
+@media (min-width: 768px) {
+  .hamburger {
+    display: none;
+  }
+
+  .mobile-menu,
+  .mobile-menu-overlay {
+    display: none;
+  }
 }
 
 main.page-content {
