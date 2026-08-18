@@ -1,85 +1,61 @@
 export interface Destination {
   id: string;
-  slug: string;
   name: string;
   tagline: string;
-  heroImage: {
-    desktop: string;
-    mobile: string;
-    alt: string;
-  };
+  heroImage: string;
   overview: string;
   highlights: string[];
 }
 
 export const destinations: Destination[] = [
   {
-    id: "1",
-    slug: "bali",
-    name: "Bali, Indonesia",
-    tagline: "Island of the Gods — where lush jungles meet golden shores",
-    heroImage: {
-      desktop:
-        "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1920&q=80",
-      mobile:
-        "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=768&q=80",
-      alt: "Aerial view of Bali rice terraces and coastline",
-    },
+    id: 'santorini',
+    name: 'Santorini',
+    tagline: 'Whitewashed cliffs above a sparkling Aegean caldera',
+    heroImage:
+      'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=1600&q=80',
     overview:
-      "Bali blends spiritual charm with tropical beauty, offering everything from ancient temples to world-class surf breaks. Whether you're chasing sunrise over Mount Batur or exploring vibrant beach clubs in Seminyak, Bali delivers an unforgettable mix of culture and relaxation.",
+      'Santorini is a volcanic island in the Cyclades group, famed for its dramatic caldera views, whitewashed villages perched on cliff edges, and some of the most spectacular sunsets in the world. It is the perfect blend of relaxation, history and romance.',
     highlights: [
-      "Sunrise trek up Mount Batur volcano",
-      "Sacred water temple at Tirta Empul",
-      "Rice terraces of Tegallalang",
-      "World-class surf at Uluwatu",
-      "Vibrant nightlife in Seminyak & Canggu",
+      'Watch the sunset from Oia village',
+      'Explore the black sand beaches of Kamari and Perissa',
+      'Sample local wines at a cliffside winery',
+      'Wander the ancient ruins of Akrotiri',
     ],
   },
   {
-    id: "2",
-    slug: "santorini",
-    name: "Santorini, Greece",
-    tagline: "Whitewashed cliffs, endless blue, unforgettable sunsets",
-    heroImage: {
-      desktop:
-        "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=1920&q=80",
-      mobile:
-        "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=768&q=80",
-      alt: "Whitewashed buildings overlooking the caldera in Santorini",
-    },
+    id: 'kyoto',
+    name: 'Kyoto',
+    tagline: 'Timeless temples, tranquil gardens and cherry blossoms',
+    heroImage:
+      'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1600&q=80',
     overview:
-      "Perched along dramatic caldera cliffs, Santorini is famous for its whitewashed villages, blue-domed churches, and some of the most spectacular sunsets on Earth. Beyond the postcard views, the island offers volcanic beaches, ancient ruins, and a thriving wine scene.",
+      'Kyoto, the former imperial capital of Japan, is home to thousands of shrines and temples, traditional wooden machiya houses, and meticulously kept gardens. It offers an immersive glimpse into Japanese culture, from tea ceremonies to seasonal festivals.',
     highlights: [
-      "Sunset views from Oia village",
-      "Volcanic red and black sand beaches",
-      "Ancient ruins of Akrotiri",
-      "Wine tasting at cliffside vineyards",
-      "Caldera boat tours & hot springs",
+      'Walk through the Fushimi Inari torii gate paths',
+      'Visit the golden pavilion of Kinkaku-ji',
+      'Stroll the Arashiyama bamboo grove',
+      'Experience a traditional tea ceremony in Gion',
     ],
   },
   {
-    id: "3",
-    slug: "kyoto",
-    name: "Kyoto, Japan",
-    tagline: "Timeless temples, tranquil gardens, ancient tradition",
-    heroImage: {
-      desktop:
-        "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1920&q=80",
-      mobile:
-        "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=768&q=80",
-      alt: "Fushimi Inari torii gates in Kyoto",
-    },
+    id: 'machu-picchu',
+    name: 'Machu Picchu',
+    tagline: 'A lost city high in the Andean mountains',
+    heroImage:
+      'https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=1600&q=80',
     overview:
-      "Once the imperial capital of Japan, Kyoto is home to over a thousand temples and shrines, immaculate gardens, and preserved geisha districts. It's a city where centuries-old tradition lives seamlessly alongside modern Japanese life.",
+      'Machu Picchu is a 15th-century Inca citadel set high in the Andes Mountains of Peru. Surrounded by dramatic peaks and cloud forest, it is one of the most iconic archaeological sites in the world and a bucket-list destination for adventurers and history lovers alike.',
     highlights: [
-      "Thousands of torii gates at Fushimi Inari",
-      "Bamboo groves of Arashiyama",
-      "Golden Pavilion at Kinkaku-ji",
-      "Geisha spotting in Gion district",
-      "Traditional tea ceremonies",
+      'Hike the classic Inca Trail',
+      'Watch sunrise over the ruins from the Sun Gate',
+      'Explore the agricultural terraces and temples',
+      'Visit the nearby town of Aguas Calientes',
     ],
   },
 ];
 
-export const getDestinationBySlug = (slug: string): Destination | undefined =>
-  destinations.find((destination) => destination.slug === slug);
+export function getDestinationById(id: string | undefined): Destination | undefined {
+  if (!id) return undefined;
+  return destinations.find((destination) => destination.id === id);
+}
