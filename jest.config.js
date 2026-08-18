@@ -1,14 +1,11 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
-  setupFilesAfterEach: [],
-  setupFilesAfterEnv: ['@testing-library/jest-dom'],
-  moduleNameMapper: {
-    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
-    '^@/(.*)$': '<rootDir>/src/$1',
-  },
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
+  testMatch: ['**/__tests__/**/*.test.tsx', '**/__tests__/**/*.test.ts'],
   transform: {
-    '^.+\\.tsx?$': ['ts-jest', { tsconfig: 'tsconfig.json' }],
+    '^.+\\.(ts|tsx)$': ['ts-jest', { isolatedModules: true }],
   },
-  testMatch: ['**/*.test.tsx', '**/*.test.ts'],
+  testTimeout: 10000,
+  clearMocks: true,
 };

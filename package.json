@@ -2,29 +2,30 @@
   "name": "dotsquares-travel",
   "version": "1.0.0",
   "private": true,
-  "description": "Travel Package Detail Page - Book Now CTA feature",
+  "description": "Travel Package Detail Page components",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "build": "tsc -p tsconfig.json",
+    "test": "jest --ci --watchAll=false --runInBand",
+    "lint": "eslint . --ext .ts,.tsx --max-warnings=0"
   },
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.22.0"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "typescript": "^5.3.3",
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
-    "@types/jest": "^29.5.11",
+    "@testing-library/jest-dom": "^6.4.2",
+    "@testing-library/react": "^14.2.1",
+    "@types/jest": "^29.5.12",
+    "@types/react": "^18.2.61",
+    "@types/react-dom": "^18.2.19",
+    "@typescript-eslint/parser": "^7.1.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
-    "ts-jest": "^29.1.1",
-    "@testing-library/react": "^14.1.2",
-    "@testing-library/jest-dom": "^6.2.0",
-    "@testing-library/user-event": "^14.5.2",
-    "identity-obj-proxy": "^3.0.0"
+    "ts-jest": "^29.1.2",
+    "typescript": "^5.4.2"
   }
 }
