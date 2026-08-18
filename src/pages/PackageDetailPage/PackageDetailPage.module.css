@@ -1,0 +1,77 @@
+.page {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+
+.header {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.heroImage {
+  width: 100%;
+  max-width: 420px;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.headerInfo {
+  flex: 1;
+  min-width: 240px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 800;
+  margin: 0 0 4px;
+  color: var(--color-text, #1a1a1a);
+}
+
+.destination {
+  font-size: 15px;
+  color: var(--color-text-muted, #6c757d);
+  margin: 0 0 12px;
+}
+
+.description {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-text, #1a1a1a);
+  margin: 0 0 16px;
+}
+
+.priceRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.price {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-primary, #0d6efd);
+}
+
+.rating {
+  font-size: 16px;
+  font-weight: 600;
+  color: #f5a623;
+}
+
+.notFound {
+  max-width: 640px;
+  margin: 64px auto;
+  text-align: center;
+  color: var(--color-text, #1a1a1a);
+}
+
+@media (max-width: 640px) {
+  .heroImage {
+    height: 200px;
+  }
+}
