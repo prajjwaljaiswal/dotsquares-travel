@@ -1,11 +1,12 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import DestinationHero from '../components/DestinationHero';
-import { getDestinationById } from '../data/destinations';
+import DestinationOverview from '../components/DestinationOverview';
+import { getDestinationBySlug } from '../data/destinations';
 
 function DestinationDetailPage() {
-  const { id } = useParams<{ id: string }>();
-  const destination = getDestinationById(id);
+  const { slug } = useParams<{ slug: string }>();
+  const destination = getDestinationBySlug(slug);
 
   if (!destination) {
     return (
@@ -18,6 +19,7 @@ function DestinationDetailPage() {
   return (
     <main>
       <DestinationHero destination={destination} />
+      <DestinationOverview destination={destination} />
     </main>
   );
 }
