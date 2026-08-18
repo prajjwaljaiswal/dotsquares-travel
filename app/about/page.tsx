@@ -1,3 +1,4 @@
+import Team from '../components/Team';
 import AboutStory from '../components/AboutStory';
 import AboutMissionVision from '../components/AboutMissionVision';
 import AboutPhilosophy from '../components/AboutPhilosophy';
@@ -19,6 +20,7 @@ export default function AboutPage() {
       <AboutStory />
       <AboutMissionVision />
       <AboutPhilosophy />
+      <Team />
     </main>
   );
 }
