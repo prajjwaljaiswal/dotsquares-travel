@@ -1,6 +1,9 @@
 import { Routes, Route } from 'react-router-dom';
+import Header from './components/Header.jsx';
 import Home from './pages/Home.jsx';
 import ExplorePage from './pages/ExplorePage';
+import About from './pages/About.jsx';
+import Contact from './pages/Contact.jsx';
 import NotFound from './pages/NotFound.jsx';
 import Itinerary from './components/Itinerary/Itinerary';
 import { itineraryData } from './data/itineraryData';
@@ -19,12 +22,19 @@ function PackageDetail() {
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/explore" element={<ExplorePage />} />
-      <Route path="/package-detail" element={<PackageDetail />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <>
+      <Header />
+      <main className="page-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/explore" element={<ExplorePage />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/package-detail" element={<PackageDetail />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
+    </>
   );
 }
 
