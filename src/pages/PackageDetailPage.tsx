@@ -21,3 +21,5 @@ export function PackageDetailPage() {
     </main>
   );
 }
+
+export default PackageDetailPage;
