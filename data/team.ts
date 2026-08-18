@@ -3,43 +3,50 @@ export interface TeamMember {
   name: string;
   role: string;
   bio: string;
-  photo: string;
+  photoUrl: string;
 }
 
 export const teamMembers: TeamMember[] = [
   {
-    id: "1",
-    name: "Sarah Mitchell",
-    role: "Founder & Lead Travel Consultant",
-    bio: "With over 15 years exploring 60+ countries, Sarah crafts bespoke itineraries that turn dream trips into reality.",
-    photo: "https://randomuser.me/api/portraits/women/45.jpg",
+    id: 'team-1',
+    name: 'Ava Thompson',
+    role: 'Lead Travel Expert',
+    bio: 'Ava has spent over a decade curating bespoke itineraries across Southeast Asia and loves helping travellers discover hidden gems off the beaten path.',
+    photoUrl: '/images/team/ava-thompson.jpg',
   },
   {
-    id: "2",
-    name: "James Carter",
-    role: "Senior Travel Expert, Asia & Pacific",
-    bio: "James lived in Southeast Asia for a decade and specialises in immersive, off-the-beaten-path adventures.",
-    photo: "https://randomuser.me/api/portraits/men/32.jpg",
+    id: 'team-2',
+    name: 'Marcus Reid',
+    role: 'Destination Specialist, Europe',
+    bio: 'Marcus is a former tour guide with deep knowledge of European culture and cuisine, dedicated to crafting unforgettable city and countryside escapes.',
+    photoUrl: '/images/team/marcus-reid.jpg',
   },
   {
-    id: "3",
-    name: "Amara Osei",
-    role: "Travel Expert, Africa & Middle East",
-    bio: "Amara designs unforgettable safaris and cultural journeys, drawing on her deep local knowledge and connections.",
-    photo: "https://randomuser.me/api/portraits/women/68.jpg",
+    id: 'team-3',
+    name: 'Priya Nair',
+    role: 'Adventure Travel Consultant',
+    bio: 'Priya specialises in trekking and adventure packages, having personally hiked across the Himalayas and the Andes to test every route she recommends.',
+    photoUrl: '/images/team/priya-nair.jpg',
   },
   {
-    id: "4",
-    name: "Lucas Fernandez",
-    role: "Travel Expert, Europe & Americas",
-    bio: "Lucas is passionate about slow travel and helps clients discover authentic experiences across two continents.",
-    photo: "https://randomuser.me/api/portraits/men/76.jpg",
+    id: 'team-4',
+    name: 'Daniel Osei',
+    role: 'Luxury Travel Advisor',
+    bio: 'Daniel builds premium, tailor-made experiences for discerning travellers, with a focus on exclusive resorts and private tours worldwide.',
+    photoUrl: '/images/team/daniel-osei.jpg',
   },
   {
-    id: "5",
-    name: "Priya Nair",
-    role: "Customer Experience Manager",
-    bio: "Priya ensures every journey runs smoothly, providing round-the-clock support from booking to touchdown.",
-    photo: "https://randomuser.me/api/portraits/women/22.jpg",
+    id: 'team-5',
+    name: 'Sofia Martinez',
+    role: 'Family Travel Planner',
+    bio: 'Sofia designs stress-free, kid-friendly holidays for families, drawing on her own experience travelling with three children across four continents.',
+    photoUrl: '/images/team/sofia-martinez.jpg',
+  },
+  {
+    id: 'team-6',
+    name: 'Liam Chen',
+    role: 'Customer Experience Manager',
+    bio: 'Liam ensures every traveller receives seamless support before, during, and after their trip, turning good holidays into unforgettable ones.',
+    photoUrl: '/images/team/liam-chen.jpg',
   },
 ];

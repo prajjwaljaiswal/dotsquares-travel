@@ -1,27 +1,23 @@
-import { render, screen } from "@testing-library/react";
-import Team from "./Team";
+import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
+import Team from './Team';
+import { teamMembers } from '@/data/team';
 
-describe("Team", () => {
-  it("renders the section heading", () => {
+describe('Team', () => {
+  it('renders the section heading', () => {
     render(<Team />);
-    expect(
-      screen.getByText(/Meet Our Travel Experts/i)
-    ).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /meet our travel experts/i })).toBeInTheDocument();
   });
 
-  it("renders at least 4 team members with name, role, and bio", () => {
+  it('renders at least 4 demo team members', () => {
     render(<Team />);
-    const headingElements = screen.getAllByRole("heading", { level: 3 });
-    expect(headingElements.length).toBeGreaterThanOrEqual(4);
+    expect(teamMembers.length).toBeGreaterThanOrEqual(4);
 
-    headingElements.forEach((heading) => {
-      expect(heading.textContent).toBeTruthy();
+    teamMembers.forEach((member) => {
+      expect(screen.getByText(member.name)).toBeInTheDocument();
+      expect(screen.getByText(member.role)).toBeInTheDocument();
+      expect(screen.getByText(member.bio)).toBeInTheDocument();
+      expect(screen.getByAltText(member.name)).toBeInTheDocument();
     });
-  });
-
-  it("renders a photo for each team member", () => {
-    render(<Team />);
-    const images = screen.getAllByRole("img");
-    expect(images.length).toBeGreaterThanOrEqual(4);
   });
 });
