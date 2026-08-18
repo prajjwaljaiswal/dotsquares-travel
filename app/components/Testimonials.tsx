@@ -1,21 +1,45 @@
 const testimonials = [
-  { id: 1, name: 'Amelia R.', quote: 'The best travel planning experience I have ever had!' },
-  { id: 2, name: 'James T.', quote: 'Booking was seamless and the deals were unbeatable.' }
+  {
+    name: 'Sarah Johnson',
+    location: 'New York, USA',
+    quote: 'Our trip was absolutely unforgettable. Every detail was perfectly planned!',
+    rating: 5,
+  },
+  {
+    name: 'James Smith',
+    location: 'London, UK',
+    quote: 'The best travel experience we have ever had. Highly recommend!',
+    rating: 5,
+  },
+  {
+    name: 'Maria Garcia',
+    location: 'Madrid, Spain',
+    quote: 'Professional service from start to finish. We will definitely book again.',
+    rating: 5,
+  },
 ];
 
 export default function Testimonials() {
   return (
-    <section data-testid="section-testimonials" aria-labelledby="testimonials-heading">
-      <div className="container">
+    <section data-testid="section-testimonials" className="testimonials" aria-labelledby="testimonials-heading">
+      <div className="testimonials-container">
         <h2 id="testimonials-heading">What Our Travelers Say</h2>
-        <ul style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px', listStyle: 'none' }}>
+        <div className="testimonials-grid">
           {testimonials.map((testimonial) => (
-            <li key={testimonial.id}>
-              <blockquote>"{testimonial.quote}"</blockquote>
-              <cite>{testimonial.name}</cite>
-            </li>
+            <div key={testimonial.name} className="testimonial-card">
+              <p className="testimonial-quote">
+                &ldquo;{testimonial.quote}&rdquo;
+              </p>
+              <div className="testimonial-author">
+                <span className="testimonial-name">{testimonial.name}</span>
+                <span className="testimonial-location">{testimonial.location}</span>
+              </div>
+              <div className="testimonial-rating" aria-label={`${testimonial.rating} out of 5 stars`}>
+                {'★'.repeat(testimonial.rating)}
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
     </section>
   );

@@ -5,15 +5,23 @@ import Testimonials from './components/Testimonials';
 import Newsletter from './components/Newsletter';
 import Footer from './components/Footer';
 
-export default function HomePage() {
+export const metadata = {
+  title: 'Dotsquares Travel - Discover Your Next Adventure',
+  description:
+    'Explore featured destinations, read traveler testimonials, and subscribe to our newsletter for the best travel deals with Dotsquares Travel.',
+};
+
+export default function Home() {
   return (
-    <main>
+    <>
       <Header />
-      <Hero />
-      <FeaturedDestinations />
-      <Testimonials />
-      <Newsletter />
+      <main>
+        <Hero />
+        <FeaturedDestinations />
+        <Testimonials />
+        <Newsletter />
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }
