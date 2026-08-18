@@ -1,0 +1,62 @@
+.team-member-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background-color: var(--color-surface, #ffffff);
+  border-radius: var(--radius-lg, 12px);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.08));
+  padding: var(--spacing-lg, 24px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  height: 100%;
+}
+
+.team-member-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md, 0 8px 20px rgba(0, 0, 0, 0.12));
+}
+
+.team-member-card__photo-wrapper {
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: var(--spacing-md, 16px);
+  border: 3px solid var(--color-primary-light, #e6f0ff);
+}
+
+.team-member-card__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.team-member-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs, 4px);
+}
+
+.team-member-card__name {
+  font-size: var(--font-size-lg, 1.125rem);
+  font-weight: 600;
+  color: var(--color-text-primary, #1a1a1a);
+  margin: 0;
+}
+
+.team-member-card__role {
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: 500;
+  color: var(--color-primary, #0066cc);
+  margin: 0 0 var(--spacing-sm, 8px);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.team-member-card__bio {
+  font-size: var(--font-size-base, 0.95rem);
+  line-height: 1.5;
+  color: var(--color-text-secondary, #555555);
+  margin: 0;
+}

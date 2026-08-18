@@ -7,13 +7,16 @@
     "jsx": "react-jsx",
     "strict": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
     "outDir": "dist",
-    "declaration": false
+    "declaration": false,
+    "allowJs": true,
+    "types": ["jest", "@testing-library/jest-dom"]
   },
   "include": ["src"]
 }
